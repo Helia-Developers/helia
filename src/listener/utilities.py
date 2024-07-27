@@ -39,7 +39,7 @@ class Utilities(commands.Cog):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         return Strings(lang)
 
-    @commands.slash_command(name="user", description="Shows user information")
+    @commands.slash_command(name="user", description="user info")
     async def user(self,
                    ctx: disnake.ApplicationCommandInteraction,
                    member: disnake.Member = None) -> None:
@@ -79,7 +79,7 @@ class Utilities(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
-    @commands.slash_command(name="emoji", description="Shows emoji information")
+    @commands.slash_command(name="emoji", description="emoji info")
     async def emoji(self, ctx: disnake.ApplicationCommandInteraction, emoji: str) -> None:
         """Shows emoji information.
 
@@ -105,7 +105,7 @@ class Utilities(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
-    @commands.slash_command(name="channel", description="Shows channel information")
+    @commands.slash_command(name="channel", description="channel info")
     async def channel(self, ctx: disnake.ApplicationCommandInteraction, channel: disnake.TextChannel) -> None:
         """Shows channel information.
 
@@ -143,7 +143,7 @@ class Utilities(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
-    @commands.slash_command(name="avatar", description="Shows user's avatar")
+    @commands.slash_command(name="avatar", description="user avatar")
     async def avatar(self,
                      ctx: disnake.ApplicationCommandInteraction,
                      member: disnake.Member = None) -> None:
@@ -175,7 +175,7 @@ class Utilities(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
-    @commands.slash_command(name="randint", description="Generates a random integer between two given numbers")
+    @commands.slash_command(name="randint", description="random num")
     async def randint(self, ctx: disnake.ApplicationCommandInteraction, stc1: int, stc2: int):
         """Generates a random integer between two given numbers.
 
@@ -204,7 +204,7 @@ class Utilities(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
-    @commands.slash_command(name="sqrt", description="Calculates the square root of a given number")
+    @commands.slash_command(name="sqrt", description="get sqrt")
     async def sqrt(self, ctx: disnake.ApplicationCommandInteraction, num: int):
         """Calculates the square root of a given number.
 
@@ -247,7 +247,7 @@ class Utilities(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
-    @commands.slash_command(name="guild", description="Shows guild information")
+    @commands.slash_command(name="guild", description="guild info")
     async def guild(self, ctx: disnake.ApplicationCommandInteraction, guild_id: int = None) -> None:
         """Shows guild information.
 

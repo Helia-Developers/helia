@@ -16,7 +16,7 @@ class Other(commands.Cog, name="Other"):
           self.bot = bot
           self.name = "Other"
 
-      @commands.slash_command(name="ping", description="Check the bot's latency")
+      @commands.slash_command(name="ping", description="Check ping")
       async def ping(self, inter: disnake.ApplicationCommandInteraction) -> NoReturn:
           """
           Shows the bot's latency.
@@ -45,7 +45,7 @@ class Other(commands.Cog, name="Other"):
               Logger.error(f"Error in ping command: {str(e)}")
               await inter.response.send_message("An error occurred while processing the command.", ephemeral=True)
 
-      @commands.slash_command(name="wallpaper", description="Get wallpaper information and options")
+      @commands.slash_command(name="wallpaper", description="Get wallpaper")
       async def wallpaper(self, inter: disnake.ApplicationCommandInteraction):
           """
           Displays wallpaper information and available options.

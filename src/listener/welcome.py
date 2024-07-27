@@ -61,7 +61,7 @@ class Welcome(commands.Cog):
         cursor.close()
         connect.close()
 
-    @commands.slash_command(name="welcome", description="Welcome commands")
+    @commands.slash_command(name="welcome", description="Welcome")
     async def welcome(self, inter: disnake.ApplicationCommandInteraction):
         """
         Displays the list of commands related to server join and leave messages.

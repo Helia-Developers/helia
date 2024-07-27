@@ -36,7 +36,8 @@ class CoreClient(commands.AutoShardedBot):
             max_messages=None,
             intents=intents,
             chunk_guilds_at_startup=False,
-            sync_commands=True,
+            #sync_commands=True,
+            command_sync_flags=commands.CommandSyncFlags.all(),
         )
         self.name = name
         self.id = id
@@ -97,8 +98,8 @@ class CoreClient(commands.AutoShardedBot):
         await self.change_presence(status=disnake.Status.online, activity=activar)
         self.launch_time = datetime.datetime.utcnow()
 
-        self.load_extension("jishaku")
-        print("    Loaded 'jishaku.py'")
+        #self.load_extension("jishaku")
+        #print("    Loaded 'jishaku.py'")
         await super(CoreClient, self).change_presence(status=disnake.Status.online)
         # await self.update_status_on_dbl()
         print("[LAUNCH] Logged in as {}".format(super(CoreClient, self).user))

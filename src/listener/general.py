@@ -129,8 +129,16 @@ class General(commands.Cog, name="General"):
             )
             wikierror.set_footer(text="Try again ")
             await inter.response.send_message(embed=wikierror)
+        except disnake.ext.commands.errors.NSFWChannelRequired:
+            nsfw_error = disnake.Embed(
+                title="NSFW Channel Required",
+                description="This command can only be used in NSFW channels.",
+                color=0xFF0000
+            )
+            await inter.response.send_message(embed=nsfw_error, ephemeral=True)
         except Exception as e:
             await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            
 
     @commands.slash_command(name="about", description="Information about the bot")
     async def about(self, inter: disnake.ApplicationCommandInteraction) -> NoReturn:
