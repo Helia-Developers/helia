@@ -164,12 +164,8 @@ async def main():
                         "yellow",
                     )
                 else:
-                    exc = "{}: {}".format(type(e).__name__, e)
-                    cprint(
-                        "║=====Failed to load extension {}\n{}=====║".format(
-                            extension, exc),
-                        "red",
-                    )
+                    exc = f"{type(e).__name__}: {e}"
+                    cprint(f"║=====Failed to load extension {extension}\n{exc}=====║", "red")
 
     # Run Bot
 
