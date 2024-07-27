@@ -39,7 +39,7 @@ class Other(commands.Cog, name="Other"):
             STRINGS = Strings(lang)
             latency = "%.0fms" % (self.bot.latency * 100)
             embed = disnake.Embed(
-                title="{} Latency".format(self.bot.name),
+                title=f"{self.bot.name} Latency",
                 description=f":hourglass_flowing_sand: {latency} ",
 # Define the color constant at the module level
 EMBED_COLOR = 0xFF8000
