@@ -13,6 +13,8 @@ The `on_command_error` event listener handles various types of errors that can o
 # -*- coding: utf-8 -*-
 import asyncio
 import datetime
+import os
+import traceback
 from typing import NoReturn
 
 import disnake
@@ -30,6 +32,18 @@ class Listeners(commands.Cog, name="Listeners"):
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Listeners"
+        self.logpath = "logs/log.txt"
+        self._ensure_log_file_exists()
+
+    def _ensure_log_file_exists(self):
+        os.makedirs(os.path.dirname(self.logpath), exist_ok=True)
+        if not os.path.exists(self.logpath):
+            open(self.logpath, 'a').close()
+
+    def _log_to_file(self, message: str):
+        with open(self.logpath, "a", encoding='utf-8') as file:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            file.write(f"[{timestamp}] {message}\n")
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild: Guild) -> NoReturn:
@@ -45,7 +59,6 @@ class Listeners(commands.Cog, name="Listeners"):
         ║==============================║
         """)
         path = "scripts/version.txt"
-        logpath = "logs/log.txt"
         with open(path, "r") as file:
             ver = file.readline()
         channel = guild.text_channels[0]
@@ -68,16 +81,12 @@ class Listeners(commands.Cog, name="Listeners"):
             value=STRINGS["general"]["abouthostingvalue"],
             inline=True,
         )
-        # embed.add_field(name=STRINGS['general']['aboutthanks'], value=STRINGS['general']['aboutthankstext'],inline=False)
         embed.set_footer(text=self.bot.user.name,
                          icon_url=self.bot.user.avatar.url)
         print("The invite for this server is :")
         print(f"{invite}")
-        with open(logpath, "a") as file:
-            print("\n", file=file)
-            print(f"Bot has been added to: {guild}", file=file)
-            print("The invite for this server is :", file=file)
-            print(f"{invite}", file=file)
+        self._log_to_file(f"Bot has been added to: {guild}")
+        self._log_to_file(f"The invite for this server is: {invite}")
         for channel in guild.text_channels:
             if channel.permissions_for(guild.me).send_messages:
                 await channel.send(embed=embed)
@@ -88,6 +97,7 @@ class Listeners(commands.Cog, name="Listeners"):
         """Logging commands to the console."""
         Logger.command_used(ctx.message.author, ctx.command.name,
                             ctx.message.guild)
+        self._log_to_file(f"Command used: {ctx.command.name} by {ctx.message.author} in {ctx.message.guild}")
 
     @commands.Cog.listener()
     async def on_message(self, message: Message) -> NoReturn:
@@ -122,9 +132,8 @@ class Listeners(commands.Cog, name="Listeners"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         COMMANDS = Commands(lang)
-        logpath = "logs/log.txt"
-        cprint("==============================")
-        cprint(f"""
+        
+        error_message = f"""
         ║========================║=========================║
         ║ Guild                  ║ Member                  ║
         ║ {ctx.guild.name}::::::::::::::║ {ctx.author.name}:::::::::::::::::║        
@@ -134,22 +143,16 @@ class Listeners(commands.Cog, name="Listeners"):
         ║========================║=========================║
         =======================================================
         Traceback 
-        {error}
+        {traceback.format_exc()}
         =======================================================
-        """)
+        """
         cprint("==============================")
-        with open(logpath, "a") as file:
-            print("\n", file=file)
-            print("An error has occured in the bot!", file=file)
-            print(f"Traceback : {error}", file=file)
-            print(
-                f"Guild that caused the error : {ctx.guild.name} - Guild id {ctx.guild.id} - Member triggering the error {ctx.author.name} - Member id {ctx.author.id} ",
-                file=file,
-            )
+        cprint(error_message)
+        cprint("==============================")
+        self._log_to_file(error_message)
 
         if isinstance(error, commands.CommandNotFound):
             return
-        #await ctx.message.add_reaction(CONFIG["no_emoji"])
 
         if isinstance(error, commands.MissingRequiredArgument):
             prefix = await s.get_field("prefix", CONFIG["default_prefix"])
@@ -188,7 +191,6 @@ class Listeners(commands.Cog, name="Listeners"):
             embed.title = STRINGS["error"]["on_error_title"]
             embed.description = STRINGS["error"]["on_error_text"].format(
                 str(error))
-            # Logger.warn(str(error))
 
         msg = await ctx.send(embed=embed)
         await asyncio.sleep(20)

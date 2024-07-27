@@ -14,6 +14,7 @@ import asyncio
 import datetime
 import json
 import os
+import sys
 
 import aiohttp
 import disnake
@@ -34,23 +35,8 @@ os.system("ls -l; poetry add disnake")
 os.system("ls -l; pip install -U git+https://github.com/Disnake-Extensions/jishaku")
 os.system("ls -l; pip install -U git+https://github.com/pieckenst/WaveLinkFork.git")
 
-# os.system("ls -l; pip install git+https://github.com/pieckenst/Orion.py.git@Development")
-# os.system("ls -l; pip install git+https://github.com/Senarc-Studios/Orion.py.git@Development")
-
-# from disnake_components import (
-# Button,
-# ComponentsBot,
-# disnakeComponents,
-# Select,
-# SelectOption,
-# )
-
 CONFIG = Config()
 STRINGS = Strings(CONFIG["default_locale"])
-
-# from pixivpy_async import PixivClient
-# from ytpy import YoutubeClient
-# import asyncpraw
 
 prefixes = ["//"]
 default_prefix = "//"
@@ -83,9 +69,14 @@ cprint(
 
 def load_server_prefixes():
     global server_prefixes
+    server_prefixes = {}
 
-    with open("prefixes.json") as f:
-        server_prefixes = json.load(f)
+    try:
+        with open("prefixes.json") as f:
+            server_prefixes = json.load(f)
+    except FileNotFoundError:
+        # If the file doesn't exist, create an empty dictionary
+        save_server_prefixes()
 
 
 def save_server_prefixes():
@@ -96,7 +87,7 @@ def save_server_prefixes():
 
 
 def get_memory_config():
-    intents = disnake.Intents.all()
+    intents = disnake.Intents.default()
     # Commented line for requesting members privileged intent - uncomment for enabling
     intents.members = True
     intents.presences = False
@@ -140,14 +131,6 @@ async def main():
         cprint(
             f"=====Extension - {command_cog} was loaded succesfully!=====", "green")
     if __name__ == "__main__":
-        # youtube_client = YoutubeClient(session)
-        # music_manager = GuildMusicManager(client=client)
-        # reddit_client = asyncpraw.Reddit(client_id=os.environ['REDDIT_CLIENT_ID'],
-        # client_secret=os.environ['REDDIT_CLIENT_SECRET'],
-        # user_agent=os.environ['REDDIT_USER_AGENT'])
-
-        # pixiv_client = PixivClient()
-
         # Load command Cogs
         startup_extensions = [
             "listener.help",
@@ -157,7 +140,6 @@ async def main():
             "listener.calculator",
             "listener.listeners",
             "listener.admin",
-            # 'listener.wallpapers',
             "listener.utilities",
             "listener.gnulinux",
             "listener.general",
@@ -168,26 +150,28 @@ async def main():
             "listener.welcome",
             "listener.goodbye",
             "listener.workers",
-            # 'listener.gacha_commands'
         ]
         for extension in startup_extensions:
             try:
-
                 client.load_extension(extension)
                 cprint(
                     f"║=====Extension - {extension} was loaded succesfully!=====║",
                     "green",
                 )
-            except Exception as e:
-                exc = "{}: {}".format(type(e).__name__, e)
-                cprint(
-                    "║=====Failed to load extension {}\n{}=====║".format(
-                        extension, exc
-                    ),
-                    "red",
-                )
-
-    # disnakeComponents(client)
+            except commands.errors.ExtensionFailed as e:
+                if isinstance(e.original, disnake.errors.HTTPException) and e.original.code == 50035:
+                    cprint(
+                        f"║=====Warning: SyncWarning: Failed to overwrite global commands due to 400 Bad Request (error code: 50035): Invalid Form Body in {extension}=====║",
+                        "yellow",
+                    )
+                else:
+                    exc = "{}: {}".format(type(e).__name__, e)
+                    cprint(
+                        "║=====Failed to load extension {}\n{}=====║".format(
+                            extension, exc
+                        ),
+                        "red",
+                    )
 
     # Run Bot
 

@@ -143,8 +143,18 @@ class Strings:
             ) as f:
                 return json.load(f)
 
-
+"""
+    Provides logging utilities for the bot.
+    
+    The `Logger` class provides several static methods for logging different types of messages, such as informational, warning, and error messages. These methods use the `Strings` class to retrieve localized strings for the log messages, and format the messages with the current timestamp.
+    
+    The `done` method logs an informational message with a green color.
+    The `warn` method logs a warning message with a red color.
+    The `cog_loaded` method logs a message indicating that a cog has been loaded.
+    The `command_used` method logs a message indicating that a command has been used, with the command name, the tag, and the guild name.
+    """
 class Logger:
+
     def done(msg: AnyStr) -> NoReturn:
         STRINGS = Strings(CONFIG["default_locale"])
         now = datetime.datetime.now()
