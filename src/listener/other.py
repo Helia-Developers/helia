@@ -41,7 +41,15 @@ class Other(commands.Cog, name="Other"):
             embed = disnake.Embed(
                 title="{} Latency".format(self.bot.name),
                 description=f":hourglass_flowing_sand: {latency} ",
-                color=0xFF8000,
+# Define the color constant at the module level
+EMBED_COLOR = 0xFF8000
+
+# Use the constant in your embed creation
+embed = disnake.Embed(
+    title=STRINGS["moderation"]["setstatustext"],
+    description=STRINGS["moderation"]["setstatusdesc"],
+    color=EMBED_COLOR,
+)
             )
             await inter.response.send_message(embed=embed)
         except Exception as e:
