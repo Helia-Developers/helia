@@ -1,3 +1,15 @@
+"""
+The CoreClient class is the main entry point for the Discord bot. It inherits from the AutoShardedBot class from the disnake.ext.commands module, which provides functionality for managing sharded Discord bots.
+
+The class has the following features:
+- Initializes the bot with a name, ID, and command prefix.
+- Defines a loop that changes the bot's status every 110 seconds, displaying various activities and messages.
+- Provides an `update_status_on_dbl` method that updates the bot's server count on the Discord Bot List (DBL) website.
+- Handles the bot's ready event, loading the jishaku extension, changing the bot's presence, and connecting to a database.
+- Handles the bot's guild join and leave events, updating the bot's status on the DBL website.
+- Handles incoming messages, invoking the bot's commands using the NanoContext class.
+"""
+
 import asyncio
 import datetime
 import os
@@ -25,7 +37,8 @@ class CoreClient(commands.AutoShardedBot):
             max_messages=None,
             intents=intents,
             chunk_guilds_at_startup=False,
-            slash_interactions=True,
+            # sync_commands=True,
+            command_sync_flags=commands.CommandSyncFlags.all(),
         )
         self.name = name
         self.id = id
@@ -33,7 +46,7 @@ class CoreClient(commands.AutoShardedBot):
 
         # disnake Bot List updates.
         # self.dbl_token = os.environ['DBL_TOKEN']
-        # self.BASE_URL = "https://disnakebots.org/api/bots/458298539517411328/stats"
+        # self.BASE_URL = "https://discordbots.org/api/bots/458298539517411328/stats"
         # self.headers = {"Authorization": self.dbl_token}
 
     @tasks.loop(seconds=110)
@@ -62,8 +75,7 @@ class CoreClient(commands.AutoShardedBot):
             disnake.Game(
                 name="Deep inside, we're nothing more than scions and sinners"
             ),
-            disnake.Activity(
-                type=disnake.ActivityType.watching, name="headbanging"),
+            disnake.Activity(type=disnake.ActivityType.watching, name="headbanging"),
         ]
         await asyncio.sleep(40)
         print("---------------------------")
@@ -86,8 +98,8 @@ class CoreClient(commands.AutoShardedBot):
         await self.change_presence(status=disnake.Status.online, activity=activar)
         self.launch_time = datetime.datetime.utcnow()
 
-        self.load_extension("jishaku")
-        print("    Loaded 'jishaku.py'")
+        # self.load_extension("jishaku")
+        # print("    Loaded 'jishaku.py'")
         await super(CoreClient, self).change_presence(status=disnake.Status.online)
         # await self.update_status_on_dbl()
         print("[LAUNCH] Logged in as {}".format(super(CoreClient, self).user))

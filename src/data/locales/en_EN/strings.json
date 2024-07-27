@@ -296,7 +296,7 @@
     "terminologydesc": "Server Administrator \n Any user who has the permission, ability, or access to add or configure our bot on the server. \nServer Member \n Any user who is a member of a server where Helia is present on.",
     "datacollecttitle": "Data Collected for server configuration",
     "datacollectdesc": "The following may be collected when you use the server administrator commands to set up the bot the way you see fit",
-    "dctitlecont": "⠀",
+    "dctitlecont": ":arrow_forward:",
     "datacollectcont": "Server configurations (guild_id,channel_id, role_id, bot locale , custom prefix setting) - Which are used for setting your welcome and goodbye channels , your server prefix and setting the language you wish the bot to speak",
     "loggingtitle": "Logging",
     "loggingdesc": "We log the following things about you \n Commands you use in your server ( which means , server name and the nickname of command invoker are stored - this is stored temporarily in the bot console and will be not visible to us after a couple hours)",

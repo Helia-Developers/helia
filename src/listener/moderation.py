@@ -1,3 +1,27 @@
+"""
+This class provides a set of moderation commands for a Discord bot, including commands to ban, unban, kick, and mute members, as well as commands to manage roles and channels.
+
+The `ban` and `slashban` commands allow the bot to ban a specified member from the server, with an optional reason. The `unban` and `slashunban` commands allow the bot to unban a specified member from the server.
+
+The `multiban` command allows the bot to ban multiple members at once.
+
+The `kick` and `slashkick` commands allow the bot to kick a specified member from the server, with an optional reason.
+
+The `purge` command allows the bot to delete a specified number of messages in the current channel.
+
+The `setname` command allows the bot to set a nickname for a specified member.
+
+The `mute` command allows the bot to mute a specified member, preventing them from sending messages.
+
+The `unmute` command allows the bot to unmute a specified member, allowing them to send messages again.
+
+The `lockdownrole` and `unlockrole` commands allow the bot to disable and enable writing permissions for a specified role in the server.
+
+The `lockdown` and `unlock` commands allow the bot to disable and enable writing permissions for everyone in the server.
+
+The `channellock` and `channelunlock` commands allow the bot to disable and enable writing permissions in the current channel.
+"""
+
 import asyncio
 from typing import NoReturn
 
@@ -5,6 +29,7 @@ import disnake
 from disnake import Member, User
 from disnake.ext import commands
 from disnake.ext.commands import Bot, Context, Greedy
+from disnake.ext.commands.params import Param
 from termcolor import cprint
 
 from listener.utils import Config, Logger, Settings, Strings, Utils
@@ -19,7 +44,7 @@ class Moderation(commands.Cog, name="Moderation"):
         self.bot = bot
         self.name = "Moderation"
 
-    @commands.command(slash_interaction=True, message_command=True)
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(ban_members=True)
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -41,32 +66,6 @@ class Moderation(commands.Cog, name="Moderation"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
 
-        # select_components = [[
-        # Button(style=ButtonStyle.green, label="✓"),
-        # Button(style=ButtonStyle.red, label="X"),
-        # ]]
-        # done_components = [[
-        # Button(style=ButtonStyle.grey, label="·", disabled=True),
-        # ]]
-
-        # embedconfirm = disnake.Embed(
-        # title="Ban Command",
-        # description="```Do you want to ban this member?```",
-        # )
-        # await ctx.send(embed=embedconfirm, components=select_components)
-        # response = await self.bot.wait_for(
-        # "button_click", check=lambda message: message.author == ctx.author)
-        # try:
-        # if response.component.label == "✓":
-        # await response.respond(
-        # type=7,
-        # embed=disnake.Embed(
-        # title="Action confirmed",
-        # description=f"Banning {member} for {reason}",
-        # color=0xFF8000,
-        # ),
-        # components=done_components,
-        # )
         if not member.bot:
             embed = Utils.error_embed(
                 STRINGS["moderation"]["dm_kick"].format(ctx.guild, reason)
@@ -82,7 +81,58 @@ class Moderation(commands.Cog, name="Moderation"):
         """
         )
 
-    @commands.command()
+    @commands.slash_command(
+        name="ban",
+        description="Bans a member.",
+    )
+    @commands.bot_has_permissions(ban_members=True)
+    @commands.has_permissions(ban_members=True)
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def slashban(
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        member: Member = Param(description="User to ban."),
+        *,
+        reason: str = Param(description="Reason to ban."),
+    ) -> NoReturn:
+        """
+
+
+        A command to ban a specified user.
+
+        Arguments:
+        -----------
+        - `member` - user
+        - `reason` - ban reason
+
+        """
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
+        lang = await s.get_field("locale", CONFIG["default_locale"])
+        STRINGS = Strings(lang)
+        if not member.bot:
+            embed = Utils.error_embed(
+                STRINGS["moderation"]["dm_kick"].format(inter.guild, reason)
+            )
+            await member.send(embed=embed)
+        await asyncio.sleep(5)
+        await member.ban(reason=reason)
+        cprint(
+            f"""
+        ║============================================================║
+        ║--------Succesfully banned {member} in {inter.guild.name}-------║
+        ║============================================================║
+        """
+        )
+        await inter.edit_original_message(
+            embed=disnake.Embed(
+                title="Action done",
+                description=f"Banned {member}",
+                color=0xFF8000,
+            ),
+        )
+
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(ban_members=True)
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -100,22 +150,6 @@ class Moderation(commands.Cog, name="Moderation"):
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-
-        # select_components = [[
-        # Button(style=ButtonStyle.green, label="✓"),
-        # Button(style=ButtonStyle.red, label="X"),
-        # ]]
-        # done_components = [[
-        # Button(style=ButtonStyle.grey, label="·", disabled=True),
-        # ]]
-
-        # embedconfirm = disnake.Embed(
-        # title="Unban Command",
-        # description="```Do you want to unban this member?```",
-        # )
-        # await ctx.send(embed=embedconfirm, components=select_components)
-        # response = await self.bot.wait_for(
-        # "button_click", check=lambda message: message.author == ctx.author)
 
         if "#" in ctx.message.content:
             banned_users = await ctx.guild.bans()
@@ -159,22 +193,82 @@ class Moderation(commands.Cog, name="Moderation"):
              ║============================================================║
             """
             )
-        # else:
-        # await response.respond(
-        # type=7,
-        # embed=disnake.Embed(
-        # title="Action Aborted",
-        # description="The action was aborted by clicking the no button",
-        # color=0xDD2E44,
-        # ),
-        # components=done_components,
-        # )
-
-        await ctx.message.add_reaction(CONFIG["no_emoji"])
         embed = Utils.error_embed(STRINGS["error"]["user_not_found"])
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.slash_command(
+        name="unban",
+        description="Unbans a member.",
+    )
+    @commands.bot_has_permissions(ban_members=True)
+    @commands.has_permissions(ban_members=True)
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def slashunban(
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        *,
+        member=Param(description="User to unban."),
+    ) -> NoReturn:
+        """
+
+
+        A command to unban a specified user.
+
+        Arguments:
+        -----------
+        - `member` - user tag. Example: `name#1234`
+
+        """
+        s = await Settings(inter.guild.id)
+        lang = await s.get_field("locale", CONFIG["default_locale"])
+        STRINGS = Strings(lang)
+
+        if "#" in member:
+            banned_users = await inter.guild.bans()
+            for ban_entry in banned_users:
+                member_name, member_discriminator = member.split("#")
+                user = ban_entry.user
+                if (user.name, user.discriminator) == (
+                    member_name,
+                    member_discriminator,
+                ):
+                    await inter.guild.unban(user)
+                    await inter.response.send_message(
+                        embed=disnake.Embed(
+                            title="Action confirmed",
+                            description=f"Unbanned {user}",
+                            color=0xFF8000,
+                        ),
+                    )
+            cprint(
+                f"""
+             ║============================================================║
+             ║------Succesfully unbanned {member} in {inter.guild.name}-------║
+             ║============================================================║
+            """
+            )
+            return
+        elif member is int:
+            member = await self.client.fetch_user(int(member))
+            await inter.guild.unban(member)
+            await inter.response.send_message(
+                embed=disnake.Embed(
+                    title="Action confirmed",
+                    description=f"Unbanned {user}",
+                    color=0xFF8000,
+                ),
+            )
+            cprint(
+                f"""
+             ║============================================================║
+             ║------Succesfully unbanned {member} in {inter.guild.name}-------║
+             ║============================================================║
+            """
+            )
+        embed = Utils.error_embed(STRINGS["error"]["user_not_found"])
+        await inter.response.send_message(embed=embed)
+
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(ban_members=True)
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -208,8 +302,7 @@ class Moderation(commands.Cog, name="Moderation"):
             else:
                 try:
                     embed = Utils.error_embed(
-                        STRINGS["moderation"]["dm_ban"].format(
-                            ctx.guild.name, reason)
+                        STRINGS["moderation"]["dm_ban"].format(ctx.guild.name, reason)
                     )
                     await member.send(embed=embed)
                 except:
@@ -229,7 +322,7 @@ class Moderation(commands.Cog, name="Moderation"):
             await asyncio.sleep(30)
             await msg.delete()
 
-    @commands.command()
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(kick_members=True)
     @commands.has_permissions(kick_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -251,57 +344,68 @@ class Moderation(commands.Cog, name="Moderation"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
 
-        select_components = [
-            [
-                Button(style=ButtonStyle.green, label="✓"),
-                Button(style=ButtonStyle.red, label="X"),
-            ]
-        ]
-        done_components = [
-            [
-                Button(style=ButtonStyle.grey, label="·", disabled=True),
-            ]
-        ]
-
-        embedconfirm = disnake.Embed(
-            title="Kick Command",
-            description="```Do you want to kick this member?```",
-        )
-        await ctx.send(embed=embedconfirm, components=select_components)
-        response = await self.bot.wait_for(
-            "button_click", check=lambda message: message.author == ctx.author
-        )
-        if response.component.label == "✓":
-            await response.respond(
-                type=7,
-                embed=disnake.Embed(
-                    title="Action Completed",
-                    description=f"Kicked {member} for {reason}",
-                    color=0xDD2E44,
-                ),
-                components=done_components,
+        if not member.bot:
+            embed = Utils.error_embed(
+                STRINGS["moderation"]["dm_kick"].format(ctx.guild, reason)
             )
-            if not member.bot:
-                embed = Utils.error_embed(
-                    STRINGS["moderation"]["dm_kick"].format(ctx.guild, reason)
-                )
-                await member.send(embed=embed)
-            await asyncio.sleep(5)
-            await member.kick()
-            await ctx.message.add_reaction(CONFIG["yes_emoji"])
-        else:
-            await response.respond(
-                type=7,
-                embed=disnake.Embed(
-                    title="Action Aborted",
-                    description="The action was aborted by clicking the no button",
-                    color=0xDD2E44,
-                ),
-                components=done_components,
-            )
-            return
+            await member.send(embed=embed)
+        await asyncio.sleep(5)
+        await member.kick()
+        await ctx.send(
+            embed=disnake.Embed(
+                title="Action Completed",
+                description=f"Kicked {member} for {reason}",
+                color=0xDD2E44,
+            ),
+        )
+        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
 
-    @commands.command(aliases=["clear"])
+    @commands.slash_command(
+        name="kick",
+        description="Kicks a member.",
+    )
+    @commands.bot_has_permissions(kick_members=True)
+    @commands.has_permissions(kick_members=True)
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def slashkick(
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        member: Member = Param(description="User to kick."),
+        *,
+        reason: str = "N/A",
+    ) -> NoReturn:
+        """
+
+
+        A command to kick a specified user.
+
+        Arguments:
+        -----------
+        - `member` - user
+        - `reason` - kick reason
+
+        """
+        await inter.response.defer()
+        s = await Settings(ctx.guild.id)
+        lang = await s.get_field("locale", CONFIG["default_locale"])
+        STRINGS = Strings(lang)
+
+        if not member.bot:
+            embed = Utils.error_embed(
+                STRINGS["moderation"]["dm_kick"].format(ctx.guild, reason)
+            )
+            await member.send(embed=embed)
+        await asyncio.sleep(5)
+        await member.kick()
+        await inter.edit_original_message(
+            embed=disnake.Embed(
+                title="Action Completed",
+                description=f"Kicked {member} for {reason}",
+                color=0xDD2E44,
+            ),
+        )
+
+    @commands.command(slash_command=True, message_command=True, aliases=["clear"])
     @commands.bot_has_permissions(manage_messages=True)
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -358,7 +462,9 @@ class Moderation(commands.Cog, name="Moderation"):
         # )
         # return
 
-    @commands.command(aliases=["setnick, setname"])
+    @commands.command(
+        slash_command=True, message_command=True, aliases=["setnick, setname"]
+    )
     @commands.bot_has_permissions(manage_nicknames=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -386,12 +492,12 @@ class Moderation(commands.Cog, name="Moderation"):
             or member == ctx.message.author
         ):
             await member.edit(nick=name)
-            await ctx.message.add_reaction(CONFIG["yes_emoji"])
+            # await ctx.message.add_reaction(CONFIG["yes_emoji"])
         else:
             embed = Utils.error_embed(STRINGS["error"]["missing_perms"])
             await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(manage_roles=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def mute(
@@ -417,8 +523,7 @@ class Moderation(commands.Cog, name="Moderation"):
             mute_role_id is None
             or disnake.utils.get(ctx.guild.roles, id=mute_role_id) is None
         ):
-            embed = Utils.done_embed(
-                STRINGS["moderation"]["on_mute_role_create"])
+            embed = Utils.done_embed(STRINGS["moderation"]["on_mute_role_create"])
             await ctx.send(embed=embed)
             mute_role = await ctx.guild.create_role(name="Muted")
 
@@ -430,8 +535,7 @@ class Moderation(commands.Cog, name="Moderation"):
 
             for user_role in member.roles:
                 if user_role == mute_role:
-                    embed = Utils.error_embed(
-                        STRINGS["error"]["already_muted"])
+                    embed = Utils.error_embed(STRINGS["error"]["already_muted"])
                     await ctx.send(embed=embed)
                     return
 
@@ -441,9 +545,9 @@ class Moderation(commands.Cog, name="Moderation"):
             )
 
         await member.add_roles(mute_role)
-        await ctx.message.add_reaction(CONFIG["yes_emoji"])
+        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
 
-    @commands.command()
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
@@ -469,9 +573,9 @@ class Moderation(commands.Cog, name="Moderation"):
             await ctx.send("нету роли мута ок да\n\n\nок")
         else:
             await member.remove_roles(mute_role)
-            await ctx.message.add_reaction(CONFIG["yes_emoji"])
+            # await ctx.message.add_reaction(CONFIG["yes_emoji"])
 
-    @commands.command()
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -499,7 +603,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -527,7 +631,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -549,7 +653,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -572,7 +676,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
@@ -594,7 +698,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await ctx.send(embed=embed)
 
-    @commands.command()
+    @commands.command(slash_command=True, message_command=True)
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)

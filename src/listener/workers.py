@@ -1,3 +1,11 @@
+"""Updates bot information on bots.servers-discord.com.
+
+This coroutine runs in a background task and periodically sends a request to the
+bots.servers-discord.com API to update the bot's server count. It retrieves the
+current number of guilds the bot is in and sends this information to the API
+along with the bot's client ID.
+"""
+
 # -*- coding: utf-8 -*-
 import asyncio
 
@@ -24,21 +32,20 @@ class Workers(commands.Cog):
             cprint("""║=============================║""")
             print("║[SDC] Looping update request-║")
             print("║Debug information║")
-            cprint(f"""
+            cprint(
+                f"""
             ║=============================================║
             ║Number of guilds:-----║Client ID:            ║
             ║{len(self.bot.guilds)}:::::::::::::::::::║{self.bot.user.id}----║
             ║======================║======================║
-            """)
+            """
+            )
             print("Proceeding to authorize")
             headers = {"Authorization": CONFIG["sdc_token"]}
             r = requests.post(
                 f"https://api.server-discord.com/v2/bots/{self.bot.user.id}/stats",
                 headers=headers,
-                data={
-                    "servers": len(self.bot.guilds),
-                    "shards": 1
-                },
+                data={"servers": len(self.bot.guilds), "shards": 1},
             )
             print(r.content)
             print("[SDC] Authorization completed")

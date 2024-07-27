@@ -1,3 +1,13 @@
+"""
+This module provides mappings between country names, ISO 3166-1 alpha-2 codes, and ISO 3166-1 alpha-3 codes.
+
+The `states` dictionary maps U.S. state abbreviations to their full state names.
+The `alpha2` dictionary maps ISO 3166-1 alpha-2 country codes to their corresponding country names.
+The `alpha3` dictionary maps ISO 3166-1 alpha-3 country codes to their corresponding country names.
+The `alt_names` dictionary provides alternative names for some countries.
+The `JHU_names` dictionary provides the names used by the Johns Hopkins University for some countries.
+"""
+
 states = {
     "AK": "Alaska",
     "AL": "Alabama",

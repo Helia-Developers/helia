@@ -1,3 +1,16 @@
+"""
+The `calculate` function takes a mathematical expression as a string and evaluates it, returning the result as a string.
+
+The function supports the following operations:
+- Addition (+)
+- Subtraction (-)
+- Multiplication (×)
+- Division (÷)
+- Use of the constant pi (π)
+
+If an error occurs during the evaluation, the function will return the string "An error occurred."
+"""
+
 import math
 
 from disnake import ButtonStyle, SelectOption

@@ -1,3 +1,19 @@
+"""
+Provides utility functions and classes for the Discord bot.
+
+The `Config` class loads the bot's configuration from a JSON file.
+
+The `Commands` class provides a way to load command translations from locale-specific JSON files.
+
+The `Settings` class manages the bot's settings, which are stored in a JSON file. It provides methods to create, retrieve, and update settings fields.
+
+The `Strings` class provides a way to load locale-specific strings from JSON files.
+
+The `Logger` class provides logging functions to print messages with different levels of severity.
+
+The `Utils` class is a Discord command extension that provides utility functions, such as creating embeds with different colors.
+"""
+
 # -*- coding: utf-8 -*-
 import datetime
 import json
@@ -29,13 +45,11 @@ class Commands:
         return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
 
     def __new__(self, locale: AnyStr = "") -> Dict:
-        dirs = self.__listdirs(
-            dirname(abspath(__file__)) + "/../data/locales/")
+        dirs = self.__listdirs(dirname(abspath(__file__)) + "/../data/locales/")
 
         if locale in dirs or locale != "":
             with open(
-                dirname(abspath(__file__)) +
-                f"/../data/locales/{locale}/commands.json",
+                dirname(abspath(__file__)) + f"/../data/locales/{locale}/commands.json",
                 "r",
             ) as f:
                 return json.load(f)
@@ -109,13 +123,11 @@ class Strings:
         return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
 
     def __new__(self, locale: AnyStr = "") -> Dict:
-        dirs = self.__listdirs(
-            dirname(abspath(__file__)) + "/../data/locales/")
+        dirs = self.__listdirs(dirname(abspath(__file__)) + "/../data/locales/")
 
         if locale in dirs or locale != "":
             with open(
-                dirname(abspath(__file__)) +
-                f"/../data/locales/{locale}/strings.json",
+                dirname(abspath(__file__)) + f"/../data/locales/{locale}/strings.json",
                 "r",
             ) as f:
                 return json.load(f)
@@ -127,6 +139,18 @@ class Strings:
                 "r",
             ) as f:
                 return json.load(f)
+
+
+"""
+    Provides logging utilities for the bot.
+    
+    The `Logger` class provides several static methods for logging different types of messages, such as informational, warning, and error messages. These methods use the `Strings` class to retrieve localized strings for the log messages, and format the messages with the current timestamp.
+    
+    The `done` method logs an informational message with a green color.
+    The `warn` method logs a warning message with a red color.
+    The `cog_loaded` method logs a message indicating that a cog has been loaded.
+    The `command_used` method logs a message indicating that a command has been used, with the command name, the tag, and the guild name.
+    """
 
 
 class Logger:
