@@ -38,6 +38,9 @@ class General(commands.Cog, name="General"):
 
     @commands.slash_command(name="echo", description="Echo a message as the bot")
     async def echo(self, inter: disnake.ApplicationCommandInteraction, content: str):
+        if not content or len(content) > 200:
+            await inter.response.send_message("Invalid content. Please provide a non-empty message under 200 characters.", ephemeral=True)
+            return
         """
         A command to send a specified message as the bot.
 
