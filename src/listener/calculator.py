@@ -12,14 +12,12 @@ from scripts.calculator import buttons
 
 
 class Calculator(commands.Cog, name="Calculator"):
-
     def __init__(self, bot):
         self.bot = bot
         self.name = "Calculator"
 
     @commands.slash_command(name="calculator", description="Open a calculator")
     async def calculator(self, inter: disnake.ApplicationCommandInteraction):
-
         def calculate(exp):
             ox = str(exp)
             o = ox.replace("×", "*")
@@ -42,9 +40,11 @@ class Calculator(commands.Cog, name="Calculator"):
             color=disnake.Colour.blurple(),
         )
         await m.edit(content="", components=buttons, embed=e)
-        done = [[
-            Button(style=ButtonStyle.grey, label="·", disabled=True),
-        ]]
+        done = [
+            [
+                Button(style=ButtonStyle.grey, label="·", disabled=True),
+            ]
+        ]
         allowed = [
             "1",
             "2",
@@ -68,10 +68,9 @@ class Calculator(commands.Cog, name="Calculator"):
             try:
                 res = await self.bot.wait_for(
                     "button_click",
-                    check=lambda i: i.author.id == inter.author.id and i.
-                    message.id == m.id,
-                    timeout=(delta -
-                             datetime.datetime.utcnow()).total_seconds(),
+                    check=lambda i: i.author.id == inter.author.id
+                    and i.message.id == m.id,
+                    timeout=(delta - datetime.datetime.utcnow()).total_seconds(),
                 )
             except asyncio.TimeoutError:
                 await m.edit(
@@ -111,10 +110,14 @@ class Calculator(commands.Cog, name="Calculator"):
                     ),
                     components=done,
                 )
-            elif (len(expression) > 9 or expression.count("²") >= 4
-                  or expression.count("³") >= 4 or expression.count("²²") > 1
-                  or expression.count("³³") > 1
-                  or expression.count("²²³³") >= 1):
+            elif (
+                len(expression) > 9
+                or expression.count("²") >= 4
+                or expression.count("³") >= 4
+                or expression.count("²²") > 1
+                or expression.count("³³") > 1
+                or expression.count("²²³³") >= 1
+            ):
                 if res.component.label in allowed:
                     await res.response.edit_message(
                         embed=disnake.Embed(

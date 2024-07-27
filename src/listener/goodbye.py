@@ -24,18 +24,19 @@ from scripts import db
 
 
 class Goodbye(commands.Cog):
-
     def __init__(self, bot):
         self.bot = bot
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
         logpath = "logs/log.txt"
-        cprint(f"""
+        cprint(
+            f"""
         ║============================================================║
         ║-------- {member} left {member.guild.name}-----------------------║
         ║============================================================║
-        """)
+        """
+        )
         with open(logpath, "a") as file:
             print("\n", file=file)
             print(f"{member} left {member.guild.name}", file=file)
@@ -43,13 +44,12 @@ class Goodbye(commands.Cog):
         connect = sqlite3.connect(db.main)
         cursor = connect.cursor()
         cursor.execute(
-            db.select_table("goodbye", "channel_id", "guild_id",
-                            member.guild.id))
+            db.select_table("goodbye", "channel_id", "guild_id", member.guild.id)
+        )
         chan = cursor.fetchone()
         if chan is None:
             return
-        cursor.execute(
-            db.select_table("goodbye", "text", "guild_id", member.guild.id))
+        cursor.execute(db.select_table("goodbye", "text", "guild_id", member.guild.id))
         desc = cursor.fetchone()
         descdef = f"The one who left was {member}, who knows his/hers reasons for leaving but we will welcome them with open arms if they return "
         gb = disnake.Embed(
@@ -59,20 +59,15 @@ class Goodbye(commands.Cog):
         gb.set_author(name="Goodbye System")
 
         if desc is None:
-            gb.add_field(name="Server message",
-                         value=f"{descdef}",
-                         inline=True)
+            gb.add_field(name="Server message", value=f"{descdef}", inline=True)
         else:
-            gb.add_field(name="Server message",
-                         value=f"{desc[0]}",
-                         inline=True)
+            gb.add_field(name="Server message", value=f"{desc[0]}", inline=True)
         channel = self.bot.get_channel(int(chan[0]))
         cursor.close()
         connect.close()
         await channel.send(embed=gb)
 
-    @commands.slash_command(name="goodbye",
-                            description="Display goodbye commands help")
+    @commands.slash_command(name="goodbye", description="Display goodbye commands help")
     async def goodbye(self, inter: disnake.ApplicationCommandInteraction):
         """
         Displays a help message with all the available goodbye-related commands.
@@ -102,11 +97,10 @@ class Goodbye(commands.Cog):
         ).set_author(name="Help System")
         await inter.response.send_message(embed=goodbyehelp)
 
-    @commands.slash_command(name="goodbye_channel",
-                            description="Set goodbye channel")
-    async def goodbye_channel(self,
-                              inter: disnake.ApplicationCommandInteraction,
-                              channel: disnake.TextChannel):
+    @commands.slash_command(name="goodbye_channel", description="Set goodbye channel")
+    async def goodbye_channel(
+        self, inter: disnake.ApplicationCommandInteraction, channel: disnake.TextChannel
+    ):
         """
         Sets the channel where the goodbye message will be sent.
 
@@ -124,13 +118,14 @@ class Goodbye(commands.Cog):
             connect = sqlite3.connect(db.main)
             cursor = connect.cursor()
             cursor.execute(
-                db.select_table("goodbye", "channel_id", "guild_id",
-                                inter.guild.id))
+                db.select_table("goodbye", "channel_id", "guild_id", inter.guild.id)
+            )
             result = cursor.fetchone()
             if result is None:
                 val = (inter.guild.id, channel.id)
                 cursor.execute(
-                    db.insert_table("goodbye", "guild_id", "channel_id"), val)
+                    db.insert_table("goodbye", "guild_id", "channel_id"), val
+                )
             else:
                 cursor.execute(
                     db.update_table(
@@ -139,7 +134,8 @@ class Goodbye(commands.Cog):
                         channel.id,
                         "guild_id",
                         inter.guild.id,
-                    ))
+                    )
+                )
             connect.commit()
             cursor.close()
             connect.close()
@@ -149,12 +145,11 @@ class Goodbye(commands.Cog):
             )
         except Exception as e:
             await inter.response.send_message(
-                f"Failed to set channel: {str(e)}", ephemeral=True)
+                f"Failed to set channel: {str(e)}", ephemeral=True
+            )
 
-    @commands.slash_command(name="goodbye_clear",
-                            description="Clear goodbye channel")
-    async def goodbye_clear(self,
-                            inter: disnake.ApplicationCommandInteraction):
+    @commands.slash_command(name="goodbye_clear", description="Clear goodbye channel")
+    async def goodbye_clear(self, inter: disnake.ApplicationCommandInteraction):
         """
         Removes the configured goodbye channel.
         """
@@ -169,31 +164,30 @@ class Goodbye(commands.Cog):
             connect = sqlite3.connect(db.main)
             cursor = connect.cursor()
             cursor.execute(
-                db.select_table("goodbye", "channel_id", "guild_id",
-                                inter.guild.id))
+                db.select_table("goodbye", "channel_id", "guild_id", inter.guild.id)
+            )
             result = cursor.fetchone()
             if result is None:
                 await inter.response.send_message(
-                    "No goodbye channel is set for this server.",
-                    ephemeral=True)
+                    "No goodbye channel is set for this server.", ephemeral=True
+                )
             else:
-                cursor.execute(
-                    db.delete_table("goodbye", "guild_id", inter.guild.id))
+                cursor.execute(db.delete_table("goodbye", "guild_id", inter.guild.id))
                 await inter.response.send_message(
-                    "Cleared the goodbye channel setting", ephemeral=True)
+                    "Cleared the goodbye channel setting", ephemeral=True
+                )
             connect.commit()
             cursor.close()
             connect.close()
         except Exception as e:
             await inter.response.send_message(
-                f"Failed to remove goodbye channel setting: {str(e)}",
-                ephemeral=True)
+                f"Failed to remove goodbye channel setting: {str(e)}", ephemeral=True
+            )
 
-    @commands.slash_command(name="goodbye_text",
-                            description="Set goodbye text")
-    async def goodbye_text(self,
-                           inter: disnake.ApplicationCommandInteraction,
-                           content: str = None):
+    @commands.slash_command(name="goodbye_text", description="Set goodbye text")
+    async def goodbye_text(
+        self, inter: disnake.ApplicationCommandInteraction, content: str = None
+    ):
         """
         Sets the text of the goodbye message.
 
@@ -210,30 +204,32 @@ class Goodbye(commands.Cog):
         try:
             if content is None:
                 content = "A person left, who knows his/hers reasons for leaving but we will welcome them with open arms if they return "
-                await inter.response.send_message("Setting default message",
-                                                  ephemeral=True)
+                await inter.response.send_message(
+                    "Setting default message", ephemeral=True
+                )
 
             connect = sqlite3.connect(db.main)
             cursor = connect.cursor()
             cursor.execute(
-                db.select_table("goodbye", "text", "guild_id", inter.guild.id))
+                db.select_table("goodbye", "text", "guild_id", inter.guild.id)
+            )
             res = cursor.fetchone()
             if res is None:
                 val = (inter.guild.id, content)
-                cursor.execute(db.insert_table("goodbye", "guild_id", "text"),
-                               val)
+                cursor.execute(db.insert_table("goodbye", "guild_id", "text"), val)
             else:
                 val = (content, inter.guild.id)
-                cursor.execute(
-                    "UPDATE goodbye SET text = ? WHERE guild_id = ?", val)
+                cursor.execute("UPDATE goodbye SET text = ? WHERE guild_id = ?", val)
             connect.commit()
             cursor.close()
             connect.close()
-            await inter.response.send_message("Set the goodbye message text",
-                                              ephemeral=True)
+            await inter.response.send_message(
+                "Set the goodbye message text", ephemeral=True
+            )
         except Exception as e:
             await inter.response.send_message(
-                f"Error setting goodbye text: {str(e)}", ephemeral=True)
+                f"Error setting goodbye text: {str(e)}", ephemeral=True
+            )
 
 
 def setup(bot):

@@ -31,7 +31,6 @@ CONFIG = Config()
 
 
 class Utilities(commands.Cog):
-
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Utilities"
@@ -42,9 +41,9 @@ class Utilities(commands.Cog):
         return Strings(lang)
 
     @commands.slash_command(name="user", description="user info")
-    async def user(self,
-                   ctx: disnake.ApplicationCommandInteraction,
-                   member: disnake.Member = None) -> None:
+    async def user(
+        self, ctx: disnake.ApplicationCommandInteraction, member: disnake.Member = None
+    ) -> None:
         """Shows user information.
 
         Parameters
@@ -53,8 +52,9 @@ class Utilities(commands.Cog):
         """
         try:
             self.bot.load_extension(f"listener.{module}")
-            embeder = disnake.Embed(title=f"Module {module} has been loaded",
-                                    color=0x0C0C0C)
+            embeder = disnake.Embed(
+                title=f"Module {module} has been loaded", color=0x0C0C0C
+            )
         except disnake.DiscordException as e:
             logging.error(f"Failed to load module {module}: {e}")
         except Exception as e:
@@ -79,11 +79,13 @@ class Utilities(commands.Cog):
 
             embed = disnake.Embed(
                 description=STRINGS["utilities"]["user_info"].format(
-                    id, created_at, joined_at, username, stat, activ, color),
+                    id, created_at, joined_at, username, stat, activ, color
+                ),
                 color=color,
             )
             embed.set_author(
-                name=STRINGS["utilities"]["user_info_title"].format(name, tag))
+                name=STRINGS["utilities"]["user_info_title"].format(name, tag)
+            )
             embed.set_thumbnail(url=avatar)
 
             await ctx.send(embed=embed)
@@ -91,8 +93,9 @@ class Utilities(commands.Cog):
             await ctx.send(f"An error occurred: {str(e)}")
 
     @commands.slash_command(name="emoji", description="emoji info")
-    async def emoji(self, ctx: disnake.ApplicationCommandInteraction,
-                    emoji: str) -> None:
+    async def emoji(
+        self, ctx: disnake.ApplicationCommandInteraction, emoji: str
+    ) -> None:
         """Shows emoji information.
 
         Parameters
@@ -102,8 +105,9 @@ class Utilities(commands.Cog):
         try:
             STRINGS = await self._get_strings(ctx)
 
-            format = (r"png" if re.sub(r"[\<]", r"",
-                                       emoji.split(":")[0]) == "" else "gif")
+            format = (
+                r"png" if re.sub(r"[\<]", r"", emoji.split(":")[0]) == "" else "gif"
+            )
             name = emoji.split(":")[1]
             id = re.sub(r"[\>]", r"", emoji.split(r":")[2])
 
@@ -111,18 +115,17 @@ class Utilities(commands.Cog):
                 title=STRINGS["utilities"]["emoji_info_title"].format(name),
                 color=0xEDA84E,
             )
-            embed.set_image(
-                url=f"https://cdn.discordapp.com/emojis/{id}.{format}")
-            embed.set_footer(
-                text=STRINGS["utilities"]["emoji_info"].format(id))
+            embed.set_image(url=f"https://cdn.discordapp.com/emojis/{id}.{format}")
+            embed.set_footer(text=STRINGS["utilities"]["emoji_info"].format(id))
 
             await ctx.send(embed=embed)
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
     @commands.slash_command(name="channel", description="channel info")
-    async def channel(self, ctx: disnake.ApplicationCommandInteraction,
-                      channel: disnake.TextChannel) -> None:
+    async def channel(
+        self, ctx: disnake.ApplicationCommandInteraction, channel: disnake.TextChannel
+    ) -> None:
         """Shows channel information.
 
         Parameters
@@ -133,8 +136,8 @@ class Utilities(commands.Cog):
             STRINGS = await self._get_strings(ctx)
 
             if channel.type == disnake.ChannelType.text or channel.type not in [
-                    disnake.ChannelType.voice,
-                    disnake.ChannelType.news,
+                disnake.ChannelType.voice,
+                disnake.ChannelType.news,
             ]:
                 type = STRINGS["etc"]["channel_type"]["text"]
             elif channel.type == disnake.ChannelType.voice:
@@ -142,8 +145,11 @@ class Utilities(commands.Cog):
             else:
                 type = STRINGS["etc"]["channel_type"]["news"]
 
-            is_nsfw = (STRINGS["etc"]["other"]["yes"]
-                       if channel.nsfw else STRINGS["etc"]["other"]["no"])
+            is_nsfw = (
+                STRINGS["etc"]["other"]["yes"]
+                if channel.nsfw
+                else STRINGS["etc"]["other"]["no"]
+            )
 
             name = channel.name
             id = channel.id
@@ -151,19 +157,21 @@ class Utilities(commands.Cog):
 
             embed = disnake.Embed(
                 description=STRINGS["utilities"]["channel_info"].format(
-                    id, type, created_at, is_nsfw),
+                    id, type, created_at, is_nsfw
+                ),
                 color=0xEDA84E,
             )
             embed.set_author(
-                name=STRINGS["utilities"]["channel_info_title"].format(name))
+                name=STRINGS["utilities"]["channel_info_title"].format(name)
+            )
             await ctx.send(embed=embed)
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
     @commands.slash_command(name="avatar", description="user avatar")
-    async def avatar(self,
-                     ctx: disnake.ApplicationCommandInteraction,
-                     member: disnake.Member = None) -> None:
+    async def avatar(
+        self, ctx: disnake.ApplicationCommandInteraction, member: disnake.Member = None
+    ) -> None:
         """Shows user's avatar.
 
         Parameters
@@ -182,10 +190,8 @@ class Utilities(commands.Cog):
 
             embed = disnake.Embed(
                 color=0xEDA84E,
-                title=STRINGS["utilities"]["avatar_info_title"].format(
-                    name, tag),
-                description=STRINGS["utilities"]["avatar_info"].format(
-                    hash, avatar),
+                title=STRINGS["utilities"]["avatar_info_title"].format(name, tag),
+                description=STRINGS["utilities"]["avatar_info"].format(hash, avatar),
             )
             embed.set_image(url=avatar)
 
@@ -194,8 +200,9 @@ class Utilities(commands.Cog):
             await ctx.send(f"An error occurred: {str(e)}")
 
     @commands.slash_command(name="randint", description="random num")
-    async def randint(self, ctx: disnake.ApplicationCommandInteraction,
-                      stc1: int, stc2: int):
+    async def randint(
+        self, ctx: disnake.ApplicationCommandInteraction, stc1: int, stc2: int
+    ):
         """Generates a random integer between two given numbers.
 
         Parameters
@@ -210,15 +217,15 @@ class Utilities(commands.Cog):
                 title=STRINGS["generictext"]["randinttitle"],
                 description=STRINGS["generictext"]["descgenermath"],
             )
-            embed.add_field(name=STRINGS["generictext"]["numberone"],
-                            value=f"{stc1}",
-                            inline=True)
-            embed.add_field(name=STRINGS["generictext"]["numbertwo"],
-                            value=f"{stc2}",
-                            inline=True)
-            embed.add_field(name=STRINGS["generictext"]["result"],
-                            value=f"{result}",
-                            inline=False)
+            embed.add_field(
+                name=STRINGS["generictext"]["numberone"], value=f"{stc1}", inline=True
+            )
+            embed.add_field(
+                name=STRINGS["generictext"]["numbertwo"], value=f"{stc2}", inline=True
+            )
+            embed.add_field(
+                name=STRINGS["generictext"]["result"], value=f"{result}", inline=False
+            )
             await ctx.send(embed=embed)
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
@@ -267,9 +274,9 @@ class Utilities(commands.Cog):
             await ctx.send(f"An error occurred: {str(e)}")
 
     @commands.slash_command(name="guild", description="guild info")
-    async def guild(self,
-                    ctx: disnake.ApplicationCommandInteraction,
-                    guild_id: int = None) -> None:
+    async def guild(
+        self, ctx: disnake.ApplicationCommandInteraction, guild_id: int = None
+    ) -> None:
         """Shows guild information.
 
         Parameters
@@ -298,15 +305,16 @@ class Utilities(commands.Cog):
             totals = Counter()
             for channel in guild.channels:
                 allow, deny = channel.overwrites_for(everyone).pair()
-                perms = disnake.Permissions((everyone_perms & ~deny.value)
-                                            | allow.value)
+                perms = disnake.Permissions(
+                    (everyone_perms & ~deny.value) | allow.value
+                )
                 channel_type = type(channel)
                 totals[channel_type] += 1
                 if not perms.read_messages:
                     secret[channel_type] += 1
-                elif isinstance(channel,
-                                disnake.VoiceChannel) and (not perms.connect
-                                                           or not perms.speak):
+                elif isinstance(channel, disnake.VoiceChannel) and (
+                    not perms.connect or not perms.speak
+                ):
                     secret[channel_type] += 1
 
             e = disnake.Embed()
@@ -369,8 +377,7 @@ class Utilities(commands.Cog):
             e.add_field(name="Members", value=fmt, inline=True)
             e.add_field(
                 name="Roles",
-                value=", ".join(roles)
-                if len(roles) < 10 else f"{len(roles)} roles",
+                value=", ".join(roles) if len(roles) < 10 else f"{len(roles)} roles",
             )
 
             emoji_stats = Counter()
@@ -384,7 +391,8 @@ class Utilities(commands.Cog):
 
             fmt = (
                 f'Regular: {emoji_stats["regular"]}/{guild.emoji_limit}\n'
-                f'Animated: {emoji_stats["animated"]}/{guild.emoji_limit}\n')
+                f'Animated: {emoji_stats["animated"]}/{guild.emoji_limit}\n'
+            )
             if emoji_stats["disabled"] or emoji_stats["animated_disabled"]:
                 fmt = f'{fmt}Disabled: {emoji_stats["disabled"]} regular, {emoji_stats["animated_disabled"]} animated\n'
 

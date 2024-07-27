@@ -36,7 +36,6 @@ CONFIG = Config()
 
 
 class Confirm(disnake.ui.View):
-
     def __init__(self, ctx, bot: Bot):
         super().__init__()
         self.bot = bot
@@ -47,8 +46,9 @@ class Confirm(disnake.ui.View):
     # stop the View from listening to more input.
     # We also send the user an ephemeral message that we're confirming their choice.
     @disnake.ui.button(style=ButtonStyle.green, label="✓", custom_id="yes")
-    async def confirm(self, button: disnake.ui.Button,
-                      interaction: disnake.MessageInteraction):
+    async def confirm(
+        self, button: disnake.ui.Button, interaction: disnake.MessageInteraction
+    ):
         s = await Settings(self.ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
@@ -70,7 +70,6 @@ class Confirm(disnake.ui.View):
         ]
 
         if str(author.id) in valid_users:
-
             await interaction.response.edit_message(
                 embed=disnake.Embed(
                     title=STRINGS["moderation"]["shutdownembedtitle"],
@@ -82,7 +81,8 @@ class Confirm(disnake.ui.View):
             await self.bot.change_presence(
                 status=disnake.Status.online,
                 activity=disnake.Game(
-                    name="Shutting down for either reboot or update "),
+                    name="Shutting down for either reboot or update "
+                ),
             )
             await asyncio.sleep(5)
             print("---------------------------")
@@ -103,8 +103,9 @@ class Confirm(disnake.ui.View):
 
     # This one is similar to the confirmation button except sets the inner value to `False`
     @disnake.ui.button(style=ButtonStyle.red, label="X", custom_id="no")
-    async def cancel(self, button: disnake.ui.Button,
-                     interaction: disnake.MessageInteraction):
+    async def cancel(
+        self, button: disnake.ui.Button, interaction: disnake.MessageInteraction
+    ):
         s = await Settings(self.ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
@@ -144,8 +145,9 @@ class Admin(commands.Cog, name="Admin"):
         """
         try:
             self.bot.load_extension(f"listener.{module}")
-            embeder = disnake.Embed(title=f"Module {module} has been loaded",
-                                    color=0x0C0C0C)
+            embeder = disnake.Embed(
+                title=f"Module {module} has been loaded", color=0x0C0C0C
+            )
             await ctx.send(embed=embeder, delete_after=5)
         except Exception as e:
             # await ctx.message.add_reaction(CONFIG["no_emoji"])
@@ -160,10 +162,10 @@ class Admin(commands.Cog, name="Admin"):
     )
     @commands.is_owner()
     async def sload(
-            self,
-            inter: disnake.ApplicationCommandInteraction,
-            *,
-            module: str = Param(description="Name of the module."),
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        *,
+        module: str = Param(description="Name of the module."),
     ) -> NoReturn:
         """Loads a module (cog). If the module is not found
             or an error is found in its code, it will throw an error.
@@ -175,8 +177,9 @@ class Admin(commands.Cog, name="Admin"):
         """
         try:
             self.bot.load_extension(f"listener.{module}")
-            embeder = disnake.Embed(title=f"Module {module} has been loaded",
-                                    color=0x0C0C0C)
+            embeder = disnake.Embed(
+                title=f"Module {module} has been loaded", color=0x0C0C0C
+            )
             await inter.response.send_message(embed=embeder, ephemeral=True)
         except Exception as e:
             # await ctx.message.add_reaction(CONFIG["no_emoji"])
@@ -198,7 +201,8 @@ class Admin(commands.Cog, name="Admin"):
         try:
             self.bot.unload_extension(f"listener.{module}")
             embederx = disnake.Embed(
-                title=f"Module {module} has been unloaded", color=0x0C0C0C)
+                title=f"Module {module} has been unloaded", color=0x0C0C0C
+            )
             await ctx.send(embed=embederx, delete_after=5)
         except Exception as e:
             # await ctx.message.add_reaction(CONFIG["no_emoji"])
@@ -214,10 +218,10 @@ class Admin(commands.Cog, name="Admin"):
     )
     @commands.is_owner()
     async def sunload(
-            self,
-            inter: disnake.ApplicationCommandInteraction,
-            *,
-            module: str = Param(description="Name of the module."),
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        *,
+        module: str = Param(description="Name of the module."),
     ) -> NoReturn:
         """Unloads a module (cog). If the module is not found, it will throw an error.
 
@@ -229,7 +233,8 @@ class Admin(commands.Cog, name="Admin"):
         try:
             self.bot.unload_extension(f"listener.{module}")
             embederx = disnake.Embed(
-                title=f"Module {module} has been unloaded", color=0x0C0C0C)
+                title=f"Module {module} has been unloaded", color=0x0C0C0C
+            )
             await inter.response.send_message(embed=embederx, ephemeral=True)
         except Exception as e:
             # await ctx.message.add_reaction(CONFIG["no_emoji"])
@@ -253,7 +258,8 @@ class Admin(commands.Cog, name="Admin"):
         try:
             self.bot.reload_extension(f"listener.{module}")
             embederxx = disnake.Embed(
-                title=f"Module {module} has been reloaded", color=0x0C0C0C)
+                title=f"Module {module} has been reloaded", color=0x0C0C0C
+            )
             await ctx.send(embed=embederxx, delete_after=5)
         except Exception as e:
             # await ctx.message.add_reaction(CONFIG["no_emoji"])
@@ -268,10 +274,10 @@ class Admin(commands.Cog, name="Admin"):
     )
     @commands.is_owner()
     async def _sreload(
-            self,
-            inter: disnake.ApplicationCommandInteraction,
-            *,
-            module: str = Param(description="Name of the module."),
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        *,
+        module: str = Param(description="Name of the module."),
     ) -> NoReturn:
         """Loads a module (cog). If the module is not found
             or an error is found in its code, it will throw an error.
@@ -284,7 +290,8 @@ class Admin(commands.Cog, name="Admin"):
         try:
             self.bot.reload_extension(f"listener.{module}")
             embederxx = disnake.Embed(
-                title=f"Module {module} has been reloaded", color=0x0C0C0C)
+                title=f"Module {module} has been reloaded", color=0x0C0C0C
+            )
             await inter.response.send_message(embed=embederxx, ephemeral=True)
         except Exception as e:
             # await ctx.message.add_reaction(CONFIG["no_emoji"])
@@ -300,10 +307,7 @@ class Admin(commands.Cog, name="Admin"):
         brief="Makes a bot invite without any permissions",
     )
     @commands.cooldown(1, 15, commands.BucketType.user)
-    async def invite_bot(self,
-                         ctx,
-                         *,
-                         user: typing.Optional[disnake.User] = None):
+    async def invite_bot(self, ctx, *, user: typing.Optional[disnake.User] = None):
         user = user or ctx.author
 
         if not user.bot:
@@ -315,11 +319,12 @@ class Admin(commands.Cog, name="Admin"):
 
             return await ctx.send(embed=embed)
 
-        invite = disnake.utils.oauth_url(client_id=user.id,
-                                         scopes=("bot",
-                                                 "applications.commands"))
+        invite = disnake.utils.oauth_url(
+            client_id=user.id, scopes=("bot", "applications.commands")
+        )
         embeder = disnake.Embed(
-            title="Generating invite for the provided user id", color=0x778EFD)
+            title="Generating invite for the provided user id", color=0x778EFD
+        )
         waiter = await ctx.send(embed=embeder, delete_after=5)
         await asyncio.sleep(5)
         embedtimes = disnake.Embed(title="Your invite", color=0x778EFD)
@@ -330,10 +335,9 @@ class Admin(commands.Cog, name="Admin"):
         name="invite_bot",
         description="Makes a bot invite without any permissions.",
     )
-    async def sinvite_bot(self,
-                          inter: disnake.ApplicationCommandInteraction,
-                          *,
-                          user: disnake.User = None):
+    async def sinvite_bot(
+        self, inter: disnake.ApplicationCommandInteraction, *, user: disnake.User = None
+    ):
         user = user or inter.author
 
         if not user.bot:
@@ -345,11 +349,12 @@ class Admin(commands.Cog, name="Admin"):
 
             return await inter.response.send_message(embed=embed)
 
-        invite = disnake.utils.oauth_url(client_id=user.id,
-                                         scopes=("bot",
-                                                 "applications.commands"))
+        invite = disnake.utils.oauth_url(
+            client_id=user.id, scopes=("bot", "applications.commands")
+        )
         embeder = disnake.Embed(
-            title="Generating invite for the provided user id", color=0x778EFD)
+            title="Generating invite for the provided user id", color=0x778EFD
+        )
 
         embedtimes = disnake.Embed(title="Your invite is here", color=0x778EFD)
         embedtimes.add_field(name="Link", value=f"{invite}", inline=True)
@@ -381,8 +386,7 @@ class Admin(commands.Cog, name="Admin"):
             "168422909482762240",
         ]
 
-        viewbx.add_item(
-            Button(style=ButtonStyle.grey, label="·", disabled=True))
+        viewbx.add_item(Button(style=ButtonStyle.grey, label="·", disabled=True))
         embedconfirm = disnake.Embed(
             title=STRINGS["moderation"]["shutdownembedtitle"],
             description=STRINGS["moderation"]["shutdownconfirm"],
@@ -394,8 +398,9 @@ class Admin(commands.Cog, name="Admin"):
         name="shutdown",
         description="Shutdown the bot [OWNERS-ONLY!!!!].",
     )
-    async def slashshutdown(self, inter: disnake.ApplicationCommandInteraction
-                            ):  # Команда для выключения бота
+    async def slashshutdown(
+        self, inter: disnake.ApplicationCommandInteraction
+    ):  # Команда для выключения бота
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
@@ -415,8 +420,7 @@ class Admin(commands.Cog, name="Admin"):
             "168422909482762240",
         ]
 
-        viewbx.add_item(
-            Button(style=ButtonStyle.grey, label="·", disabled=True))
+        viewbx.add_item(Button(style=ButtonStyle.grey, label="·", disabled=True))
         embedconfirm = disnake.Embed(
             title=STRINGS["moderation"]["shutdownembedtitle"],
             description=STRINGS["moderation"]["shutdownconfirm"],
@@ -424,9 +428,9 @@ class Admin(commands.Cog, name="Admin"):
         await inter.response.send_message(embed=embedconfirm, view=viewb)
         await viewb.wait()
 
-    @commands.command(slash_command=True,
-                      message_command=True,
-                      description="Set bot status")
+    @commands.command(
+        slash_command=True, message_command=True, description="Set bot status"
+    )
     async def set_status(self, ctx, *args):
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
@@ -442,8 +446,7 @@ class Admin(commands.Cog, name="Admin"):
             "497406228364787717",
         ]
         if str(author.id) in valid_users:
-            await self.bot.change_presence(
-                activity=disnake.Game(" ".join(args)))
+            await self.bot.change_presence(activity=disnake.Game(" ".join(args)))
             embed = disnake.Embed(
                 title=STRINGS["moderation"]["setstatustext"],
                 description=STRINGS["moderation"]["setstatusdesc"],
@@ -454,8 +457,7 @@ class Admin(commands.Cog, name="Admin"):
                 value=STRINGS["moderation"]["setstatusfielddesc"],
                 inline=True,
             )
-            embed.set_footer(text=self.bot.user.name,
-                             icon_url=self.bot.user.avatar.url)
+            embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
         else:
             embed = disnake.Embed(
                 title="You failed",
@@ -470,9 +472,9 @@ class Admin(commands.Cog, name="Admin"):
         description="Set the bot status[OWNERS-ONLY!!!!].",
     )
     async def slashset_status(
-            self,
-            inter: disnake.ApplicationCommandInteraction,
-            sts: str = Param(description="Text of status."),
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        sts: str = Param(description="Text of status."),
     ):
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
@@ -488,8 +490,7 @@ class Admin(commands.Cog, name="Admin"):
             "497406228364787717",
         ]
         if str(author.id) in valid_users:
-            await self.bot.change_presence(activity=disnake.Game(" ".join(sts))
-                                           )
+            await self.bot.change_presence(activity=disnake.Game(" ".join(sts)))
             embed = disnake.Embed(
                 title=STRINGS["moderation"]["setstatustext"],
                 description=STRINGS["moderation"]["setstatusdesc"],
@@ -500,8 +501,7 @@ class Admin(commands.Cog, name="Admin"):
                 value=STRINGS["moderation"]["setstatusfielddesc"],
                 inline=True,
             )
-            embed.set_footer(text=self.bot.user.name,
-                             icon_url=self.bot.user.avatar.url)
+            embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
         else:
             embed = disnake.Embed(
                 title="You failed",
@@ -514,13 +514,12 @@ class Admin(commands.Cog, name="Admin"):
     @commands.command(description="Bot restart")
     @commands.is_owner()
     async def restart(self, ctx):
-
         for ext in self.bot.cogs:  # Idk how you called it
             self.bot.reload_extension(f"{ext}")
 
-    @commands.command(slash_command=True,
-                      message_command=True,
-                      description="Bot invite links")
+    @commands.command(
+        slash_command=True, message_command=True, description="Bot invite links"
+    )
     async def invite(self, ctx: Context):
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
@@ -532,43 +531,50 @@ class Admin(commands.Cog, name="Admin"):
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botinvitetitle"],
                 url=f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=204859462&scope=applications.commands%20bot",
-            ))
+            )
+        )
         view.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botinvitedescd"],
                 url=f"https://discord.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=204557314",
-            ))
+            )
+        )
         view.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["canaryver"],
                 url="https://discord.com/oauth2/authorize?client_id=671612079106424862&scope=bot&permissions=204557314",
-            ))
+            )
+        )
         view.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botupsdc"],
                 url=f"https://bots.server-discord.com/{self.bot.user.id}",
-            ))
+            )
+        )
         view.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botuptopgg"],
                 url=f"https://top.gg/bot/{self.bot.user.id}",
-            ))
+            )
+        )
         viewx.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botupbod"],
                 url=f"https://bots.ondiscord.xyz/bots/{self.bot.user.id}",
-            ))
+            )
+        )
         viewx.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botupdblco"],
                 url=f"https://discordbotslist.co/bot/{self.bot.user.id}",
-            ))
+            )
+        )
         embed = disnake.Embed(
             title=STRINGS["general"]["invitedescd"],
             colour=disnake.Colour(0xFF6900),
@@ -608,11 +614,9 @@ class Admin(commands.Cog, name="Admin"):
         # value=f"https://discordbotslist.co/bot/{self.bot.user.id}",
         # inline=True,
         # )
-        embed.set_footer(text=self.bot.user.name,
-                         icon_url=self.bot.user.avatar.url)
+        embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
 
-        embedcont = disnake.Embed(title="-----",
-                                  colour=disnake.Colour(0xFF6900))
+        embedcont = disnake.Embed(title="-----", colour=disnake.Colour(0xFF6900))
         await ctx.send(embed=embed, view=view)
         await ctx.send("`----`", view=viewx)
 
@@ -631,43 +635,50 @@ class Admin(commands.Cog, name="Admin"):
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botinvitetitle"],
                 url=f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=204859462&scope=applications.commands%20bot",
-            ))
+            )
+        )
         view.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botinvitedescd"],
                 url=f"https://discord.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=204557314",
-            ))
+            )
+        )
         view.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["canaryver"],
                 url="https://discord.com/oauth2/authorize?client_id=671612079106424862&scope=bot&permissions=204557314",
-            ))
+            )
+        )
         view.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botupsdc"],
                 url=f"https://bots.server-discord.com/{self.bot.user.id}",
-            ))
+            )
+        )
         view.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botuptopgg"],
                 url=f"https://top.gg/bot/{self.bot.user.id}",
-            ))
+            )
+        )
         viewx.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botupbod"],
                 url=f"https://bots.ondiscord.xyz/bots/{self.bot.user.id}",
-            ))
+            )
+        )
         viewx.add_item(
             Button(
                 style=ButtonStyle.link,
                 label=STRINGS["general"]["botupdblco"],
                 url=f"https://discordbotslist.co/bot/{self.bot.user.id}",
-            ))
+            )
+        )
         embed = disnake.Embed(
             title=STRINGS["general"]["invitedescd"],
             colour=disnake.Colour(0xFF6900),
@@ -707,17 +718,15 @@ class Admin(commands.Cog, name="Admin"):
         # value=f"https://discordbotslist.co/bot/{self.bot.user.id}",
         # inline=True,
         # )
-        embed.set_footer(text=self.bot.user.name,
-                         icon_url=self.bot.user.avatar.url)
+        embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
 
-        embedcont = disnake.Embed(title="-----",
-                                  colour=disnake.Colour(0xFF6900))
+        embedcont = disnake.Embed(title="-----", colour=disnake.Colour(0xFF6900))
         await inter.response.send_message(embed=embed, view=view)
         await inter.response.send_message("`----`", view=viewx)
 
-    @commands.command(slash_command=True,
-                      message_command=True,
-                      brief="Gives the bot's uptime")
+    @commands.command(
+        slash_command=True, message_command=True, brief="Gives the bot's uptime"
+    )
     async def uptime(self, ctx):
         delta_uptime = datetime.datetime.utcnow() - self.bot.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
@@ -726,12 +735,8 @@ class Admin(commands.Cog, name="Admin"):
         embed = disnake.Embed(title="Bot uptime")
         embed.add_field(name="Days", value=f"```{days}d```", inline=True)
         embed.add_field(name="Hours", value=f"```{hours}h```", inline=True)
-        embed.add_field(name="Minutes",
-                        value=f"```{minutes}m```",
-                        inline=False)
-        embed.add_field(name="Seconds",
-                        value=f"```{seconds}s```",
-                        inline=False)
+        embed.add_field(name="Minutes", value=f"```{minutes}m```", inline=False)
+        embed.add_field(name="Seconds", value=f"```{seconds}s```", inline=False)
         await ctx.send(embed=embed)
 
     @commands.slash_command(
@@ -746,12 +751,8 @@ class Admin(commands.Cog, name="Admin"):
         embed = disnake.Embed(title="Bot uptime")
         embed.add_field(name="Days", value=f"```{days}d```", inline=True)
         embed.add_field(name="Hours", value=f"```{hours}h```", inline=True)
-        embed.add_field(name="Minutes",
-                        value=f"```{minutes}m```",
-                        inline=False)
-        embed.add_field(name="Seconds",
-                        value=f"```{seconds}s```",
-                        inline=False)
+        embed.add_field(name="Minutes", value=f"```{minutes}m```", inline=False)
+        embed.add_field(name="Seconds", value=f"```{seconds}s```", inline=False)
         await inter.response.send_message(embed=embed)
 
     # @commands.command()

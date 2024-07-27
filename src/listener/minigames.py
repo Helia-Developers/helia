@@ -23,7 +23,6 @@ CONFIG = Config()
 
 
 class Minigames(commands.Cog):
-
     def __init__(self, bot):
         self.bot = bot
 
@@ -48,17 +47,18 @@ class Minigames(commands.Cog):
             lang = await s.get_field("locale", CONFIG["default_locale"])
             STRINGS = Strings(lang)
             kuboid = random.choice(games.kubik)
-            embedkub = disnake.Embed(title=STRINGS["other"]["rollcubetitle"],
-                                     color=0x00FF00)
-            embedkub.add_field(name=STRINGS["other"]["rolled"],
-                               value=kuboid,
-                               inline=False)
+            embedkub = disnake.Embed(
+                title=STRINGS["other"]["rollcubetitle"], color=0x00FF00
+            )
+            embedkub.add_field(
+                name=STRINGS["other"]["rolled"], value=kuboid, inline=False
+            )
             await inter.response.send_message(embed=embedkub)
         except Exception as e:
             Logger.error(f"Error in kubik command: {str(e)}")
             await inter.response.send_message(
-                "An error occurred while processing the command.",
-                ephemeral=True)
+                "An error occurred while processing the command.", ephemeral=True
+            )
 
     @commands.slash_command(name="monetka", description="Flip a coin")
     async def monetka(self, inter: disnake.ApplicationCommandInteraction):
@@ -81,17 +81,18 @@ class Minigames(commands.Cog):
             lang = await s.get_field("locale", CONFIG["default_locale"])
             STRINGS = Strings(lang)
             mon = random.choice(games.monet)
-            embedmonet = disnake.Embed(title=STRINGS["other"]["cointosstitle"],
-                                       color=0x00FF00)
-            embedmonet.add_field(name=STRINGS["other"]["rolled"],
-                                 value=mon,
-                                 inline=False)
+            embedmonet = disnake.Embed(
+                title=STRINGS["other"]["cointosstitle"], color=0x00FF00
+            )
+            embedmonet.add_field(
+                name=STRINGS["other"]["rolled"], value=mon, inline=False
+            )
             await inter.response.send_message(embed=embedmonet)
         except Exception as e:
             Logger.error(f"Error in monetka command: {str(e)}")
             await inter.response.send_message(
-                "An error occurred while processing the command.",
-                ephemeral=True)
+                "An error occurred while processing the command.", ephemeral=True
+            )
 
     @commands.slash_command(name="casino", description="Play a casino game")
     async def casino(self, inter: disnake.ApplicationCommandInteraction):
@@ -117,23 +118,24 @@ class Minigames(commands.Cog):
             kasino1 = random.choice(games.casin_obj1)
             kasino2 = random.choice(games.casin_obj2)
             kasino3 = random.choice(games.casin_obj3)
-            embedkas = disnake.Embed(title=STRINGS["other"]["casinotitle"],
-                                     color=0x00FF00)
-            embedkas.add_field(name=STRINGS["other"]["rolled"],
-                               value=kasino1,
-                               inline=True)
-            embedkas.add_field(name=STRINGS["other"]["rolled"],
-                               value=kasino2,
-                               inline=True)
-            embedkas.add_field(name=STRINGS["other"]["rolled"],
-                               value=kasino3,
-                               inline=True)
+            embedkas = disnake.Embed(
+                title=STRINGS["other"]["casinotitle"], color=0x00FF00
+            )
+            embedkas.add_field(
+                name=STRINGS["other"]["rolled"], value=kasino1, inline=True
+            )
+            embedkas.add_field(
+                name=STRINGS["other"]["rolled"], value=kasino2, inline=True
+            )
+            embedkas.add_field(
+                name=STRINGS["other"]["rolled"], value=kasino3, inline=True
+            )
             await inter.response.send_message(embed=embedkas)
         except Exception as e:
             Logger.error(f"Error in casino command: {str(e)}")
             await inter.response.send_message(
-                "An error occurred while processing the command.",
-                ephemeral=True)
+                "An error occurred while processing the command.", ephemeral=True
+            )
 
 
 def setup(client):

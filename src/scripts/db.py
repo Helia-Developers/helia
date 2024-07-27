@@ -55,10 +55,10 @@ def control():
         )
 
         cursor.execute(
-            "CREATE TABLE IF NOT EXISTS prefixes(guild_id TEXT, prefix TEXT)")
+            "CREATE TABLE IF NOT EXISTS prefixes(guild_id TEXT, prefix TEXT)"
+        )
 
-        cursor.execute(
-            "CREATE TABLE IF NOT EXISTS verify(guild_id TEXT, role_id TEXT)")
+        cursor.execute("CREATE TABLE IF NOT EXISTS verify(guild_id TEXT, role_id TEXT)")
 
         base.commit()
     except sqlite3.OperationalError as e:

@@ -11,7 +11,6 @@ CONFIG = Config()
 
 
 class Preferences(commands.Cog, name="Preferences"):
-
     def __init__(self, bot) -> None:
         self.bot = bot
         self.name = "Preferences"
@@ -19,8 +18,9 @@ class Preferences(commands.Cog, name="Preferences"):
     @commands.slash_command(name="prefix", description="Sets a custom prefix")
     @commands.has_permissions(administrator=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def prefix(self, inter: disnake.ApplicationCommandInteraction,
-                     prefix: str) -> NoReturn:
+    async def prefix(
+        self, inter: disnake.ApplicationCommandInteraction, prefix: str
+    ) -> NoReturn:
         """Sets a custom prefix.
 
         Parameters:
@@ -29,15 +29,15 @@ class Preferences(commands.Cog, name="Preferences"):
         """
         s = await Settings(inter.guild.id)
         await s.set_field("prefix", prefix)
-        embed = disnake.Embed(title=f"Prefix has been set to {prefix}",
-                              color=0x0C0C0C)
+        embed = disnake.Embed(title=f"Prefix has been set to {prefix}", color=0x0C0C0C)
         await inter.response.send_message(embed=embed, ephemeral=True)
 
     @commands.slash_command(name="locale", description="Sets bot language")
     @commands.has_permissions(administrator=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def locale(self, inter: disnake.ApplicationCommandInteraction,
-                     locale: str) -> NoReturn:
+    async def locale(
+        self, inter: disnake.ApplicationCommandInteraction, locale: str
+    ) -> NoReturn:
         """Sets bot language. If not found, it throws an error.
 
         Parameters:
@@ -52,8 +52,7 @@ class Preferences(commands.Cog, name="Preferences"):
         for _locale in locales:
             if _locale == locale:
                 await s.set_field("locale", locale)
-                embed = disnake.Embed(title="Locale successfully set!",
-                                      color=0x0C0C0C)
+                embed = disnake.Embed(title="Locale successfully set!", color=0x0C0C0C)
                 await inter.response.send_message(embed=embed, ephemeral=True)
                 return
 
