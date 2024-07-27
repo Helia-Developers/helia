@@ -7,6 +7,7 @@ The `get_help` function is responsible for generating the help embed that is dis
 
 The `Help` class is a Discord bot cog that provides the `/help` command, which displays the help system to the user. It creates the initial help embed and the `DropdownView` to allow the user to select a category.
 """
+
 import disnake
 from disnake import ButtonStyle, SelectOption, interactions
 from disnake.ext import commands
@@ -14,6 +15,7 @@ from disnake.ui import Button, Select, View
 
 
 class Dropdown(disnake.ui.Select):
+
     def __init__(self, bot):
         self.bot = bot  # one thing fixed...
 
@@ -67,6 +69,7 @@ class Dropdown(disnake.ui.Select):
 
 
 class DropdownView(disnake.ui.View):
+
     def __init__(self, bot):
         super().__init__()
 
@@ -105,6 +108,7 @@ async def get_help(self, interaction, CogToPassAlong):
 
 
 class Help(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -130,12 +134,12 @@ class Help(commands.Cog):
         # await interaction.send(embed=embed)
 
         await ctx.send(embed=embede, view=view)
-        
+
     @commands.slash_command(
         name="help",
         description="Get a list of commands in the bot.",
     )
-    async def shelp(self,inter: disnake.ApplicationCommandInteraction):
+    async def shelp(self, inter: disnake.ApplicationCommandInteraction):
         embed = disnake.Embed(title="SELECTION TEST",
                               description="Testing our embeds",
                               color=0xFF8000)
@@ -154,7 +158,6 @@ class Help(commands.Cog):
         # await interaction.send(embed=embed)
 
         await inter.response.send_message(embed=embede, view=view)
-    
 
 
 def setup(bot):

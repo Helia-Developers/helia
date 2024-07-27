@@ -5,6 +5,7 @@ bots.servers-discord.com API to update the bot's server count. It retrieves the
 current number of guilds the bot is in and sends this information to the API
 along with the bot's client ID.
 """
+
 # -*- coding: utf-8 -*-
 import asyncio
 
@@ -19,6 +20,7 @@ CONFIG = Config()
 
 
 class Workers(commands.Cog):
+
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Workers"

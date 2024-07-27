@@ -11,6 +11,7 @@ CONFIG = Config()
 
 
 class Broadcast(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -19,7 +20,8 @@ class Broadcast(commands.Cog):
         description="Send a global announcement to all servers",
     )
     @commands.is_owner()
-    async def announce(self, inter: disnake.ApplicationCommandInteraction, content: str):
+    async def announce(self, inter: disnake.ApplicationCommandInteraction,
+                       content: str):
         """
         Send a global announcement to all servers.
 
@@ -41,15 +43,17 @@ class Broadcast(commands.Cog):
                 color=0x3B88C3,
             )
             author_name = f"{inter.author}"
-            announcement.set_author(
-                name=author_name, icon_url=inter.author.avatar.url)
+            announcement.set_author(name=author_name,
+                                    icon_url=inter.author.avatar.url)
             announcement.add_field(
                 name=STRINGS["general"]["announcesfieldtitle"],
                 value=f"{inter.guild.name}",
                 inline=False,
             )
             announcement.add_field(
-                name=STRINGS["general"]["announcesfielddesc"], value=content, inline=True
+                name=STRINGS["general"]["announcesfielddesc"],
+                value=content,
+                inline=True,
             )
             announcement.set_footer(
                 text=STRINGS["general"]["announcesfooter"],
@@ -72,11 +76,15 @@ class Broadcast(commands.Cog):
                 except disnake.NotFound:
                     continue
                 except Exception as e:
-                    print(f"Error sending announcement to guild {guild.id}: {str(e)}")
-            
-            await inter.followup.send(f"Announcement sent to {sent_counter} servers.")
+                    print(
+                        f"Error sending announcement to guild {guild.id}: {str(e)}"
+                    )
+
+            await inter.followup.send(
+                f"Announcement sent to {sent_counter} servers.")
         except Exception as e:
-            await inter.followup.send(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.followup.send(f"An error occurred: {str(e)}",
+                                      ephemeral=True)
 
     @commands.slash_command(
         name="debug",
@@ -94,9 +102,11 @@ class Broadcast(commands.Cog):
         """
         try:
             voice_states = inter.bot.voice_clients
-            await inter.response.send_message(f'I am currently in {len(voice_states)} voice channels')
+            await inter.response.send_message(
+                f"I am currently in {len(voice_states)} voice channels")
         except Exception as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
 
 def setup(bot):

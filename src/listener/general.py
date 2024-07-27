@@ -9,6 +9,7 @@ A general-purpose cog that provides various utility commands for the bot, such a
 
 This cog is designed to be a central hub for common bot functionality that doesn't fit into more specialized cogs.
 """
+
 # -*- coding: utf-8 -*-
 import datetime
 import math
@@ -30,13 +31,16 @@ CONFIG = Config()
 
 
 class General(commands.Cog, name="General"):
+
     def __init__(self, bot) -> None:
         self.bot = bot
         self.name = "General"
         self.process = psutil.Process(os.getpid())
 
-    @commands.slash_command(name="echo", description="Echo a message as the bot")
-    async def echo(self, inter: disnake.ApplicationCommandInteraction, content: str):
+    @commands.slash_command(name="echo",
+                            description="Echo a message as the bot")
+    async def echo(self, inter: disnake.ApplicationCommandInteraction,
+                   content: str):
         """
         A command to send a specified message as the bot.
 
@@ -58,13 +62,17 @@ class General(commands.Cog, name="General"):
                     )
                     embed.set_footer(
                         text=STRINGS["general"]["blacklistwarnfooter"])
-                    return await inter.response.send_message(embed=embed, ephemeral=True)
+                    return await inter.response.send_message(embed=embed,
+                                                             ephemeral=True)
             await inter.response.send_message(content)
         except Exception as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
-    @commands.slash_command(name="embed", description="Generate an embed message")
-    async def embed(self, inter: disnake.ApplicationCommandInteraction, name: str, content: str):
+    @commands.slash_command(name="embed",
+                            description="Generate an embed message")
+    async def embed(self, inter: disnake.ApplicationCommandInteraction,
+                    name: str, content: str):
         """
         A command to send an embed with specified name and content as the bot.
 
@@ -88,15 +96,18 @@ class General(commands.Cog, name="General"):
                     )
                     embed.set_footer(
                         text=STRINGS["general"]["blacklistwarnfooter"])
-                    return await inter.response.send_message(embed=embed, ephemeral=True)
+                    return await inter.response.send_message(embed=embed,
+                                                             ephemeral=True)
             creator = disnake.Embed(title=name, description=content)
             await inter.response.send_message(embed=creator)
         except Exception as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(name="wiki", description="Search Wikipedia")
     @commands.is_nsfw()
-    async def wiki(self, inter: disnake.ApplicationCommandInteraction, searcher: str):
+    async def wiki(self, inter: disnake.ApplicationCommandInteraction,
+                   searcher: str):
         """
         A command to search Wikipedia for a specified topic.
         [REQUIRES NSFW CHANNEL! - Thank you top.gg for somehow finding nsfw there and as a result forcing this command to be restricted]
@@ -133,15 +144,17 @@ class General(commands.Cog, name="General"):
             nsfw_error = disnake.Embed(
                 title="NSFW Channel Required",
                 description="This command can only be used in NSFW channels.",
-                color=0xFF0000
+                color=0xFF0000,
             )
             await inter.response.send_message(embed=nsfw_error, ephemeral=True)
         except Exception as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
-            
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
-    @commands.slash_command(name="about", description="Information about the bot")
-    async def about(self, inter: disnake.ApplicationCommandInteraction) -> NoReturn:
+    @commands.slash_command(name="about",
+                            description="Information about the bot")
+    async def about(self,
+                    inter: disnake.ApplicationCommandInteraction) -> NoReturn:
         """
         Shows a short description of the bot.
         """
@@ -187,7 +200,8 @@ class General(commands.Cog, name="General"):
                              icon_url=self.bot.user.avatar.url)
             await inter.response.send_message(embed=embed)
         except Exception as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(name="privacy", description="Shows privacy policy")
     async def privacy(self, inter: disnake.ApplicationCommandInteraction):
@@ -237,7 +251,8 @@ class General(commands.Cog, name="General"):
                              icon_url=self.bot.user.avatar.url)
             await inter.response.send_message(embed=embed)
         except Exception as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
 
 def setup(bot: Bot) -> NoReturn:

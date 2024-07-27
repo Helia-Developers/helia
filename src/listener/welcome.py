@@ -12,6 +12,7 @@ from scripts import db
 
 
 class Welcome(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -92,7 +93,8 @@ class Welcome(commands.Cog):
         await inter.response.send_message(embed=welcomehelp)
 
     @welcome.sub_command(name="channel", description="Set welcome channel")
-    async def channel(self, inter: disnake.ApplicationCommandInteraction, chan: disnake.TextChannel):
+    async def channel(self, inter: disnake.ApplicationCommandInteraction,
+                      chan: disnake.TextChannel):
         """
         Set the welcome channel for the server.
 
@@ -134,9 +136,11 @@ class Welcome(commands.Cog):
                     "You do not have enough permissions - :You require **Manage Channels**."
                 )
         except Exception as e:
-            await inter.response.send_message(f"Failed to set channel: {str(e)}")
+            await inter.response.send_message(
+                f"Failed to set channel: {str(e)}")
 
-    @welcome.sub_command(name="clear", description="Remove the set welcome channel")
+    @welcome.sub_command(name="clear",
+                         description="Remove the set welcome channel")
     async def clear(self, inter: disnake.ApplicationCommandInteraction):
         """
         Remove the set welcome channel for the server.
@@ -155,8 +159,7 @@ class Welcome(commands.Cog):
                     )
                 else:
                     cursor.execute(
-                        db.delete_table("welcome", "guild_id",
-                                        inter.guild.id))
+                        db.delete_table("welcome", "guild_id", inter.guild.id))
                     await inter.response.send_message("Cleared the table")
                 connect.commit()
                 cursor.close()
@@ -166,10 +169,13 @@ class Welcome(commands.Cog):
                     "You do not have enough permissions - :You require **Manage Channels**."
                 )
         except Exception as e:
-            await inter.response.send_message(f"Failed to remove welcome channel setting: {str(e)}")
+            await inter.response.send_message(
+                f"Failed to remove welcome channel setting: {str(e)}")
 
     @welcome.sub_command(name="text", description="Set welcome message text")
-    async def text(self, inter: disnake.ApplicationCommandInteraction, content: str = None):
+    async def text(self,
+                   inter: disnake.ApplicationCommandInteraction,
+                   content: str = None):
         """
         Set the welcome message text for the server.
 
@@ -181,7 +187,8 @@ class Welcome(commands.Cog):
         try:
             if inter.author.guild_permissions.manage_channels:
                 if content is None:
-                    await inter.response.send_message("Setting default message")
+                    await inter.response.send_message("Setting default message"
+                                                      )
                     content = "Give them a warm welcome and say hello to them"
                 connect = sqlite3.connect(db.main)
                 cursor = connect.cursor()
@@ -200,13 +207,15 @@ class Welcome(commands.Cog):
                 connect.commit()
                 cursor.close()
                 connect.close()
-                await inter.response.send_message("Set the welcome message text")
+                await inter.response.send_message(
+                    "Set the welcome message text")
             else:
                 await inter.response.send_message(
                     "You do not have enough permissions - :You require **Manage Channels**."
                 )
         except Exception as e:
-            await inter.response.send_message(f"Error, argument may be invalid: {str(e)}")
+            await inter.response.send_message(
+                f"Error, argument may be invalid: {str(e)}")
 
 
 def setup(bot):

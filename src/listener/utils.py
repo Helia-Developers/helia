@@ -13,6 +13,7 @@ The `Logger` class provides logging functions to print messages with different l
 
 The `Utils` class is a Discord command extension that provides utility functions, such as creating embeds with different colors.
 """
+
 # -*- coding: utf-8 -*-
 import datetime
 import json
@@ -32,7 +33,8 @@ class Config:
     cfg = None
 
     def __new__(self) -> Any:
-        with open(dirname(abspath(__file__)) + "/../data/config.json", "r") as f:
+        with open(dirname(abspath(__file__)) + "/../data/config.json",
+                  "r") as f:
             return json.load(f)
 
 
@@ -40,8 +42,11 @@ CONFIG = Config()
 
 
 class Commands:
+
     def __listdirs(path: AnyStr) -> List[str]:
-        return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+        return [
+            d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))
+        ]
 
     def __new__(self, locale: AnyStr = "") -> Dict:
         dirs = self.__listdirs(
@@ -49,17 +54,17 @@ class Commands:
 
         if locale in dirs or locale != "":
             with open(
-                dirname(abspath(__file__)) +
-                f"/../data/locales/{locale}/commands.json",
-                "r",
+                    dirname(abspath(__file__)) +
+                    f"/../data/locales/{locale}/commands.json",
+                    "r",
             ) as f:
                 return json.load(f)
         else:
             CONFIG = Config()
             with open(
-                dirname(abspath(__file__))
-                + f'/../data/locales/{CONFIG["default_locale"]}/commands.json',
-                "r",
+                    dirname(abspath(__file__)) +
+                    f'/../data/locales/{CONFIG["default_locale"]}/commands.json',
+                    "r",
             ) as f:
                 return json.load(f)
 
@@ -73,14 +78,14 @@ class Settings:
         self.guild_id = _guild_id
 
         async with async_open(
-            dirname(abspath(__file__)) + "/../data/settings.json", "r"
-        ) as f:
+                dirname(abspath(__file__)) + "/../data/settings.json",
+                "r") as f:
             self.settings = json.loads(await f.read())
 
     async def __save(self) -> NoReturn:
         async with async_open(
-            dirname(abspath(__file__)) + "/../data/settings.json", "w"
-        ) as f:
+                dirname(abspath(__file__)) + "/../data/settings.json",
+                "w") as f:
             await f.write(json.dumps(self.settings, indent=4))
 
     async def __create_guild_object(self) -> NoReturn:
@@ -120,8 +125,11 @@ class Settings:
 
 
 class Strings:
+
     def __listdirs(path: AnyStr) -> List[str]:
-        return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+        return [
+            d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))
+        ]
 
     def __new__(self, locale: AnyStr = "") -> Dict:
         dirs = self.__listdirs(
@@ -129,19 +137,20 @@ class Strings:
 
         if locale in dirs or locale != "":
             with open(
-                dirname(abspath(__file__)) +
-                f"/../data/locales/{locale}/strings.json",
-                "r",
+                    dirname(abspath(__file__)) +
+                    f"/../data/locales/{locale}/strings.json",
+                    "r",
             ) as f:
                 return json.load(f)
         else:
             CONFIG = Config()
             with open(
-                dirname(abspath(__file__))
-                + f'/../data/locales/{CONFIG["default_locale"]}/strings.json',
-                "r",
+                    dirname(abspath(__file__)) +
+                    f'/../data/locales/{CONFIG["default_locale"]}/strings.json',
+                    "r",
             ) as f:
                 return json.load(f)
+
 
 """
     Provides logging utilities for the bot.
@@ -153,6 +162,8 @@ class Strings:
     The `cog_loaded` method logs a message indicating that a cog has been loaded.
     The `command_used` method logs a message indicating that a command has been used, with the command name, the tag, and the guild name.
     """
+
+
 class Logger:
 
     def done(msg: AnyStr) -> NoReturn:
@@ -173,12 +184,16 @@ class Logger:
         STRINGS = Strings(CONFIG["default_locale"])
         now = datetime.datetime.now()
         time = now.strftime("%HH:%MM:%SS")
-        cprint("""║============================================================║""")
+        cprint(
+            """║============================================================║"""
+        )
         # cprint(
         # STRINGS["bot_log"]["info"].format(time, STRINGS["bot_log"]["cog_loaded"].format(cog)),
         # "green",
         # )
-        cprint("""║============================================================║""")
+        cprint(
+            """║============================================================║"""
+        )
 
     def command_used(tag: AnyStr, command: AnyStr, guild: AnyStr) -> NoReturn:
         STRINGS = Strings(CONFIG["default_locale"])
@@ -192,6 +207,7 @@ class Logger:
 
 
 class Utils(commands.Cog, name="Utils"):
+
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Utils"
@@ -208,11 +224,17 @@ class Utils(commands.Cog, name="Utils"):
     async def get_prefix(bot: Bot, msg: Message) -> List[str]:
         s = await Settings(msg.guild.id)
         prefix = await s.get_field("prefix", CONFIG["default_prefix"])
-        return [bot.user.mention + " ", f"<@!{bot.user.id}> ", prefix, prefix + " "]
+        return [
+            bot.user.mention + " ", f"<@!{bot.user.id}> ", prefix, prefix + " "
+        ]
 
     def get_locales_list():
+
         def __listdirs(path: AnyStr) -> List[str]:
-            return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
+            return [
+                d for d in os.listdir(path)
+                if os.path.isdir(os.path.join(path, d))
+            ]
 
         return __listdirs(dirname(abspath(__file__)) + "/../data/locales/")
 

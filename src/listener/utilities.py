@@ -13,6 +13,7 @@ The `Utilities` class is a Cog that adds several utility commands to the bot, in
 
 These commands are implemented as slash commands.
 """
+
 # -*- coding: utf-8 -*-
 import math
 import random
@@ -30,6 +31,7 @@ CONFIG = Config()
 
 
 class Utilities(commands.Cog):
+
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Utilities"
@@ -80,7 +82,8 @@ class Utilities(commands.Cog):
             await ctx.send(f"An error occurred: {str(e)}")
 
     @commands.slash_command(name="emoji", description="emoji info")
-    async def emoji(self, ctx: disnake.ApplicationCommandInteraction, emoji: str) -> None:
+    async def emoji(self, ctx: disnake.ApplicationCommandInteraction,
+                    emoji: str) -> None:
         """Shows emoji information.
 
         Parameters
@@ -90,23 +93,27 @@ class Utilities(commands.Cog):
         try:
             STRINGS = await self._get_strings(ctx)
 
-            format = r"png" if re.sub(r"[\<]", r"",
-                                      emoji.split(":")[0]) == "" else "gif"
+            format = (r"png" if re.sub(r"[\<]", r"",
+                                       emoji.split(":")[0]) == "" else "gif")
             name = emoji.split(":")[1]
             id = re.sub(r"[\>]", r"", emoji.split(r":")[2])
 
             embed = disnake.Embed(
                 title=STRINGS["utilities"]["emoji_info_title"].format(name),
-                color=0xEDA84E)
-            embed.set_image(url=f"https://cdn.discordapp.com/emojis/{id}.{format}")
-            embed.set_footer(text=STRINGS["utilities"]["emoji_info"].format(id))
+                color=0xEDA84E,
+            )
+            embed.set_image(
+                url=f"https://cdn.discordapp.com/emojis/{id}.{format}")
+            embed.set_footer(
+                text=STRINGS["utilities"]["emoji_info"].format(id))
 
             await ctx.send(embed=embed)
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
     @commands.slash_command(name="channel", description="channel info")
-    async def channel(self, ctx: disnake.ApplicationCommandInteraction, channel: disnake.TextChannel) -> None:
+    async def channel(self, ctx: disnake.ApplicationCommandInteraction,
+                      channel: disnake.TextChannel) -> None:
         """Shows channel information.
 
         Parameters
@@ -117,16 +124,17 @@ class Utilities(commands.Cog):
             STRINGS = await self._get_strings(ctx)
 
             if channel.type == disnake.ChannelType.text or channel.type not in [
-                disnake.ChannelType.voice,
-                disnake.ChannelType.news,
+                    disnake.ChannelType.voice,
+                    disnake.ChannelType.news,
             ]:
                 type = STRINGS["etc"]["channel_type"]["text"]
             elif channel.type == disnake.ChannelType.voice:
                 type = STRINGS["etc"]["channel_type"]["voice"]
             else:
                 type = STRINGS["etc"]["channel_type"]["news"]
-            
-            is_nsfw = STRINGS["etc"]["other"]["yes"] if channel.nsfw else STRINGS["etc"]["other"]["no"]
+
+            is_nsfw = (STRINGS["etc"]["other"]["yes"]
+                       if channel.nsfw else STRINGS["etc"]["other"]["no"])
 
             name = channel.name
             id = channel.id
@@ -165,7 +173,8 @@ class Utilities(commands.Cog):
 
             embed = disnake.Embed(
                 color=0xEDA84E,
-                title=STRINGS["utilities"]["avatar_info_title"].format(name, tag),
+                title=STRINGS["utilities"]["avatar_info_title"].format(
+                    name, tag),
                 description=STRINGS["utilities"]["avatar_info"].format(
                     hash, avatar),
             )
@@ -176,7 +185,8 @@ class Utilities(commands.Cog):
             await ctx.send(f"An error occurred: {str(e)}")
 
     @commands.slash_command(name="randint", description="random num")
-    async def randint(self, ctx: disnake.ApplicationCommandInteraction, stc1: int, stc2: int):
+    async def randint(self, ctx: disnake.ApplicationCommandInteraction,
+                      stc1: int, stc2: int):
         """Generates a random integer between two given numbers.
 
         Parameters
@@ -248,7 +258,9 @@ class Utilities(commands.Cog):
             await ctx.send(f"An error occurred: {str(e)}")
 
     @commands.slash_command(name="guild", description="guild info")
-    async def guild(self, ctx: disnake.ApplicationCommandInteraction, guild_id: int = None) -> None:
+    async def guild(self,
+                    ctx: disnake.ApplicationCommandInteraction,
+                    guild_id: int = None) -> None:
         """Shows guild information.
 
         Parameters
@@ -294,8 +306,7 @@ class Utilities(commands.Cog):
             if guild.icon:
                 e.set_thumbnail(url=f"{guild.icon.url}")
             else:
-                e.set_thumbnail(
-                    url="https://i.imgur.com/SAigvsR.png")
+                e.set_thumbnail(url="https://i.imgur.com/SAigvsR.png")
 
             channel_info = []
             key_to_emoji = {
@@ -334,7 +345,8 @@ class Utilities(commands.Cog):
 
             info = [
                 f'{CONFIG["yes_emoji"]}: {label}'
-                for feature, label in all_features.items() if feature in features
+                for feature, label in all_features.items()
+                if feature in features
             ]
 
             if info:
@@ -361,8 +373,9 @@ class Utilities(commands.Cog):
                     emoji_stats["regular"] += 1
                     emoji_stats["disabled"] += not emoji.available
 
-            fmt = (f'Regular: {emoji_stats["regular"]}/{guild.emoji_limit}\n'
-                   f'Animated: {emoji_stats["animated"]}/{guild.emoji_limit}\n')
+            fmt = (
+                f'Regular: {emoji_stats["regular"]}/{guild.emoji_limit}\n'
+                f'Animated: {emoji_stats["animated"]}/{guild.emoji_limit}\n')
             if emoji_stats["disabled"] or emoji_stats["animated_disabled"]:
                 fmt = f'{fmt}Disabled: {emoji_stats["disabled"]} regular, {emoji_stats["animated_disabled"]} animated\n'
 

@@ -11,6 +11,7 @@ This Cog includes the following commands:
 
 The information displayed for each distribution includes a description, a thumbnail image, and a link to the distribution's website.
 """
+
 # LOCALIZATION SUPPORT NEEDS IMPLEMENTING
 import asyncio
 
@@ -24,6 +25,7 @@ CONFIG = Config()
 
 
 class GNULinux(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -64,7 +66,8 @@ class GNULinux(commands.Cog):
             )
             await inter.response.send_message(embed=archl)
         except (disnake.HTTPException, disnake.Forbidden) as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(
         name="ubuntu",
@@ -101,7 +104,8 @@ class GNULinux(commands.Cog):
             ubuntu1.set_thumbnail(url="https://i.imgur.com/TfVgK1v.png")
             await inter.response.send_message(embed=ubuntu1)
         except (disnake.HTTPException, disnake.Forbidden) as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(
         name="debian",
@@ -140,7 +144,8 @@ class GNULinux(commands.Cog):
             )
             await inter.response.send_message(embed=debian1)
         except (disnake.HTTPException, disnake.Forbidden) as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(
         name="deepin",
@@ -179,7 +184,8 @@ class GNULinux(commands.Cog):
             )
             await inter.response.send_message(embed=deepin1)
         except (disnake.HTTPException, disnake.Forbidden) as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(
         name="manjaro",
@@ -218,7 +224,8 @@ class GNULinux(commands.Cog):
             )
             await inter.response.send_message(embed=manjaro1)
         except (disnake.HTTPException, disnake.Forbidden) as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(
         name="mint",
@@ -255,7 +262,8 @@ class GNULinux(commands.Cog):
             mint1.set_thumbnail(url="https://i.imgur.com/cyRjcbp.png")
             await inter.response.send_message(embed=mint1)
         except (disnake.HTTPException, disnake.Forbidden) as e:
-            await inter.response.send_message(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
 
 def setup(bot):

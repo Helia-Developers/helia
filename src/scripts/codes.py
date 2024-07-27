@@ -7,6 +7,7 @@ The `alpha3` dictionary maps ISO 3166-1 alpha-3 country codes to their correspon
 The `alt_names` dictionary provides alternative names for some countries.
 The `JHU_names` dictionary provides the names used by the Johns Hopkins University for some countries.
 """
+
 states = {
     "AK": "Alaska",
     "AL": "Alabama",

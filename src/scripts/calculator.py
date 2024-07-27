@@ -10,6 +10,7 @@ The function supports the following operations:
 
 If an error occurs during the evaluation, the function will return the string "An error occurred."
 """
+
 import math
 
 from disnake import ButtonStyle, SelectOption

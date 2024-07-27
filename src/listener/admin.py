@@ -7,6 +7,7 @@ The module also includes a custom `Confirm` view that is used to confirm the shu
 
 Only bot owners are allowed to use the commands in this module.
 """
+
 # -*- coding: utf-8 -*-
 import asyncio
 import datetime
@@ -20,8 +21,8 @@ import disnake
 from disnake import ButtonStyle, SelectOption
 from disnake.ext import commands
 from disnake.ext.commands import Bot, Context
-from disnake.ui import Button, Select, View
 from disnake.ext.commands.params import Param
+from disnake.ui import Button, Select, View
 from dotenv import load_dotenv
 
 from listener.utils import Config, Logger, Settings, Strings, Utils
@@ -35,6 +36,7 @@ CONFIG = Config()
 
 
 class Confirm(disnake.ui.View):
+
     def __init__(self, ctx, bot: Bot):
         super().__init__()
         self.bot = bot
@@ -50,10 +52,10 @@ class Confirm(disnake.ui.View):
         s = await Settings(self.ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        if isinstance(self.ctx,disnake.ApplicationCommandInteraction):
-         author = self.ctx.author
+        if isinstance(self.ctx, disnake.ApplicationCommandInteraction):
+            author = self.ctx.author
         else:
-         author = self.ctx.message.author
+            author = self.ctx.message.author
         valid_users = [
             "540142383270985738",
             "573123021598883850",
@@ -106,10 +108,10 @@ class Confirm(disnake.ui.View):
         s = await Settings(self.ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        if isinstance(self.ctx,disnake.ApplicationCommandInteraction):
-         author = self.ctx.author
+        if isinstance(self.ctx, disnake.ApplicationCommandInteraction):
+            author = self.ctx.author
         else:
-         author = self.ctx.message.author
+            author = self.ctx.message.author
         await interaction.response.edit_message(
             embed=disnake.Embed(
                 title=STRINGS["moderation"]["shutdownaborttitle"],
@@ -142,21 +144,27 @@ class Admin(commands.Cog, name="Admin"):
         """
         try:
             self.bot.load_extension(f"listener.{module}")
-            embeder=disnake.Embed(title=f"Module {module} has been loaded", color=0x0c0c0c)
-            await ctx.send(embed=embeder,delete_after=5)
+            embeder = disnake.Embed(title=f"Module {module} has been loaded",
+                                    color=0x0C0C0C)
+            await ctx.send(embed=embeder, delete_after=5)
         except Exception as e:
-            #await ctx.message.add_reaction(CONFIG["no_emoji"])
+            # await ctx.message.add_reaction(CONFIG["no_emoji"])
             embed = Utils.error_embed("`{}`: {}".format(type(e).__name__, e))
             await ctx.send(embed=embed)
-        #else:
-            #await ctx.message.add_reaction(CONFIG["yes_emoji"])
-    
+        # else:
+        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
+
     @commands.slash_command(
         name="load",
         description="Load a module.",
     )
     @commands.is_owner()
-    async def sload(self, inter: disnake.ApplicationCommandInteraction, *, module: str = Param(description="Name of the module.")) -> NoReturn:
+    async def sload(
+            self,
+            inter: disnake.ApplicationCommandInteraction,
+            *,
+            module: str = Param(description="Name of the module."),
+    ) -> NoReturn:
         """Loads a module (cog). If the module is not found
             or an error is found in its code, it will throw an error.
 
@@ -167,14 +175,15 @@ class Admin(commands.Cog, name="Admin"):
         """
         try:
             self.bot.load_extension(f"listener.{module}")
-            embeder=disnake.Embed(title=f"Module {module} has been loaded", color=0x0c0c0c)
-            await inter.response.send_message(embed=embeder,ephemeral=True)
+            embeder = disnake.Embed(title=f"Module {module} has been loaded",
+                                    color=0x0C0C0C)
+            await inter.response.send_message(embed=embeder, ephemeral=True)
         except Exception as e:
-            #await ctx.message.add_reaction(CONFIG["no_emoji"])
+            # await ctx.message.add_reaction(CONFIG["no_emoji"])
             embed = Utils.error_embed("`{}`: {}".format(type(e).__name__, e))
             await inter.response.send_message(embed=embed)
-        #else:
-            #await ctx.message.add_reaction(CONFIG["yes_emoji"])
+        # else:
+        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
 
     @commands.command(slash_command=True, message_command=True)
     @commands.is_owner()
@@ -188,23 +197,28 @@ class Admin(commands.Cog, name="Admin"):
         """
         try:
             self.bot.unload_extension(f"listener.{module}")
-            embederx=disnake.Embed(title=f"Module {module} has been unloaded", color=0x0c0c0c)
-            await ctx.send(embed=embederx,delete_after=5)
+            embederx = disnake.Embed(
+                title=f"Module {module} has been unloaded", color=0x0C0C0C)
+            await ctx.send(embed=embederx, delete_after=5)
         except Exception as e:
-            #await ctx.message.add_reaction(CONFIG["no_emoji"])
+            # await ctx.message.add_reaction(CONFIG["no_emoji"])
             embed = Utils.error_embed("`{}`: {}".format(type(e).__name__, e))
             await ctx.send(embed=embed)
-        #else:
+        # else:
 
-            #await ctx.message.add_reaction(CONFIG["yes_emoji"])
-    
-    
+        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
+
     @commands.slash_command(
         name="unload",
         description="Unload a module.",
     )
     @commands.is_owner()
-    async def sunload(self, inter: disnake.ApplicationCommandInteraction, *, module: str= Param(description="Name of the module.")) -> NoReturn:
+    async def sunload(
+            self,
+            inter: disnake.ApplicationCommandInteraction,
+            *,
+            module: str = Param(description="Name of the module."),
+    ) -> NoReturn:
         """Unloads a module (cog). If the module is not found, it will throw an error.
 
         Attributes:
@@ -214,19 +228,18 @@ class Admin(commands.Cog, name="Admin"):
         """
         try:
             self.bot.unload_extension(f"listener.{module}")
-            embederx=disnake.Embed(title=f"Module {module} has been unloaded", color=0x0c0c0c)
-            await inter.response.send_message(embed=embederx,ephemeral=True)
+            embederx = disnake.Embed(
+                title=f"Module {module} has been unloaded", color=0x0C0C0C)
+            await inter.response.send_message(embed=embederx, ephemeral=True)
         except Exception as e:
-            #await ctx.message.add_reaction(CONFIG["no_emoji"])
+            # await ctx.message.add_reaction(CONFIG["no_emoji"])
             embed = Utils.error_embed("`{}`: {}".format(type(e).__name__, e))
             await inter.response.send_message(embed=embed)
-        #else:
+        # else:
 
-            #await ctx.message.add_reaction(CONFIG["yes_emoji"])
+        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
 
-    @commands.command(slash_command=True,
-                      message_command=True,
-                      name="reload")
+    @commands.command(slash_command=True, message_command=True, name="reload")
     @commands.is_owner()
     async def _reload(self, ctx: Context, *, module: str) -> NoReturn:
         """Loads a module (cog). If the module is not found
@@ -239,22 +252,27 @@ class Admin(commands.Cog, name="Admin"):
         """
         try:
             self.bot.reload_extension(f"listener.{module}")
-            embederxx=disnake.Embed(title=f"Module {module} has been reloaded", color=0x0c0c0c)
-            await ctx.send(embed=embederxx,delete_after=5)
+            embederxx = disnake.Embed(
+                title=f"Module {module} has been reloaded", color=0x0C0C0C)
+            await ctx.send(embed=embederxx, delete_after=5)
         except Exception as e:
-            #await ctx.message.add_reaction(CONFIG["no_emoji"])
+            # await ctx.message.add_reaction(CONFIG["no_emoji"])
             embed = Utils.error_embed("`{}`: {}".format(type(e).__name__, e))
             await ctx.send(embed=embed)
-        #else:
-            #await ctx.message.add_reaction(CONFIG["yes_emoji"])
-            
-    
+        # else:
+        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
+
     @commands.slash_command(
         name="reload",
         description="Reload a module.",
     )
     @commands.is_owner()
-    async def _sreload(self, inter: disnake.ApplicationCommandInteraction, *, module: str = Param(description="Name of the module.")) -> NoReturn:
+    async def _sreload(
+            self,
+            inter: disnake.ApplicationCommandInteraction,
+            *,
+            module: str = Param(description="Name of the module."),
+    ) -> NoReturn:
         """Loads a module (cog). If the module is not found
             or an error is found in its code, it will throw an error.
 
@@ -265,18 +283,22 @@ class Admin(commands.Cog, name="Admin"):
         """
         try:
             self.bot.reload_extension(f"listener.{module}")
-            embederxx=disnake.Embed(title=f"Module {module} has been reloaded", color=0x0c0c0c)
-            await inter.response.send_message(embed=embederxx,ephemeral=True)
+            embederxx = disnake.Embed(
+                title=f"Module {module} has been reloaded", color=0x0C0C0C)
+            await inter.response.send_message(embed=embederxx, ephemeral=True)
         except Exception as e:
-            #await ctx.message.add_reaction(CONFIG["no_emoji"])
+            # await ctx.message.add_reaction(CONFIG["no_emoji"])
             embed = Utils.error_embed("`{}`: {}".format(type(e).__name__, e))
             await inter.response.send_message(embed=embed)
-        #else:
-            #await ctx.message.add_reaction(CONFIG["yes_emoji"])
+        # else:
+        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
 
-    @commands.command(slash_command=True,
-                      message_command=True,
-                      name="invite_bot",brief="Makes a bot invite without any permissions")
+    @commands.command(
+        slash_command=True,
+        message_command=True,
+        name="invite_bot",
+        brief="Makes a bot invite without any permissions",
+    )
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def invite_bot(self,
                          ctx,
@@ -303,16 +325,15 @@ class Admin(commands.Cog, name="Admin"):
         embedtimes = disnake.Embed(title="Your invite", color=0x778EFD)
         embedtimes.add_field(name="Is here", value=f"{invite}", inline=True)
         await ctx.send(embed=embedtimes)
-    
+
     @commands.slash_command(
         name="invite_bot",
         description="Makes a bot invite without any permissions.",
     )
-    
     async def sinvite_bot(self,
-                         inter: disnake.ApplicationCommandInteraction,
-                         *,
-                         user: disnake.User = None):
+                          inter: disnake.ApplicationCommandInteraction,
+                          *,
+                          user: disnake.User = None):
         user = user or inter.author
 
         if not user.bot:
@@ -329,15 +350,17 @@ class Admin(commands.Cog, name="Admin"):
                                                  "applications.commands"))
         embeder = disnake.Embed(
             title="Generating invite for the provided user id", color=0x778EFD)
-        
-       
+
         embedtimes = disnake.Embed(title="Your invite is here", color=0x778EFD)
         embedtimes.add_field(name="Link", value=f"{invite}", inline=True)
-        await inter.response.send_message(embed=embedtimes,ephemeral=True)
+        await inter.response.send_message(embed=embedtimes, ephemeral=True)
 
-    @commands.command(slash_command=True,
-                      message_command=True,
-                      name="shutdown",description="Bot restart/shutdown")
+    @commands.command(
+        slash_command=True,
+        message_command=True,
+        name="shutdown",
+        description="Bot restart/shutdown",
+    )
     async def shutdown(self, ctx: Context):  # Команда для выключения бота
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
@@ -366,12 +389,13 @@ class Admin(commands.Cog, name="Admin"):
         )
         await ctx.send(embed=embedconfirm, view=viewb)
         await viewb.wait()
-        
+
     @commands.slash_command(
         name="shutdown",
         description="Shutdown the bot [OWNERS-ONLY!!!!].",
     )
-    async def slashshutdown(self, inter: disnake.ApplicationCommandInteraction):  # Команда для выключения бота
+    async def slashshutdown(self, inter: disnake.ApplicationCommandInteraction
+                            ):  # Команда для выключения бота
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
@@ -401,7 +425,8 @@ class Admin(commands.Cog, name="Admin"):
         await viewb.wait()
 
     @commands.command(slash_command=True,
-                      message_command=True,description="Set bot status")
+                      message_command=True,
+                      description="Set bot status")
     async def set_status(self, ctx, *args):
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
@@ -439,13 +464,16 @@ class Admin(commands.Cog, name="Admin"):
             )
 
         await ctx.send(embed=embed)
-        
 
     @commands.slash_command(
         name="set_status",
         description="Set the bot status[OWNERS-ONLY!!!!].",
     )
-    async def slashset_status(self, inter: disnake.ApplicationCommandInteraction, sts: str = Param(description="Text of status.")):
+    async def slashset_status(
+            self,
+            inter: disnake.ApplicationCommandInteraction,
+            sts: str = Param(description="Text of status."),
+    ):
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
@@ -460,8 +488,8 @@ class Admin(commands.Cog, name="Admin"):
             "497406228364787717",
         ]
         if str(author.id) in valid_users:
-            await self.bot.change_presence(
-                activity=disnake.Game(" ".join(sts)))
+            await self.bot.change_presence(activity=disnake.Game(" ".join(sts))
+                                           )
             embed = disnake.Embed(
                 title=STRINGS["moderation"]["setstatustext"],
                 description=STRINGS["moderation"]["setstatusdesc"],
@@ -491,7 +519,8 @@ class Admin(commands.Cog, name="Admin"):
             self.bot.reload_extension(f"{ext}")
 
     @commands.command(slash_command=True,
-                      message_command=True,description="Bot invite links")
+                      message_command=True,
+                      description="Bot invite links")
     async def invite(self, ctx: Context):
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
@@ -586,8 +615,7 @@ class Admin(commands.Cog, name="Admin"):
                                   colour=disnake.Colour(0xFF6900))
         await ctx.send(embed=embed, view=view)
         await ctx.send("`----`", view=viewx)
-        
-    
+
     @commands.slash_command(
         name="invite",
         description="Bot invite links.",
@@ -688,7 +716,8 @@ class Admin(commands.Cog, name="Admin"):
         await inter.response.send_message("`----`", view=viewx)
 
     @commands.command(slash_command=True,
-                      message_command=True,brief="Gives the bot's uptime")
+                      message_command=True,
+                      brief="Gives the bot's uptime")
     async def uptime(self, ctx):
         delta_uptime = datetime.datetime.utcnow() - self.bot.launch_time
         hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
@@ -704,7 +733,7 @@ class Admin(commands.Cog, name="Admin"):
                         value=f"```{seconds}s```",
                         inline=False)
         await ctx.send(embed=embed)
-        
+
     @commands.slash_command(
         name="uptime",
         description="Bot uptime.",

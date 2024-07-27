@@ -7,8 +7,10 @@ The `insert_table`, `update_table`, `select_table`, and `delete_table` functions
 
 The `control` function sets up the database, creating the necessary tables if they don't already exist.
 """
+
 import os
 import sqlite3
+
 cwd = os.getcwd()
 parent_dir = os.path.abspath(cwd + "/../")
 
@@ -35,10 +37,10 @@ def control():
     print(cwd)
     print(parent_dir)
     print(main)
-    
+
     # Ensure the directory exists
     os.makedirs(os.path.dirname(main), exist_ok=True)
-    
+
     try:
         base = sqlite3.connect(main)
         print("[DB] Connected to sqlite")
@@ -49,7 +51,8 @@ def control():
                 f"CREATE TABLE IF NOT EXISTS {table}(guild_id TEXT, channel_id TEXT, text TEXT)"
             )
         cursor.execute(
-            "CREATE TABLE IF NOT EXISTS submit(guild_id TEXT, channel_id TEXT)")
+            "CREATE TABLE IF NOT EXISTS submit(guild_id TEXT, channel_id TEXT)"
+        )
 
         cursor.execute(
             "CREATE TABLE IF NOT EXISTS prefixes(guild_id TEXT, prefix TEXT)")
@@ -63,7 +66,7 @@ def control():
         print(f"[DB] Unable to open database file: {main}")
         print("[DB] Please check file permissions and path.")
     finally:
-        if 'cursor' in locals():
+        if "cursor" in locals():
             cursor.close()
-        if 'base' in locals():
+        if "base" in locals():
             base.close()

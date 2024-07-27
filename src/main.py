@@ -10,6 +10,7 @@ This is the main entry point for the Listener Discord bot. It handles the follow
 
 The bot uses the Disnake library for Discord interactions and the CoreClient class from the listener.core.client module for additional functionality.
 """
+
 import asyncio
 import datetime
 import json
@@ -32,8 +33,10 @@ os.system("ls -l; pip uninstall -y wavelink")
 os.system("ls -l; poetry remove discord.py")
 os.system("ls -l; pip install disnake")
 os.system("ls -l; poetry add disnake")
-os.system("ls -l; pip install -U git+https://github.com/Disnake-Extensions/jishaku")
-os.system("ls -l; pip install -U git+https://github.com/pieckenst/WaveLinkFork.git")
+os.system(
+    "ls -l; pip install -U git+https://github.com/Disnake-Extensions/jishaku")
+os.system(
+    "ls -l; pip install -U git+https://github.com/pieckenst/WaveLinkFork.git")
 
 CONFIG = Config()
 STRINGS = Strings(CONFIG["default_locale"])
@@ -43,16 +46,13 @@ default_prefix = "//"
 server_prefixes = {}
 loaded = False
 flwebhost.keep_alive()  # uncomment for repl.it!
-cprint(
-    """ 
+cprint(""" 
     _   _ ____ __   ____   __      ____ ____ ___  ___ _____ ____ ____     ____ _____ ____ 
     ( )_( ( ___(  ) (_  _) /__\    (  _ (_  _/ __)/ __(  _  (  _ (  _ \   (  _ (  _  (_  _)
     ) _ ( )__) )(__ _)(_ /(__)\    )(_) _)(_\__ ( (__ )(_)( )   /)(_) )   ) _ <)(_)(  )(  
     (_) (_(____(____(____(__)(__)  (____(____(___/\___(_____(_)\_(____/   (____(_____)(__) 
-    """
-)
-cprint(
-    """ 
+    """)
+cprint(""" 
     
 
       _____ _             _   _                           
@@ -63,8 +63,7 @@ cprint(
       \____/ \__\__,_|_|  \__|_|_| |_|\__, | \__,_| .__/ 
                                   __     / |      | |    
                                        |___/      |_|    
-"""
-)
+""")
 
 
 def load_server_prefixes():
@@ -99,9 +98,8 @@ def get_prefix(bot, message):
     guild_id = str(message.guild.id)
 
     if guild_id in server_prefixes:
-        return commands.when_mentioned_or(*server_prefixes[guild_id] + prefixes)(
-            bot, message
-        )
+        return commands.when_mentioned_or(*server_prefixes[guild_id] +
+                                          prefixes)(bot, message)
 
     return commands.when_mentioned_or(*prefixes)(bot, message)
 
@@ -128,8 +126,8 @@ async def main():
     modules = [Preferences(bot=client)]
     for command_cog in modules:
         client.add_cog(command_cog)
-        cprint(
-            f"=====Extension - {command_cog} was loaded succesfully!=====", "green")
+        cprint(f"=====Extension - {command_cog} was loaded succesfully!=====",
+               "green")
     if __name__ == "__main__":
         # Load command Cogs
         startup_extensions = [
@@ -159,7 +157,8 @@ async def main():
                     "green",
                 )
             except commands.errors.ExtensionFailed as e:
-                if isinstance(e.original, disnake.errors.HTTPException) and e.original.code == 50035:
+                if (isinstance(e.original, disnake.errors.HTTPException)
+                        and e.original.code == 50035):
                     cprint(
                         f"║=====Warning: SyncWarning: Failed to overwrite global commands due to 400 Bad Request (error code: 50035): Invalid Form Body in {extension}=====║",
                         "yellow",
@@ -168,8 +167,7 @@ async def main():
                     exc = "{}: {}".format(type(e).__name__, e)
                     cprint(
                         "║=====Failed to load extension {}\n{}=====║".format(
-                            extension, exc
-                        ),
+                            extension, exc),
                         "red",
                     )
 

@@ -5,6 +5,7 @@ The `Player` class is a custom subclass of `wavelink.Player` that extends the ba
 
 The `Music` class also includes methods for connecting to and disconnecting from voice channels, as well as handling various error cases that can occur during music playback.
 """
+
 # -*- coding: utf-8 -*-
 import asyncio
 import random
@@ -77,6 +78,7 @@ class RepeatMode(Enum):
 
 
 class Queue:
+
     def __init__(self):
         self._queue = []
         self.position = 0
@@ -104,7 +106,7 @@ class Queue:
     def history(self):
         if not self._queue:
             raise QueueIsEmpty
-        return self._queue[: self.position]
+        return self._queue[:self.position]
 
     @property
     def length(self):
@@ -131,7 +133,7 @@ class Queue:
             raise QueueIsEmpty
         upcoming = self.upcoming
         random.shuffle(upcoming)
-        self._queue = self._queue[: self.position + 1]
+        self._queue = self._queue[:self.position + 1]
         self._queue.extend(upcoming)
 
     def set_repeat_mode(self, mode):
@@ -148,6 +150,7 @@ class Queue:
 
 
 class Player(wavelink.Player):
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.queue = Queue()
@@ -190,8 +193,7 @@ class Player(wavelink.Player):
                 inline=True,
             )
             playEmbedplaylist.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"]
-            )
+                text=STRINGS["music"]["embed_controler_footer"])
 
             await ctx.send(embed=playEmbedplaylist)
         elif len(tracks) == 1:
@@ -216,8 +218,9 @@ class Player(wavelink.Player):
                 value=f"**({tracks[0].length//60000}:{str(tracks[0].length%60).zfill(2)})**",
                 inline=True,
             )
-            playEmbed.add_field(
-                name="Server:", value=f"{ctx.guild.name}", inline=False)
+            playEmbed.add_field(name="Server:",
+                                value=f"{ctx.guild.name}",
+                                inline=False)
 
             await ctx.send(embed=playEmbed)
 
@@ -255,36 +258,32 @@ class Player(wavelink.Player):
             await self.start_playback()
 
     async def choose_track(self, ctx, tracks):
+
         def _check(r, u):
-            return (
-                r.emoji in OPTIONS.keys() and u == ctx.author and r.message.id == msg.id
-            )
+            return (r.emoji in OPTIONS.keys() and u == ctx.author
+                    and r.message.id == msg.id)
 
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         chooseTrackEmbed = disnake.Embed(
-            description=(
-                "\n".join(
-                    f"**{i+1}.** {t.title} ({t.length//60000}:{str(t.length%60).zfill(2)})"
-                    for i, t in enumerate(tracks[:5])
-                )
-            ),
+            description=("\n".join(
+                f"**{i+1}.** {t.title} ({t.length//60000}:{str(t.length%60).zfill(2)})"
+                for i, t in enumerate(tracks[:5]))),
             colour=0x6AA84F,
             timestamp=ctx.message.created_at,
         )
         chooseTrackEmbed.set_author(
-            name=STRINGS["music"]["embed_controler_searchresults"]
-        )
+            name=STRINGS["music"]["embed_controler_searchresults"])
         chooseTrackEmbed.set_footer(
             text=STRINGS["music"]["embed_controler_footer"])
         msg = await ctx.send(embed=chooseTrackEmbed)
-        for emoji in list(OPTIONS.keys())[: min(len(tracks), len(OPTIONS))]:
+        for emoji in list(OPTIONS.keys())[:min(len(tracks), len(OPTIONS))]:
             await msg.add_reaction(emoji)
         try:
-            reaction, _ = await self.bot.wait_for(
-                "reaction_add", timeout=60.0, check=_check
-            )
+            reaction, _ = await self.bot.wait_for("reaction_add",
+                                                  timeout=60.0,
+                                                  check=_check)
         except asyncio.TimeoutError:
             await msg.delete()
         else:
@@ -306,6 +305,7 @@ class Player(wavelink.Player):
 
 
 class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
+
     def __init__(self, bot):
         self.bot = bot
         self.name = "Music"
@@ -314,11 +314,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        if (
-            not member.bot
-            and after.channel is None
-            and not [m for m in before.channel.members if not m.bot]
-        ):
+        if (not member.bot and after.channel is None
+                and not [m for m in before.channel.members if not m.bot]):
             print("---------------------------")
             print("[MUSIC]Someone left voice chat")
             print("---------------------------")
@@ -346,7 +343,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
             "HEROKUBACK": {
                 "host": "heroku-lavalink-heliaservice.herokuapp.com",
                 "port": 80,
-                "rest_uri": "https://heroku-lavalink-heliaservice.herokuapp.com",
+                "rest_uri":
+                "https://heroku-lavalink-heliaservice.herokuapp.com",
                 "password": "youshallnotpass",
                 "identifier": "HEROKUBACK",
                 "region": "us_central",
@@ -371,7 +369,9 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
 
     def get_player(self, obj):
         if isinstance(obj, commands.Context):
-            return self.wavelink.get_player(obj.guild.id, cls=Player, context=obj)
+            return self.wavelink.get_player(obj.guild.id,
+                                            cls=Player,
+                                            context=obj)
         elif isinstance(obj, disnake.Guild):
             return self.wavelink.get_player(obj.id, cls=Player)
 
@@ -394,8 +394,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         await player.teardown()
-        embed = disnake.Embed(
-            title=STRINGS["music"]["botleavevc"], color=0x808000)
+        embed = disnake.Embed(title=STRINGS["music"]["botleavevc"],
+                              color=0x808000)
         await ctx.send(embed=embed)
 
         # logger.info(f"[MUSIC]Voice channel quit requested by {ctx.author} in {ctx.message.guild}")
@@ -421,9 +421,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 raise QueueIsEmpty
             elif player.is_paused:
                 await player.set_pause(False)
-                playEmbed = disnake.Embed(
-                    title=STRINGS["music"]["playresume"], colour=0x6AA84F
-                )
+                playEmbed = disnake.Embed(title=STRINGS["music"]["playresume"],
+                                          colour=0x6AA84F)
                 playEmbed.set_footer(
                     text=STRINGS["music"]["embed_controler_footer"])
 
@@ -445,8 +444,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
             lang = await s.get_field("locale", CONFIG["default_locale"])
             STRINGS = Strings(lang)
             playEmbed_2 = disnake.Embed(
-                title=STRINGS["music"]["playererrorone"], colour=0x6AA84F
-            )
+                title=STRINGS["music"]["playererrorone"], colour=0x6AA84F)
             await ctx.send(embed=playEmbed_2)
         elif isinstance(exc, QueueIsEmpty):
             s = await Settings(ctx.guild.id)
@@ -476,9 +474,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         if player.is_paused:
             raise PlayerIsAlreadyPaused
         await player.set_pause(True)
-        pauseEmbed = disnake.Embed(
-            title=STRINGS["music"]["pausetracktext"], colour=0x6AA84F
-        )
+        pauseEmbed = disnake.Embed(title=STRINGS["music"]["pausetracktext"],
+                                   colour=0x6AA84F)
         pauseEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
 
         await ctx.send(embed=pauseEmbed)
@@ -488,9 +485,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
     @pause_command.error
     async def pause_command_error(self, ctx, exc):
         if isinstance(exc, PlayerIsAlreadyPaused):
-            pauseer_embed = disnake.Embed(
-                title=STRINGS["music"]["pauseerror"], colour=0x6AA84F
-            )
+            pauseer_embed = disnake.Embed(title=STRINGS["music"]["pauseerror"],
+                                          colour=0x6AA84F)
             await ctx.send(embed=pauseer_embed)
 
     @commands.command(
@@ -505,8 +501,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        stopEmbed = disnake.Embed(
-            title=STRINGS["music"]["stoptext"], colour=0x6AA84F)
+        stopEmbed = disnake.Embed(title=STRINGS["music"]["stoptext"],
+                                  colour=0x6AA84F)
         stopEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
         player.queue.empty()
         await player.stop()
@@ -530,17 +526,13 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         if not player.queue.upcoming:
             raise NoMoreTracks
         await player.stop()
-        nextEmbed = disnake.Embed(
-            title=STRINGS["music"]["skipsongtext"], colour=0x6AA84F
-        )
+        nextEmbed = disnake.Embed(title=STRINGS["music"]["skipsongtext"],
+                                  colour=0x6AA84F)
         if upcoming := player.queue.upcoming:
             nextEmbed.add_field(
                 name=STRINGS["music"]["queuenextinline"],
-                value=(
-                    "\n".join(
-                        f"**{i + 2}.** {t.title}" for i, t in enumerate(upcoming[:19])
-                    )
-                ),
+                value=("\n".join(f"**{i + 2}.** {t.title}"
+                                 for i, t in enumerate(upcoming[:19]))),
                 inline=False,
             )
         nextEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
@@ -592,9 +584,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
             raise NoPreviousTracks
         player.queue.position -= 2
         await player.stop()
-        previousEmbed = disnake.Embed(
-            title=STRINGS["music"]["previoustext"], colour=0x6AA84F
-        )
+        previousEmbed = disnake.Embed(title=STRINGS["music"]["previoustext"],
+                                      colour=0x6AA84F)
         previousEmbed.set_footer(
             text=STRINGS["music"]["embed_controler_footer"])
 
@@ -642,9 +633,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         player.queue.shuffle()
-        shuffleEmbed = disnake.Embed(
-            title=STRINGS["music"]["listshuffled"], colour=0x6AA84F
-        )
+        shuffleEmbed = disnake.Embed(title=STRINGS["music"]["listshuffled"],
+                                     colour=0x6AA84F)
         shuffleEmbed.set_footer(
             text=STRINGS["music"]["embed_controler_footer"])
 
@@ -682,9 +672,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
 
         if player.queue.is_empty:
             raise QueueIsEmpty
-        queueEmbed = disnake.Embed(
-            title=STRINGS["music"]["queuelisttext"], colour=0x6AA84F
-        )
+        queueEmbed = disnake.Embed(title=STRINGS["music"]["queuelisttext"],
+                                   colour=0x6AA84F)
         queueEmbed.add_field(
             name=STRINGS["music"]["queuelistcurrentlyplaying"],
             value=player.queue.current_track.title,
@@ -694,11 +683,8 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         if upcoming := player.queue.upcoming:
             queueEmbed.add_field(
                 name=STRINGS["music"]["queuenextinline"],
-                value=(
-                    "\n".join(
-                        f"**{i+2}.** {t.title}" for i, t in enumerate(upcoming[:19])
-                    )
-                ),
+                value=("\n".join(f"**{i+2}.** {t.title}"
+                                 for i, t in enumerate(upcoming[:19]))),
                 inline=False,
             )
         queueEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
@@ -751,9 +737,9 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
             description=STRINGS["music"]["volumesetdesc"],
             color=0xFF8040,
         )
-        volumeEmbed.add_field(
-            name=STRINGS["music"]["volumesetvalue"], value=f"{value} ", inline=True
-        )
+        volumeEmbed.add_field(name=STRINGS["music"]["volumesetvalue"],
+                              value=f"{value} ",
+                              inline=True)
         volumeEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
 
         await ctx.send(embed=volumeEmbed)

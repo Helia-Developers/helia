@@ -10,6 +10,7 @@ The `on_message` event listener checks if the bot was mentioned in a message, an
 
 The `on_command_error` event listener handles various types of errors that can occur when a command is used, such as missing required arguments, missing permissions, and cooldowns. It logs information about the error and sends an error message to the user.
 """
+
 # -*- coding: utf-8 -*-
 import asyncio
 import datetime
@@ -29,6 +30,7 @@ CONFIG = Config()
 
 
 class Listeners(commands.Cog, name="Listeners"):
+
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Listeners"
@@ -38,10 +40,10 @@ class Listeners(commands.Cog, name="Listeners"):
     def _ensure_log_file_exists(self):
         os.makedirs(os.path.dirname(self.logpath), exist_ok=True)
         if not os.path.exists(self.logpath):
-            open(self.logpath, 'a').close()
+            open(self.logpath, "a").close()
 
     def _log_to_file(self, message: str):
-        with open(self.logpath, "a", encoding='utf-8') as file:
+        with open(self.logpath, "a", encoding="utf-8") as file:
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             file.write(f"[{timestamp}] {message}\n")
 
@@ -97,7 +99,9 @@ class Listeners(commands.Cog, name="Listeners"):
         """Logging commands to the console."""
         Logger.command_used(ctx.message.author, ctx.command.name,
                             ctx.message.guild)
-        self._log_to_file(f"Command used: {ctx.command.name} by {ctx.message.author} in {ctx.message.guild}")
+        self._log_to_file(
+            f"Command used: {ctx.command.name} by {ctx.message.author} in {ctx.message.guild}"
+        )
 
     @commands.Cog.listener()
     async def on_message(self, message: Message) -> NoReturn:
@@ -132,7 +136,7 @@ class Listeners(commands.Cog, name="Listeners"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         COMMANDS = Commands(lang)
-        
+
         error_message = f"""
         ║========================║=========================║
         ║ Guild                  ║ Member                  ║
