@@ -1,3 +1,15 @@
+"""
+This is the main entry point for the Listener Discord bot. It handles the following:
+
+- Loading environment variables from a .env file
+- Configuring the bot's intents and client
+- Loading server-specific prefix settings from a JSON file
+- Registering command cogs and extensions
+- Starting the bot and handling exceptions
+- Saving server prefix settings on shutdown
+
+The bot uses the Disnake library for Discord interactions and the CoreClient class from the listener.core.client module for additional functionality.
+"""
 import asyncio
 import datetime
 import json

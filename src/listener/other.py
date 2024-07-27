@@ -1,3 +1,12 @@
+"""
+The `Other` class is a Disnake extension that provides various commands and functionality for the bot, such as showing the bot's latency and providing wallpaper commands.
+
+The `ping` command displays the bot's latency in milliseconds.
+
+The `wallpaper` command group provides subcommands for displaying different types of wallpapers, such as anime, nature, and Star Wars themed wallpapers. The `wallpaper` command without any subcommand displays information about the available wallpaper commands.
+"""
+
+
 # -*- coding: utf-8 -*-
 import random
 from typing import NoReturn

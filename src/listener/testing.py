@@ -1,3 +1,13 @@
+"""
+A cog that provides testing functionality for the Discord bot, including button and select menu interactions.
+
+The `testingCOG` class provides two commands:
+
+- `button`: Sends a message with a clickable button that responds with "Yay" when clicked.
+- `select`: Sends an embed with a select menu that allows the user to choose from various categories. Selecting a category will display a list of commands in that category.
+
+The cog also includes the necessary setup function to add the cog to the bot.
+"""
 import disnake
 from disnake.ext import commands
 from disnake_components import Button, ButtonStyle, Select, SelectOption

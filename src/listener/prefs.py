@@ -1,3 +1,14 @@
+"""
+This class provides commands for managing user preferences, such as setting a custom prefix and locale (language) for the bot. The `prefix` command allows administrators to set a custom prefix for the bot, which will be used to trigger commands. The `locale` command allows administrators to set the bot's language, which will affect the strings and messages displayed by the bot.
+
+The `Preferences` class inherits from `commands.Cog`, which is a way to organize related commands in a Discord bot. The class has two main commands:
+
+1. `prefix`: Sets a custom prefix for the bot. This command is only available to users with the "administrator" permission.
+2. `locale`: Sets the bot's language. This command is only available to users with the "administrator" permission.
+
+Both commands use the `Settings` class to store and retrieve the user's preferences, and they display the updated settings to the user using a Discord embed.
+"""
+
 # -*- coding: utf-8 -*-
 from typing import NoReturn
 

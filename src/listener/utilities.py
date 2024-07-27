@@ -1,3 +1,18 @@
+"""
+Provides a set of utility commands for the Discord bot.
+
+The `Utilities` class is a Cog that adds several utility commands to the bot, including:
+
+- `user`: Displays information about a user, such as their ID, username, join date, and status.
+- `emoji`: Displays information about an emoji, including its name and a preview of the emoji.
+- `channel`: Displays information about a channel, including its type, creation date, and whether it is NSFW.
+- `avatar`: Displays a user's avatar image.
+- `randint`: Generates a random integer between two given numbers.
+- `sqrt`: Calculates the square root of a given number.
+- `guild`: Displays information about the current guild, including the number of channels, members, and roles.
+
+These commands can be used both as slash commands and message commands.
+"""
 # -*- coding: utf-8 -*-
 import math
 import random

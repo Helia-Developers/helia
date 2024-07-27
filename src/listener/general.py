@@ -1,3 +1,14 @@
+"""
+A general-purpose cog that provides various utility commands for the bot, such as:
+
+- `echo`: Sends a specified message as the bot.
+- `embed`: Sends an embed with a specified name and content.
+- `wiki`: Searches Wikipedia for a specified topic.
+- `about`: Displays information about the bot and its author.
+- `privacy`: Displays the bot's privacy policy.
+
+This cog is designed to be a central hub for common bot functionality that doesn't fit into more specialized cogs.
+"""
 # -*- coding: utf-8 -*-
 import datetime
 import math

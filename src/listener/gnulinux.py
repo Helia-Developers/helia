@@ -1,3 +1,16 @@
+"""
+A Cog that provides commands for displaying information about various GNU/Linux distributions.
+
+This Cog includes the following commands:
+- `arch`: Displays information about Arch Linux.
+- `ubuntu`: Displays information about Ubuntu Linux.
+- `debian`: Displays information about Debian Linux.
+- `deepin`: Displays information about Deepin Linux.
+- `manjaro`: Displays information about Manjaro Linux.
+- `mint`: Displays information about Linux Mint.
+
+The information displayed for each distribution includes a description, a thumbnail image, and a link to the distribution's website.
+"""
 # LOCALIZATION SUPPORT NEEDS IMPLEMENTING
 import asyncio
 

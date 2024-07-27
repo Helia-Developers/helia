@@ -1,3 +1,14 @@
+"""
+The `Goodbye` class is a Discord bot cog that handles member leave events. It logs when a member leaves a server, and sends a customizable goodbye message to a configured channel.
+
+The cog provides the following commands:
+- `goodbye`: Displays a help message with all the available goodbye-related commands.
+- `goodbye channel [#channel mention]`: Sets the channel where the goodbye message will be sent.
+- `goodbye clear`: Removes the configured goodbye channel.
+- `goodbye text {Optionally enter text - otherwise the default will be set}`: Sets the text of the goodbye message.
+
+The `on_member_remove` event listener is responsible for sending the goodbye message when a member leaves the server. It retrieves the configured channel and message from the database, and sends an embed message with the goodbye text.
+"""
 # remove .removethisforenable in file name for this cog to load
 import asyncio
 import functools

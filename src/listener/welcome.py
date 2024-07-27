@@ -1,3 +1,14 @@
+"""
+The `Welcome` class is a Discord bot cog that handles the welcome and goodbye messages for new members joining a server. It listens for the `on_member_join` event and sends a welcome message to a configured channel with the new member's name and the server name. The cog also provides commands to set the welcome channel, clear the welcome channel, and set the welcome message text.
+
+The `on_member_join` event handler retrieves the welcome channel and message text from a SQLite database, and sends an embed message to the configured channel. If no welcome channel or message text is set, it uses a default message.
+
+The `welcome` command group provides the following subcommands:
+- `welcome`: Displays a help message with the available commands.
+- `welcome channel`: Sets the welcome channel for the server.
+- `welcome clear`: Removes the welcome channel setting for the server.
+- `welcome text`: Sets the welcome message text for the server.
+"""
 # remove .removethisforenable in file name for this cog to load
 import asyncio
 import functools

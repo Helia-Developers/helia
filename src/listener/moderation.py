@@ -1,3 +1,26 @@
+"""
+This class provides a set of moderation commands for a Discord bot, including commands to ban, unban, kick, and mute members, as well as commands to manage roles and channels.
+
+The `ban` and `slashban` commands allow the bot to ban a specified member from the server, with an optional reason. The `unban` and `slashunban` commands allow the bot to unban a specified member from the server.
+
+The `multiban` command allows the bot to ban multiple members at once.
+
+The `kick` and `slashkick` commands allow the bot to kick a specified member from the server, with an optional reason.
+
+The `purge` command allows the bot to delete a specified number of messages in the current channel.
+
+The `setname` command allows the bot to set a nickname for a specified member.
+
+The `mute` command allows the bot to mute a specified member, preventing them from sending messages.
+
+The `unmute` command allows the bot to unmute a specified member, allowing them to send messages again.
+
+The `lockdownrole` and `unlockrole` commands allow the bot to disable and enable writing permissions for a specified role in the server.
+
+The `lockdown` and `unlock` commands allow the bot to disable and enable writing permissions for everyone in the server.
+
+The `channellock` and `channelunlock` commands allow the bot to disable and enable writing permissions in the current channel.
+"""
 import asyncio
 from typing import NoReturn
 

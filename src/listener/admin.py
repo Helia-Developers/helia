@@ -1,3 +1,12 @@
+"""
+A module required to administer the bot. Only works for its owners.
+
+This module provides commands for loading, unloading, and reloading bot modules (cogs), as well as commands for shutting down the bot, setting the bot's status, and generating bot invite links.
+
+The module also includes a custom `Confirm` view that is used to confirm the shutdown command.
+
+Only bot owners are allowed to use the commands in this module.
+"""
 # -*- coding: utf-8 -*-
 import asyncio
 import datetime

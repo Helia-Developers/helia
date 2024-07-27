@@ -1,3 +1,15 @@
+"""This class contains various event listeners for the Discord bot.
+
+The `Listeners` class is a Disnake extension that handles various events that occur in the Discord bot, such as when the bot joins a new guild, when a command is used, when a message is received, and when an error occurs.
+
+The `on_guild_join` event listener sends a welcome message to the first channel in the guild where the bot has permission to send messages. The message includes information about the bot, such as its version and the invite link for the guild.
+
+The `on_command` event listener logs information about commands that are used, including the user who used the command and the guild where it was used.
+
+The `on_message` event listener checks if the bot was mentioned in a message, and if so, it sends a message with the bot's prefix.
+
+The `on_command_error` event listener handles various types of errors that can occur when a command is used, such as missing required arguments, missing permissions, and cooldowns. It logs information about the error and sends an error message to the user.
+"""
 # -*- coding: utf-8 -*-
 import asyncio
 import datetime

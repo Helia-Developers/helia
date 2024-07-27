@@ -1,3 +1,19 @@
+"""
+The `broadcast` class is a Discord bot extension that provides a global announcement command for the bot owner. When the `announce` command is used, the bot will send an announcement embed message to all the text channels of the guilds the bot is a member of.
+
+The announcement embed includes the following information:
+- Title: "Global Announcement from bot owner"
+- Description: "This is a global announcement from the bot owner"
+- Author: The user who ran the command
+- Fields:
+  - "Announced in": The name of the guild where the command was run
+  - "Announcement": The content of the announcement
+- Footer: The icon of the guild where the command was run
+
+The `announce` command is a slash command and a message command, and can only be used by the bot owner. It takes a single argument, which is the content of the announcement.
+
+The `debug` command is a debug command that can only be used by the bot owner. It sends a message with the number of voice channels the bot is currently in.
+"""
 import asyncio
 import os
 

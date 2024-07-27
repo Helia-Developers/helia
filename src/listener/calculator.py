@@ -1,3 +1,12 @@
+"""
+The `Calculator` class is a Discord bot command that provides a calculator functionality to users. It allows users to perform basic arithmetic operations, as well as some advanced functions like square and cube. The calculator is implemented as a Discord message with interactive buttons, and the calculation results are displayed in an embedded message.
+
+The `calculator` command is registered as both a slash command and a message command, allowing users to access the calculator through different methods. The command initializes the calculator interface, which includes the expression display, the calculator buttons, and a 5-minute time limit for the session.
+
+Users can interact with the calculator by clicking the various buttons, which update the expression display and perform the corresponding calculation. The calculator has safeguards to prevent crashes, such as limiting the length of the expression and the number of certain operations.
+
+When the user clicks the "Exit" button or the 5-minute time limit is reached, the calculator session is closed, and a closing message is displayed.
+"""
 import datetime
 import math
 

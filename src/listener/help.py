@@ -1,3 +1,12 @@
+"""
+The `Dropdown` class is a custom Discord UI component that provides a dropdown menu for users to select a category from a list of options. The selected category is then used to display the corresponding help information for that category.
+
+The `DropdownView` class is a custom Discord UI view that contains the `Dropdown` component, allowing it to be displayed in a message.
+
+The `get_help` function is responsible for generating the help embed that is displayed to the user based on the selected category. It retrieves the commands from the corresponding cog and formats them into an embed.
+
+The `Help` class is a Discord bot cog that provides the `/help` command, which displays the help system to the user. It creates the initial help embed and the `DropdownView` to allow the user to select a category.
+"""
 import disnake
 from disnake import ButtonStyle, SelectOption, interactions
 from disnake.ext import commands

@@ -1,3 +1,18 @@
+"""
+Provides utility functions and classes for the Discord bot.
+
+The `Config` class loads the bot's configuration from a JSON file.
+
+The `Commands` class provides a way to load command translations from locale-specific JSON files.
+
+The `Settings` class manages the bot's settings, which are stored in a JSON file. It provides methods to create, retrieve, and update settings fields.
+
+The `Strings` class provides a way to load locale-specific strings from JSON files.
+
+The `Logger` class provides logging functions to print messages with different levels of severity.
+
+The `Utils` class is a Discord command extension that provides utility functions, such as creating embeds with different colors.
+"""
 # -*- coding: utf-8 -*-
 import datetime
 import json

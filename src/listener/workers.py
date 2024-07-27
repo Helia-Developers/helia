@@ -1,3 +1,10 @@
+"""Updates bot information on bots.servers-discord.com.
+
+This coroutine runs in a background task and periodically sends a request to the
+bots.servers-discord.com API to update the bot's server count. It retrieves the
+current number of guilds the bot is in and sends this information to the API
+along with the bot's client ID.
+"""
 # -*- coding: utf-8 -*-
 import asyncio
 

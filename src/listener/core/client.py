@@ -1,3 +1,14 @@
+"""
+The CoreClient class is the main entry point for the Discord bot. It inherits from the AutoShardedBot class from the disnake.ext.commands module, which provides functionality for managing sharded Discord bots.
+
+The class has the following features:
+- Initializes the bot with a name, ID, and command prefix.
+- Defines a loop that changes the bot's status every 110 seconds, displaying various activities and messages.
+- Provides an `update_status_on_dbl` method that updates the bot's server count on the Discord Bot List (DBL) website.
+- Handles the bot's ready event, loading the jishaku extension, changing the bot's presence, and connecting to a database.
+- Handles the bot's guild join and leave events, updating the bot's status on the DBL website.
+- Handles incoming messages, invoking the bot's commands using the NanoContext class.
+"""
 import asyncio
 import datetime
 import os

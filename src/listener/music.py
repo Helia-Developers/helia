@@ -1,3 +1,10 @@
+"""
+This class `Music` is a Cog (a modular extension) for the Discord bot that provides music playback functionality. It uses the `wavelink` library to interact with a Lavalink server for playing audio. The class handles various music-related commands such as playing, pausing, skipping, and managing the playback queue. It also includes event handlers for handling track end, exception, and stuck events.
+
+The `Player` class is a custom subclass of `wavelink.Player` that extends the base player functionality with a `Queue` object to manage the playback queue. The `Queue` class provides methods for adding, removing, and manipulating the tracks in the queue.
+
+The `Music` class also includes methods for connecting to and disconnecting from voice channels, as well as handling various error cases that can occur during music playback.
+"""
 # -*- coding: utf-8 -*-
 import asyncio
 import random

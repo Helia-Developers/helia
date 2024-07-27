@@ -1,3 +1,12 @@
+"""
+This module provides functions for interacting with a SQLite database used by the bot.
+
+The `main` variable holds the path to the SQLite database file.
+
+The `insert_table`, `update_table`, `select_table`, and `delete_table` functions generate SQL queries for performing common database operations on tables.
+
+The `control` function sets up the database, creating the necessary tables if they don't already exist.
+"""
 import os
 import sqlite3
 

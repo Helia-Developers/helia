@@ -1,3 +1,13 @@
+"""
+A cog that provides various mini-game commands for a Discord bot.
+
+This cog includes the following commands:
+- `kubik`: Rolls a random cube and displays the result.
+- `monetka`: Flips a coin and displays the result.
+- `casino`: Generates a random casino-style result with three random elements.
+
+These commands are available as both slash commands and message commands.
+"""
 import asyncio
 import random
 
