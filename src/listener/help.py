@@ -5,6 +5,7 @@ from disnake.ui import Button, Select, View
 
 
 class Dropdown(disnake.ui.Select):
+
     def __init__(self, bot):
         self.bot = bot  # one thing fixed...
 
@@ -58,6 +59,7 @@ class Dropdown(disnake.ui.Select):
 
 
 class DropdownView(disnake.ui.View):
+
     def __init__(self, bot):
         super().__init__()
 
@@ -96,6 +98,7 @@ async def get_help(self, interaction, CogToPassAlong):
 
 
 class Help(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 

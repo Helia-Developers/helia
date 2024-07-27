@@ -11,6 +11,7 @@ CONFIG = Config()
 
 
 class Prefs(commands.Cog, name="Prefs"):
+
     def __init__(self, bot) -> None:
         self.bot = bot
         self.name = "Prefs"

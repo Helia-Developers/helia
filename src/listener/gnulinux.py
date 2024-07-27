@@ -11,6 +11,7 @@ CONFIG = Config()
 
 
 class gnulinux(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 

@@ -12,6 +12,7 @@ CONFIG = Config()
 
 
 class Workers(commands.Cog):
+
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Workers"

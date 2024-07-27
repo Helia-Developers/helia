@@ -15,6 +15,7 @@ CONFIG = Config()
 
 
 class Utilities(commands.Cog):
+
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Utilities"

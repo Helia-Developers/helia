@@ -19,6 +19,7 @@ CONFIG = Config()
 
 
 class General(commands.Cog, name="General"):
+
     def __init__(self, bot) -> None:
         self.bot = bot
         self.name = "General"

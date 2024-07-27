@@ -4,13 +4,15 @@ from disnake_components import Button, ButtonStyle, Select, SelectOption
 
 
 class testingCOG(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(
-        slash_interaction=False, message_command=True, description="BUTTON TEST"
-    )
+    @commands.command(slash_interaction=False,
+                      message_command=True,
+                      description="BUTTON TEST")
     async def button(self, ctx):
+
         async def callback(interaction):
             await interaction.send(content="Yay")
 
@@ -18,19 +20,18 @@ class testingCOG(commands.Cog):
             "Button callbacks!",
             components=[
                 self.bot.components_manager.add_callback(
-                    Button(style=ButtonStyle.blue,
-                           label="Click this"), callback
-                ),
+                    Button(style=ButtonStyle.blue, label="Click this"),
+                    callback),
             ],
         )
 
-    @commands.command(
-        slash_interaction=False, message_command=True, description="SELECT TEST"
-    )
+    @commands.command(slash_interaction=False,
+                      message_command=True,
+                      description="SELECT TEST")
     async def select(self, ctx):
-        embed = disnake.Embed(
-            title="SELECTION TEST", description="Testing our embeds", color=0xFF8000
-        )
+        embed = disnake.Embed(title="SELECTION TEST",
+                              description="Testing our embeds",
+                              color=0xFF8000)
         embede = disnake.Embed(
             title=":books: Help System",
             description=f"Welcome To {self.bot.user.name} Help System",
@@ -50,11 +51,9 @@ class testingCOG(commands.Cog):
                 ],
             )
         ]
-        done_components = [
-            [
-                Button(style=ButtonStyle.grey, label="·", disabled=True),
-            ]
-        ]
+        done_components = [[
+            Button(style=ButtonStyle.grey, label="·", disabled=True),
+        ]]
 
         async def callback(interaction):
             await interaction.send(embed=embed)
@@ -144,9 +143,9 @@ class testingCOG(commands.Cog):
                     ).set_author(name="Help System"),
                 )
             if label == "Close":
-                await interaction.respond(
-                    type=7, embed=embede, components=done_components
-                )
+                await interaction.respond(type=7,
+                                          embed=embede,
+                                          components=done_components)
 
 
 def setup(bot):

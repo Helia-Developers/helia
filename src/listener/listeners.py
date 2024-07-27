@@ -15,6 +15,7 @@ CONFIG = Config()
 
 
 class Listeners(commands.Cog, name="Listeners"):
+
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Listeners"

@@ -2,6 +2,7 @@ from .audio_event import AudioTrackScheduler
 
 
 class GuildVoiceState:
+
     def __init__(self, client):
         self.volume = 1.0
         self.scheduler = AudioTrackScheduler(client=client)
@@ -19,6 +20,7 @@ class GuildVoiceState:
 
 
 class GuildMusicManager:
+
     def __init__(self, client):
         self.client = client
         self.guild_voice_states = {}

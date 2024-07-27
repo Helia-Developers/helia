@@ -25,6 +25,7 @@ CONFIG = Config()
 
 
 class Confirm(disnake.ui.View):
+
     def __init__(self, ctx, bot: Bot):
         super().__init__()
         self.bot = bot

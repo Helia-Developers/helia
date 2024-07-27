@@ -19,6 +19,7 @@ class AudioEventListener:
 
 
 class AudioTrackScheduler(AudioEventListener):
+
     def __init__(self, client):
         self.client = client
         self.queue = []
@@ -40,8 +41,8 @@ class AudioTrackScheduler(AudioEventListener):
             source = self.queue.pop(0)
             voice_client.play(
                 source,
-                after=lambda error: self.on_track_end(
-                    source, error, voice_client),
+                after=lambda error: self.on_track_end(source, error,
+                                                      voice_client),
             )
             self.on_track_start(audio_source=source)
 
@@ -70,9 +71,9 @@ class AudioTrackScheduler(AudioEventListener):
         if self.repeat:
             # Reload source
             future = asyncio.run_coroutine_threadsafe(
-                AudioTrack.from_url(
-                    audio_source.url, stream=True, requester=audio_source.requester
-                ),
+                AudioTrack.from_url(audio_source.url,
+                                    stream=True,
+                                    requester=audio_source.requester),
                 self.client.loop,
             )
             sources = future.result()
