@@ -22,7 +22,6 @@ class AudioPlayer:
         self.scheduler.audio_player = self
 
     def play(self, audio_track: AudioTrack):
-        self.voice_client.play(
-            source=audio_track, after=self.scheduler.on_track_end)
+        self.voice_client.play(source=audio_track, after=self.scheduler.on_track_end)
         self.now_playing = audio_track
         self.scheduler.on_track_start(audio_track)

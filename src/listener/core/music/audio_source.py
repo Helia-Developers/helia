@@ -85,8 +85,7 @@ class AudioTrack(disnake.PCMVolumeTransformer):
         loop = loop or asyncio.get_event_loop()
         # gonna change this later
         data = await loop.run_in_executor(
-            None, lambda: ytdl.extract_info(
-                f"ytsearch:{keywords}", download=not stream)
+            None, lambda: ytdl.extract_info(f"ytsearch:{keywords}", download=not stream)
         )
 
         if "entries" in data:

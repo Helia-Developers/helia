@@ -31,8 +31,7 @@ class broadcast(commands.Cog):
             color=0x3B88C3,
         )
         author_name = f"{ctx.message.author}"
-        announcement.set_author(
-            name=author_name, url=ctx.message.author.avatar.url)
+        announcement.set_author(name=author_name, url=ctx.message.author.avatar.url)
         announcement.add_field(
             name=STRINGS["general"]["announcesfieldtitle"],
             value=f"{ctx.message.guild.name}",

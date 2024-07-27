@@ -24,21 +24,20 @@ class Workers(commands.Cog):
             cprint("""║=============================║""")
             print("║[SDC] Looping update request-║")
             print("║Debug information║")
-            cprint(f"""
+            cprint(
+                f"""
             ║=============================================║
             ║Number of guilds:-----║Client ID:            ║
             ║{len(self.bot.guilds)}:::::::::::::::::::║{self.bot.user.id}----║
             ║======================║======================║
-            """)
+            """
+            )
             print("Proceeding to authorize")
             headers = {"Authorization": CONFIG["sdc_token"]}
             r = requests.post(
                 f"https://api.server-discord.com/v2/bots/{self.bot.user.id}/stats",
                 headers=headers,
-                data={
-                    "servers": len(self.bot.guilds),
-                    "shards": 1
-                },
+                data={"servers": len(self.bot.guilds), "shards": 1},
             )
             print(r.content)
             print("[SDC] Authorization completed")

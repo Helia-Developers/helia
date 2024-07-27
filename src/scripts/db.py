@@ -29,14 +29,11 @@ def control():
         cursor.execute(
             f"CREATE TABLE IF NOT EXISTS {table}(guild_id TEXT, channel_id TEXT, text TEXT)"
         )
-    cursor.execute(
-        "CREATE TABLE IF NOT EXISTS submit(guild_id TEXT, channel_id TEXT)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS submit(guild_id TEXT, channel_id TEXT)")
 
-    cursor.execute(
-        "CREATE TABLE IF NOT EXISTS prefixes(guild_id TEXT, prefix TEXT)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS prefixes(guild_id TEXT, prefix TEXT)")
 
-    cursor.execute(
-        "CREATE TABLE IF NOT EXISTS verify(guild_id TEXT, role_id TEXT)")
+    cursor.execute("CREATE TABLE IF NOT EXISTS verify(guild_id TEXT, role_id TEXT)")
 
     base.commit()
     cursor.close()

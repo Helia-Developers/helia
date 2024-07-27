@@ -30,10 +30,9 @@ class Dropdown(disnake.ui.Select):
         # The placeholder is what will be shown when no option is chosen
         # The min and max values indicate we can only pick one of the three options
         # The options parameter defines the dropdown options. We defined this above
-        super().__init__(placeholder="Select a category",
-                         min_values=1,
-                         max_values=1,
-                         options=options)
+        super().__init__(
+            placeholder="Select a category", min_values=1, max_values=1, options=options
+        )
 
     async def callback(self, interaction: disnake.Interaction):
         # Use the interaction object to send a response message containing
@@ -88,9 +87,9 @@ async def get_help(self, interaction, CogToPassAlong):
     for command in self.bot.get_cog(CogToPassAlong).get_commands():
         # if cog is not hidden
         if not command.hidden:
-            emb.add_field(name=f"『`{command.name}`』",
-                          value=command.help,
-                          inline=False)
+            emb.add_field(
+                name=f"『`{command.name}`』", value=command.help, inline=False
+            )
     # found cog - breaking loop
     await interaction.response.edit_message(embed=emb)
 
@@ -99,13 +98,13 @@ class Help(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(slash_command=True,
-                      message_command=True,
-                      description="Help Command")
+    @commands.command(
+        slash_command=True, message_command=True, description="Help Command"
+    )
     async def help(self, ctx):
-        embed = disnake.Embed(title="SELECTION TEST",
-                              description="Testing our embeds",
-                              color=0xFF8000)
+        embed = disnake.Embed(
+            title="SELECTION TEST", description="Testing our embeds", color=0xFF8000
+        )
         embede = disnake.Embed(
             title=":books: Help System",
             description=f"Welcome To {self.bot.user.name} Help System",

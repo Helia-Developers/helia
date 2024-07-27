@@ -27,7 +27,6 @@ class GuildMusicManager:
         """Gets Guild's Voice State"""
 
         if guild_id not in self.guild_voice_states:
-            self.guild_voice_states[guild_id] = GuildVoiceState(
-                client=self.client)
+            self.guild_voice_states[guild_id] = GuildVoiceState(client=self.client)
 
         return self.guild_voice_states[guild_id]

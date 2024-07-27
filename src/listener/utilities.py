@@ -20,9 +20,7 @@ class Utilities(commands.Cog):
         self.name = "Utilities"
 
     @commands.command(slash_interaction=True, message_command=True)
-    async def user(self,
-                   ctx: Context,
-                   member: disnake.Member = None) -> NoReturn:
+    async def user(self, ctx: Context, member: disnake.Member = None) -> NoReturn:
         """Shows user information.
 
         Attributes:
@@ -50,11 +48,11 @@ class Utilities(commands.Cog):
 
         embed = disnake.Embed(
             description=STRINGS["utilities"]["user_info"].format(
-                id, created_at, joined_at, username, stat, activ, color),
+                id, created_at, joined_at, username, stat, activ, color
+            ),
             color=color,
         )
-        embed.set_author(
-            name=STRINGS["utilities"]["user_info_title"].format(name, tag))
+        embed.set_author(name=STRINGS["utilities"]["user_info_title"].format(name, tag))
         embed.set_thumbnail(url=avatar)
 
         await ctx.send(embed=embed)
@@ -66,14 +64,13 @@ class Utilities(commands.Cog):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
 
-        format = r"png" if re.sub(r"[\<]", r"",
-                                  emoji.split(":")[0]) == "" else "gif"
+        format = r"png" if re.sub(r"[\<]", r"", emoji.split(":")[0]) == "" else "gif"
         name = emoji.split(":")[1]
         id = re.sub(r"[\>]", r"", emoji.split(r":")[2])
 
         embed = disnake.Embed(
-            title=STRINGS["utilities"]["emoji_info_title"].format(name),
-            color=0xEDA84E)
+            title=STRINGS["utilities"]["emoji_info_title"].format(name), color=0xEDA84E
+        )
         embed.set_image(url=f"https://cdn.discordapp.com/emojis/{id}.{format}")
         embed.set_footer(text=STRINGS["utilities"]["emoji_info"].format(id))
 
@@ -87,14 +84,13 @@ class Utilities(commands.Cog):
         STRINGS = Strings(lang)
 
         if re.search(r"[@&\:]", channel) is None:
+            channel = disnake.utils.get(
+                ctx.guild.channels, id=int(re.sub("[<#>]", "", channel))
+            )
 
-            channel = disnake.utils.get(ctx.guild.channels,
-                                        id=int(re.sub("[<#>]", "", channel)))
-
-            if (channel.type
-                    == disnake.ChannelType.text) or channel.type not in [
-                        disnake.ChannelType.voice,
-                        disnake.ChannelType.news,
+            if (channel.type == disnake.ChannelType.text) or channel.type not in [
+                disnake.ChannelType.voice,
+                disnake.ChannelType.news,
             ]:
                 type = STRINGS["etc"]["channel_type"]["text"]
             elif channel.type == disnake.ChannelType.voice:
@@ -112,20 +108,20 @@ class Utilities(commands.Cog):
 
             embed = disnake.Embed(
                 description=STRINGS["utilities"]["channel_info"].format(
-                    id, type, created_at, is_nsfw),
+                    id, type, created_at, is_nsfw
+                ),
                 color=0xEDA84E,
             )
             embed.set_author(
-                name=STRINGS["utilities"]["channel_info_title"].format(name))
+                name=STRINGS["utilities"]["channel_info_title"].format(name)
+            )
             await ctx.send(embed=embed)
 
         else:
             await ctx.send("чел, это не канал, ты что-то попутал")
 
     @commands.command(slash_interaction=True, message_command=True)
-    async def avatar(self,
-                     ctx: Context,
-                     member: disnake.Member = None) -> NoReturn:
+    async def avatar(self, ctx: Context, member: disnake.Member = None) -> NoReturn:
         """Shows user's avatar.
 
         Attributes:
@@ -147,8 +143,7 @@ class Utilities(commands.Cog):
         embed = disnake.Embed(
             color=0xEDA84E,
             title=STRINGS["utilities"]["avatar_info_title"].format(name, tag),
-            description=STRINGS["utilities"]["avatar_info"].format(
-                hash, avatar),
+            description=STRINGS["utilities"]["avatar_info"].format(hash, avatar),
         )
         embed.set_image(url=avatar)
 
@@ -168,20 +163,20 @@ class Utilities(commands.Cog):
             title=STRINGS["generictext"]["randinttitle"],
             description=STRINGS["generictext"]["descgenermath"],
         )
-        embed.add_field(name=STRINGS["generictext"]["numberone"],
-                        value=f"```{stc1}```",
-                        inline=True)
-        embed.add_field(name=STRINGS["generictext"]["numbertwo"],
-                        value=f"```{stc2}```",
-                        inline=True)
-        embed.add_field(name=STRINGS["generictext"]["result"],
-                        value=f"```{result}```",
-                        inline=False)
+        embed.add_field(
+            name=STRINGS["generictext"]["numberone"], value=f"```{stc1}```", inline=True
+        )
+        embed.add_field(
+            name=STRINGS["generictext"]["numbertwo"], value=f"```{stc2}```", inline=True
+        )
+        embed.add_field(
+            name=STRINGS["generictext"]["result"], value=f"```{result}```", inline=False
+        )
         await ctx.send(embed=embed)
 
-    @commands.command(slash_interaction=True,
-                      message_command=True,
-                      description="Count square root")
+    @commands.command(
+        slash_interaction=True, message_command=True, description="Count square root"
+    )
     async def sqrt(self, ctx: Context, num: int):
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
@@ -217,9 +212,7 @@ class Utilities(commands.Cog):
             )
             await ctx.send(embed=embed)
 
-    @commands.command(slash_interaction=True,
-                      message_command=True,
-                      aliases=["server"])
+    @commands.command(slash_interaction=True, message_command=True, aliases=["server"])
     async def guild(self, ctx, *, guild_id: int = None) -> NoReturn:
         """Shows guild information."""
         s = await Settings(ctx.guild.id)
@@ -246,15 +239,14 @@ class Utilities(commands.Cog):
         totals = Counter()
         for channel in guild.channels:
             allow, deny = channel.overwrites_for(everyone).pair()
-            perms = disnake.Permissions((everyone_perms & ~deny.value)
-                                        | allow.value)
+            perms = disnake.Permissions((everyone_perms & ~deny.value) | allow.value)
             channel_type = type(channel)
             totals[channel_type] += 1
             if not perms.read_messages:
                 secret[channel_type] += 1
-            elif isinstance(channel,
-                            disnake.VoiceChannel) and (not perms.connect
-                                                       or not perms.speak):
+            elif isinstance(channel, disnake.VoiceChannel) and (
+                not perms.connect or not perms.speak
+            ):
                 secret[channel_type] += 1
 
         e = disnake.Embed()
@@ -263,8 +255,7 @@ class Utilities(commands.Cog):
         if guild.icon:
             e.set_thumbnail(url=f"{guild.icon.url}")
         else:
-            e.set_thumbnail(
-                url="https://cdn.discordapp.com/embed/avatars/1.png")
+            e.set_thumbnail(url="https://cdn.discordapp.com/embed/avatars/1.png")
 
         channel_info = []
         key_to_emoji = {
@@ -303,7 +294,8 @@ class Utilities(commands.Cog):
 
         info = [
             f'{CONFIG["yes_emoji"]}: {label}'
-            for feature, label in all_features.items() if feature in features
+            for feature, label in all_features.items()
+            if feature in features
         ]
 
         if info:
@@ -324,8 +316,7 @@ class Utilities(commands.Cog):
         e.add_field(name="Members", value=fmt, inline=True)
         e.add_field(
             name="Roles",
-            value=", ".join(roles)
-            if len(roles) < 10 else f"{len(roles)} roles",
+            value=", ".join(roles) if len(roles) < 10 else f"{len(roles)} roles",
         )
 
         emoji_stats = Counter()
@@ -337,8 +328,10 @@ class Utilities(commands.Cog):
                 emoji_stats["regular"] += 1
                 emoji_stats["disabled"] += not emoji.available
 
-        fmt = (f'Regular: {emoji_stats["regular"]}/{guild.emoji_limit}\n'
-               f'Animated: {emoji_stats["animated"]}/{guild.emoji_limit}\n')
+        fmt = (
+            f'Regular: {emoji_stats["regular"]}/{guild.emoji_limit}\n'
+            f'Animated: {emoji_stats["animated"]}/{guild.emoji_limit}\n'
+        )
         if emoji_stats["disabled"] or emoji_stats["animated_disabled"]:
             fmt = f'{fmt}Disabled: {emoji_stats["disabled"]} regular, {emoji_stats["animated_disabled"]} animated\n'
 

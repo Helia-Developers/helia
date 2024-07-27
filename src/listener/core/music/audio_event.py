@@ -40,8 +40,7 @@ class AudioTrackScheduler(AudioEventListener):
             source = self.queue.pop(0)
             voice_client.play(
                 source,
-                after=lambda error: self.on_track_end(
-                    source, error, voice_client),
+                after=lambda error: self.on_track_end(source, error, voice_client),
             )
             self.on_track_start(audio_source=source)
 

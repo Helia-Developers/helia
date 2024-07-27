@@ -121,8 +121,7 @@ async def main():
     modules = [Prefs(bot=client)]
     for command_cog in modules:
         client.add_cog(command_cog)
-        cprint(
-            f"=====Extension - {command_cog} was loaded succesfully!=====", "green")
+        cprint(f"=====Extension - {command_cog} was loaded succesfully!=====", "green")
     if __name__ == "__main__":
         # youtube_client = YoutubeClient(session)
         # music_manager = GuildMusicManager(client=client)
@@ -156,7 +155,6 @@ async def main():
         ]
         for extension in startup_extensions:
             try:
-
                 client.load_extension(extension)
                 cprint(
                     f"║=====Extension - {extension} was loaded succesfully!=====║",

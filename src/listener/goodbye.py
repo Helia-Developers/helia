@@ -21,11 +21,13 @@ class Goodbye(commands.Cog):
         logpath = "logs/log.txt"
         # with open(path, "r") as file:
         # ver = file.readline()
-        cprint(f"""
+        cprint(
+            f"""
         ║============================================================║
         ║-------- {member} left {member.guild.name}-----------------------║
         ║============================================================║
-        """)
+        """
+        )
         with open(logpath, "a") as file:
             print("\n", file=file)
             print(f"{member} left {member.guild.name}", file=file)
@@ -35,14 +37,13 @@ class Goodbye(commands.Cog):
         connect = sqlite3.connect(db.main)
         cursor = connect.cursor()
         cursor.execute(
-            db.select_table("goodbye", "channel_id", "guild_id",
-                            member.guild.id))
+            db.select_table("goodbye", "channel_id", "guild_id", member.guild.id)
+        )
         chan = cursor.fetchone()
         # print(f" Channel id fetch - {chan[0]}")
         if chan is None:
             return
-        cursor.execute(
-            db.select_table("goodbye", "text", "guild_id", member.guild.id))
+        cursor.execute(db.select_table("goodbye", "text", "guild_id", member.guild.id))
         desc = cursor.fetchone()
         descdef = f"The one who left was {member}, who knows his/hers reasons for leaving but we will welcome them with open arms if they return "
         gb = disnake.Embed(
@@ -52,13 +53,9 @@ class Goodbye(commands.Cog):
         gb.set_author(name="Goodbye System")
 
         if desc is None:
-            gb.add_field(name="Server message",
-                         value=f"{descdef}",
-                         inline=True)
+            gb.add_field(name="Server message", value=f"{descdef}", inline=True)
         else:
-            gb.add_field(name="Server message",
-                         value=f"```{desc[0]}```",
-                         inline=True)
+            gb.add_field(name="Server message", value=f"```{desc[0]}```", inline=True)
         channel = self.bot.get_channel(int(chan[0]))
         cursor.close()
         connect.close()
@@ -99,14 +96,16 @@ class Goodbye(commands.Cog):
                 connect = sqlite3.connect(db.main)
                 cursor = connect.cursor()
                 cursor.execute(
-                    db.select_table("goodbye", "channel_id", "guild_id",
-                                    ctx.message.guild.id))
+                    db.select_table(
+                        "goodbye", "channel_id", "guild_id", ctx.message.guild.id
+                    )
+                )
                 result = cursor.fetchone()
                 if result is None:
                     val = (ctx.message.guild.id, channel.id)
                     cursor.execute(
-                        db.insert_table("goodbye", "guild_id", "channel_id"),
-                        val)
+                        db.insert_table("goodbye", "guild_id", "channel_id"), val
+                    )
                 else:
                     cursor.execute(
                         db.update_table(
@@ -115,7 +114,8 @@ class Goodbye(commands.Cog):
                             channel.id,
                             "guild_id",
                             ctx.message.guild.id,
-                        ))
+                        )
+                    )
                 connect.commit()
                 cursor.close()
                 connect.close()
@@ -137,8 +137,10 @@ class Goodbye(commands.Cog):
                 connect = sqlite3.connect(db.main)
                 cursor = connect.cursor()
                 cursor.execute(
-                    db.select_table("goodbye", "channel_id", "guild_id",
-                                    ctx.message.guild.id))
+                    db.select_table(
+                        "goodbye", "channel_id", "guild_id", ctx.message.guild.id
+                    )
+                )
                 result = cursor.fetchone()
                 if result is None:
                     await ctx.send(
@@ -146,8 +148,8 @@ class Goodbye(commands.Cog):
                     )
                 else:
                     cursor.execute(
-                        db.delete_table("goodbye", "guild_id",
-                                        ctx.message.guild.id))
+                        db.delete_table("goodbye", "guild_id", ctx.message.guild.id)
+                    )
                     await ctx.send(" Cleared the table")
                 connect.commit()
                 cursor.close()
@@ -171,17 +173,17 @@ class Goodbye(commands.Cog):
                 connect = sqlite3.connect(db.main)
                 cursor = connect.cursor()
                 cursor.execute(
-                    db.select_table("goodbye", "text", "guild_id",
-                                    ctx.message.guild.id))
+                    db.select_table("goodbye", "text", "guild_id", ctx.message.guild.id)
+                )
                 res = cursor.fetchone()
                 if res is None:
                     val = (ctx.message.guild.id, content)
-                    cursor.execute(
-                        db.insert_table("goodbye", "guild_id", "text"), val)
+                    cursor.execute(db.insert_table("goodbye", "guild_id", "text"), val)
                 else:
                     val = (content, ctx.message.guild.id)
                     cursor.execute(
-                        "UPDATE goodbye SET text = ? WHERE guild_id = ?", val)
+                        "UPDATE goodbye SET text = ? WHERE guild_id = ?", val
+                    )
                 connect.commit()
                 cursor.close()
                 connect.close()

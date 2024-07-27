@@ -18,8 +18,7 @@ class testingCOG(commands.Cog):
             "Button callbacks!",
             components=[
                 self.bot.components_manager.add_callback(
-                    Button(style=ButtonStyle.blue,
-                           label="Click this"), callback
+                    Button(style=ButtonStyle.blue, label="Click this"), callback
                 ),
             ],
         )

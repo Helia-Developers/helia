@@ -91,7 +91,7 @@ class Queue:
     def upcoming(self):
         if not self._queue:
             raise QueueIsEmpty
-        return self._queue[self.position + 1:]
+        return self._queue[self.position + 1 :]
 
     @property
     def history(self):
@@ -209,8 +209,7 @@ class Player(wavelink.Player):
                 value=f"**({tracks[0].length//60000}:{str(tracks[0].length%60).zfill(2)})**",
                 inline=True,
             )
-            playEmbed.add_field(
-                name="Server:", value=f"{ctx.guild.name}", inline=False)
+            playEmbed.add_field(name="Server:", value=f"{ctx.guild.name}", inline=False)
 
             await ctx.send(embed=playEmbed)
 
@@ -237,8 +236,7 @@ class Player(wavelink.Player):
                 value=f"{ctx.author}",
                 inline=True,
             )
-            playEmbed_2.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"])
+            playEmbed_2.set_footer(text=STRINGS["music"]["embed_controler_footer"])
             await ctx.message.delete()
 
             await ctx.send(embed=playEmbed_2)
@@ -269,8 +267,7 @@ class Player(wavelink.Player):
         chooseTrackEmbed.set_author(
             name=STRINGS["music"]["embed_controler_searchresults"]
         )
-        chooseTrackEmbed.set_footer(
-            text=STRINGS["music"]["embed_controler_footer"])
+        chooseTrackEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
         msg = await ctx.send(embed=chooseTrackEmbed)
         for emoji in list(OPTIONS.keys())[: min(len(tracks), len(OPTIONS))]:
             await msg.add_reaction(emoji)
@@ -387,8 +384,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         await player.teardown()
-        embed = disnake.Embed(
-            title=STRINGS["music"]["botleavevc"], color=0x808000)
+        embed = disnake.Embed(title=STRINGS["music"]["botleavevc"], color=0x808000)
         await ctx.send(embed=embed)
 
         # logger.info(f"[MUSIC]Voice channel quit requested by {ctx.author} in {ctx.message.guild}")
@@ -409,7 +405,6 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
             await player.connect(ctx)
 
         if query is None:
-
             if player.queue.is_empty:
                 raise QueueIsEmpty
             elif player.is_paused:
@@ -417,8 +412,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 playEmbed = disnake.Embed(
                     title=STRINGS["music"]["playresume"], colour=0x6AA84F
                 )
-                playEmbed.set_footer(
-                    text=STRINGS["music"]["embed_controler_footer"])
+                playEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
 
                 await ctx.send(embed=playEmbed)
             else:
@@ -450,8 +444,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 description=STRINGS["music"]["queueerrordesc"],
                 colour=0x6AA84F,
             )
-            playEmbed_3.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"])
+            playEmbed_3.set_footer(text=STRINGS["music"]["embed_controler_footer"])
             await ctx.send(embed=playEmbed_3)
 
     @commands.command(
@@ -498,8 +491,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         s = await Settings(ctx.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        stopEmbed = disnake.Embed(
-            title=STRINGS["music"]["stoptext"], colour=0x6AA84F)
+        stopEmbed = disnake.Embed(title=STRINGS["music"]["stoptext"], colour=0x6AA84F)
         stopEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
         player.queue.empty()
         await player.stop()
@@ -553,8 +545,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 description=STRINGS["music"]["queueerrordesc"],
                 colour=0x6AA84F,
             )
-            nextEmbed_2.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"])
+            nextEmbed_2.set_footer(text=STRINGS["music"]["embed_controler_footer"])
             await ctx.send(embed=nextEmbed_2)
         elif isinstance(exc, NoMoreTracks):
             s = await Settings(ctx.guild.id)
@@ -565,8 +556,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 description=STRINGS["music"]["nomoretrackdesc"],
                 colour=0x6AA84F,
             )
-            nextEmbed_3.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"])
+            nextEmbed_3.set_footer(text=STRINGS["music"]["embed_controler_footer"])
             await ctx.send(embed=nextEmbed_3)
 
     @commands.command(
@@ -588,8 +578,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         previousEmbed = disnake.Embed(
             title=STRINGS["music"]["previoustext"], colour=0x6AA84F
         )
-        previousEmbed.set_footer(
-            text=STRINGS["music"]["embed_controler_footer"])
+        previousEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
 
         await ctx.send(embed=previousEmbed)
 
@@ -606,8 +595,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 description=STRINGS["music"]["queueerrordesc"],
                 colour=0x6AA84F,
             )
-            previousEmbed_2.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"])
+            previousEmbed_2.set_footer(text=STRINGS["music"]["embed_controler_footer"])
             await ctx.send(embed=previousEmbed_2)
         elif isinstance(exc, NoPreviousTracks):
             s = await Settings(ctx.guild.id)
@@ -618,8 +606,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 description=STRINGS["music"]["nomoretracksprevdesc"],
                 colour=0x6AA84F,
             )
-            previousEmbed_3.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"])
+            previousEmbed_3.set_footer(text=STRINGS["music"]["embed_controler_footer"])
             await ctx.send(embed=previousEmbed_3)
 
     @commands.command(
@@ -638,8 +625,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
         shuffleEmbed = disnake.Embed(
             title=STRINGS["music"]["listshuffled"], colour=0x6AA84F
         )
-        shuffleEmbed.set_footer(
-            text=STRINGS["music"]["embed_controler_footer"])
+        shuffleEmbed.set_footer(text=STRINGS["music"]["embed_controler_footer"])
 
         await ctx.send(embed=shuffleEmbed)
 
@@ -656,8 +642,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 description=STRINGS["music"]["queueerrordesc"],
                 colour=0x6AA84F,
             )
-            shuffleEmbed_2.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"])
+            shuffleEmbed_2.set_footer(text=STRINGS["music"]["embed_controler_footer"])
             await ctx.send(embed=shuffleEmbed_2)
 
     @commands.command(
@@ -711,8 +696,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 description=STRINGS["music"]["queueerrordesc"],
                 colour=0x6AA84F,
             )
-            queueEmbed_2.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"])
+            queueEmbed_2.set_footer(text=STRINGS["music"]["embed_controler_footer"])
             await ctx.send(embed=queueEmbed_2)
 
     @commands.command(
@@ -764,8 +748,7 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
                 description=STRINGS["music"]["queueerrordesc"],
                 colour=0x6AA84F,
             )
-            volumeEmbed_2.set_footer(
-                text=STRINGS["music"]["embed_controler_footer"])
+            volumeEmbed_2.set_footer(text=STRINGS["music"]["embed_controler_footer"])
             await ctx.send(embed=volumeEmbed_2)
 
 

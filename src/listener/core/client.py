@@ -62,8 +62,7 @@ class CoreClient(commands.AutoShardedBot):
             disnake.Game(
                 name="Deep inside, we're nothing more than scions and sinners"
             ),
-            disnake.Activity(
-                type=disnake.ActivityType.watching, name="headbanging"),
+            disnake.Activity(type=disnake.ActivityType.watching, name="headbanging"),
         ]
         await asyncio.sleep(40)
         print("---------------------------")

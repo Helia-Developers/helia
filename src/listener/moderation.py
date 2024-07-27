@@ -208,8 +208,7 @@ class Moderation(commands.Cog, name="Moderation"):
             else:
                 try:
                     embed = Utils.error_embed(
-                        STRINGS["moderation"]["dm_ban"].format(
-                            ctx.guild.name, reason)
+                        STRINGS["moderation"]["dm_ban"].format(ctx.guild.name, reason)
                     )
                     await member.send(embed=embed)
                 except:
@@ -417,8 +416,7 @@ class Moderation(commands.Cog, name="Moderation"):
             mute_role_id is None
             or disnake.utils.get(ctx.guild.roles, id=mute_role_id) is None
         ):
-            embed = Utils.done_embed(
-                STRINGS["moderation"]["on_mute_role_create"])
+            embed = Utils.done_embed(STRINGS["moderation"]["on_mute_role_create"])
             await ctx.send(embed=embed)
             mute_role = await ctx.guild.create_role(name="Muted")
 
@@ -430,8 +428,7 @@ class Moderation(commands.Cog, name="Moderation"):
 
             for user_role in member.roles:
                 if user_role == mute_role:
-                    embed = Utils.error_embed(
-                        STRINGS["error"]["already_muted"])
+                    embed = Utils.error_embed(STRINGS["error"]["already_muted"])
                     await ctx.send(embed=embed)
                     return
 

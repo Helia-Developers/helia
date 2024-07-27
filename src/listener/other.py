@@ -67,8 +67,7 @@ class Other(commands.Cog, name="Other"):
             title=STRINGS["wallpaper"]["wallpaperanimetitle"],
             color=0x00FF00,
         )
-        embedanime.set_footer(
-            text=STRINGS["wallpaper"]["wallpaperanimefooter"])
+        embedanime.set_footer(text=STRINGS["wallpaper"]["wallpaperanimefooter"])
         await ctx.send(embed=embedanime)
 
     @wallpaper.command()

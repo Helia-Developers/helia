@@ -29,13 +29,11 @@ class Commands:
         return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
 
     def __new__(self, locale: AnyStr = "") -> Dict:
-        dirs = self.__listdirs(
-            dirname(abspath(__file__)) + "/../data/locales/")
+        dirs = self.__listdirs(dirname(abspath(__file__)) + "/../data/locales/")
 
         if locale in dirs or locale != "":
             with open(
-                dirname(abspath(__file__)) +
-                f"/../data/locales/{locale}/commands.json",
+                dirname(abspath(__file__)) + f"/../data/locales/{locale}/commands.json",
                 "r",
             ) as f:
                 return json.load(f)
@@ -109,13 +107,11 @@ class Strings:
         return [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
 
     def __new__(self, locale: AnyStr = "") -> Dict:
-        dirs = self.__listdirs(
-            dirname(abspath(__file__)) + "/../data/locales/")
+        dirs = self.__listdirs(dirname(abspath(__file__)) + "/../data/locales/")
 
         if locale in dirs or locale != "":
             with open(
-                dirname(abspath(__file__)) +
-                f"/../data/locales/{locale}/strings.json",
+                dirname(abspath(__file__)) + f"/../data/locales/{locale}/strings.json",
                 "r",
             ) as f:
                 return json.load(f)
