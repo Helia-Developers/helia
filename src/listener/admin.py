@@ -180,7 +180,7 @@ class Admin(commands.Cog, name="Admin"):
             await inter.response.send_message(embed=embeder, ephemeral=True)
         except Exception as e:
             # await ctx.message.add_reaction(CONFIG["no_emoji"])
-            embed = Utils.error_embed("`{}`: {}".format(type(e).__name__, e))
+            embed = Utils.error_embed(f"`{type(e).__name__}`: {e}")
             await inter.response.send_message(embed=embed)
         # else:
         # await ctx.message.add_reaction(CONFIG["yes_emoji"])
