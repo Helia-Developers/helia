@@ -52,6 +52,12 @@ class Utilities(commands.Cog):
         member: The user to show information about. If not provided, shows information about the command user.
         """
         try:
+            self.bot.load_extension(f"listener.{module}")
+            embeder = disnake.Embed(title=f"Module {module} has been loaded", color=0x0c0c0c)
+        except disnake.DiscordException as e:
+            logging.error(f"Failed to load module {module}: {e}")
+        except Exception as e:
+            logging.error(f"An unexpected error occurred while loading module {module}: {e}")
             STRINGS = await self._get_strings(ctx)
 
             if member is None:
