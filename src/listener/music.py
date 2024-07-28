@@ -481,6 +481,9 @@ class Music(commands.Cog, wavelink.WavelinkMixin, name="Music"):
 
     @pause_command.error
     async def pause_command_error(self, ctx, exc):
+        s = await Settings(ctx.guild.id)
+        lang = await s.get_field("locale", CONFIG["default_locale"])
+        STRINGS = Strings(lang)
         if isinstance(exc, PlayerIsAlreadyPaused):
             pauseer_embed = disnake.Embed(
                 title=STRINGS["music"]["pauseerror"], colour=0x6AA84F

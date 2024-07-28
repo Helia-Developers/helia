@@ -36,9 +36,10 @@ CONFIG = Config()
 # STRINGS = Strings(CONFIG["default_locale"])
 
 # Load valid users from JSON config
-with open('config.json', 'r') as config_file:
+with open(dirname(abspath(__file__)) + "/../data/arrsconf.json", "r") as config_file:
     config = json.load(config_file)
     valid_users = config.get('valid_users', [])
+    print("[Admin] the list of valid owner user id's for bot administration is as follows :" + str(valid_users))
 
 class Confirm(disnake.ui.View):
     def __init__(self, ctx, bot: Bot):

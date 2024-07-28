@@ -386,13 +386,13 @@ class Moderation(commands.Cog, name="Moderation"):
 
         """
         await inter.response.defer()
-        s = await Settings(ctx.guild.id)
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
 
         if not member.bot:
             embed = Utils.error_embed(
-                STRINGS["moderation"]["dm_kick"].format(ctx.guild, reason)
+                STRINGS["moderation"]["dm_kick"].format(inter.guild, reason)
             )
             await member.send(embed=embed)
         await asyncio.sleep(5)

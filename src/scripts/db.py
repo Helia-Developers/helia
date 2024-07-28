@@ -62,9 +62,11 @@ def control():
 
         base.commit()
     except sqlite3.OperationalError as e:
+        
         print(f"[DB] Error: {e}")
         print(f"[DB] Unable to open database file: {main}")
         print("[DB] Please check file permissions and path.")
+        raise sqlite3.OperationalError
     finally:
         if "cursor" in locals():
             cursor.close()

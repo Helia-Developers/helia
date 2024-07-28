@@ -34,23 +34,26 @@ class Other(commands.Cog, name="Other"):
         NoReturn
         """
         try:
+            EMBED_COLOR=0xFF8000
             s = await Settings(inter.guild.id)
             lang = await s.get_field("locale", CONFIG["default_locale"])
             STRINGS = Strings(lang)
             latency = "%.0fms" % (self.bot.latency * 100)
-            embed = disnake.Embed(
+            embed = disnake.Embed (
                 title=f"{self.bot.name} Latency",
                 description=f":hourglass_flowing_sand: {latency} ",
                 # Define the color constant at the module level
-                EMBED_COLOR=0xFF8000
+                color=EMBED_COLOR,
+            )
+                
 
                 # Use the constant in your embed creation
-                embed=disnake.Embed(
+            embed=disnake.Embed(
                     title=STRINGS["moderation"]["setstatustext"],
                     description=STRINGS["moderation"]["setstatusdesc"],
                     color=EMBED_COLOR,
                 )
-            )
+            
             await inter.response.send_message(embed=embed)
         except Exception as e:
             Logger.error(f"Error in ping command: {str(e)}")

@@ -16,7 +16,7 @@ class Broadcast(commands.Cog):
 
     @commands.slash_command(
         name="announce",
-        description="Send a global announcement to all servers",
+        description="global announcements",
     )
     @commands.is_owner()
     async def announce(
@@ -83,7 +83,7 @@ class Broadcast(commands.Cog):
 
     @commands.slash_command(
         name="debug",
-        description="Get debug information about the bot",
+        description="debug cmd",
     )
     @commands.is_owner()
     async def debug(self, inter: disnake.ApplicationCommandInteraction):

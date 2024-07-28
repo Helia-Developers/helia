@@ -36,7 +36,7 @@ class General(commands.Cog, name="General"):
         self.name = "General"
         self.process = psutil.Process(os.getpid())
 
-    @commands.slash_command(name="echo", description="Echo a message as the bot")
+    @commands.slash_command(name="echo", description="Echo msg")
     async def echo(self, inter: disnake.ApplicationCommandInteraction, content: str):
         if not content or len(content) > 200:
             await inter.response.send_message(
@@ -73,7 +73,7 @@ class General(commands.Cog, name="General"):
                 f"An error occurred: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="embed", description="Generate an embed message")
+    @commands.slash_command(name="embed", description="Generate embed")
     async def embed(
         self, inter: disnake.ApplicationCommandInteraction, name: str, content: str
     ):
@@ -156,7 +156,7 @@ class General(commands.Cog, name="General"):
                 f"An error occurred: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="about", description="Information about the bot")
+    @commands.slash_command(name="about", description="about bot")
     async def about(self, inter: disnake.ApplicationCommandInteraction) -> NoReturn:
         """
         Shows a short description of the bot.
@@ -206,7 +206,7 @@ class General(commands.Cog, name="General"):
                 f"An error occurred: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="privacy", description="Shows privacy policy")
+    @commands.slash_command(name="privacy", description="privacy policy")
     async def privacy(self, inter: disnake.ApplicationCommandInteraction):
         """
         Shows the privacy policy of the bot.
