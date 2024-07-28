@@ -73,7 +73,8 @@ class Calculator(commands.Cog, name="Calculator"):
 
         m = await inter.response.send_message(content="Loading Calculators...")
         expression = "None"
-        delta = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=5)
+        delta = datetime.datetime.now(
+            datetime.UTC) + datetime.timedelta(minutes=5)
         e = disnake.Embed(
             title=f"{inter.author.name}'s calculator",
             description=f"\n{expression}",
