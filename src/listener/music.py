@@ -232,9 +232,9 @@ class Music(commands.Cog):
 
     @commands.Cog.listener()
     async def on_voice_state_update(self, member, before, after):
-        if not member.bot and after.channel is None:
-            if not [m for m in before.channel.members if not m.bot]:
-                await self.get_player(member.guild).teardown()
+        if not member.bot and after.channel is None and not [m for m in before.channel.members if not m.bot]:
+            await self.get_player(member.guild).teardown()
+
 
     @commands.Cog.listener()
     async def on_wavelink_track_end(
