@@ -166,9 +166,8 @@ class Player(wavelink.Player):
             self.queue.add(*tracks.tracks)
         elif len(tracks) == 1:
             self.queue.add(tracks[0])
-        else:
-            if (track := await self.choose_track(ctx, tracks)) is not None:
-                self.queue.add(track)
+        elif (track := await self.choose_track(ctx, tracks)) is not None:
+            self.queue.add(track)
 
         if not self.is_playing and not self.queue.is_empty:
             await self.start_playback()
