@@ -12,7 +12,10 @@ from listener.utils import Config, Logger, Settings, Strings
 
 CONFIG = Config()
 
-URL_REGEX = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»""'']))"
+URL_REGEX = (
+    r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»"
+    "'']))"
+)
 
 OPTIONS = {
     "1️⃣": 0,
@@ -22,37 +25,48 @@ OPTIONS = {
     "5️⃣": 4,
 }
 
+
 class AlreadyConnectedToChannel(commands.CommandError):
     pass
+
 
 class NoVoiceChannel(commands.CommandError):
     pass
 
+
 class QueueIsEmpty(commands.CommandError):
     pass
+
 
 class NoTracksFound(commands.CommandError):
     pass
 
+
 class PlayerIsAlreadyPaused(commands.CommandError):
     pass
+
 
 class PlayerIsAlreadyPlaying(commands.CommandError):
     pass
 
+
 class NoMoreTracks(commands.CommandError):
     pass
+
 
 class NoPreviousTracks(commands.CommandError):
     pass
 
+
 class InvalidRepeatMode(commands.CommandError):
     pass
+
 
 class RepeatMode(Enum):
     NONE = 0
     ONE = 1
     ALL = 2
+
 
 class Queue:
     def __init__(self):
@@ -76,13 +90,13 @@ class Queue:
     def upcoming(self):
         if not self._queue:
             raise QueueIsEmpty
-        return self._queue[self.position + 1:]
+        return self._queue[self.position + 1 :]
 
     @property
     def history(self):
         if not self._queue:
             raise QueueIsEmpty
-        return self._queue[:self.position]
+        return self._queue[: self.position]
 
     @property
     def length(self):
@@ -109,7 +123,7 @@ class Queue:
             raise QueueIsEmpty
         upcoming = self.upcoming
         random.shuffle(upcoming)
-        self._queue = self._queue[:self.position + 1]
+        self._queue = self._queue[: self.position + 1]
         self._queue.extend(upcoming)
 
     def set_repeat_mode(self, mode):
@@ -123,6 +137,7 @@ class Queue:
     def empty(self):
         self._queue.clear()
         self.position = 0
+
 
 class Player(wavelink.Player):
     def __init__(self, *args, **kwargs):
@@ -161,9 +176,7 @@ class Player(wavelink.Player):
     async def choose_track(self, ctx, tracks):
         def _check(r, u):
             return (
-                r.emoji in OPTIONS.keys()
-                and u == ctx.author
-                and r.message.id == msg.id
+                r.emoji in OPTIONS.keys() and u == ctx.author and r.message.id == msg.id
             )
 
         embed = disnake.Embed(
@@ -175,17 +188,19 @@ class Player(wavelink.Player):
                 )
             ),
             color=disnake.Color.green(),
-            timestamp=ctx.message.created_at
+            timestamp=ctx.message.created_at,
         )
         embed.set_author(name="Search Results")
         embed.set_footer(text=f"Invoked by {ctx.author.name}")
 
         msg = await ctx.send(embed=embed)
-        for emoji in list(OPTIONS.keys())[:min(len(tracks), len(OPTIONS))]:
+        for emoji in list(OPTIONS.keys())[: min(len(tracks), len(OPTIONS))]:
             await msg.add_reaction(emoji)
 
         try:
-            reaction, _ = await self.bot.wait_for("reaction_add", timeout=60.0, check=_check)
+            reaction, _ = await self.bot.wait_for(
+                "reaction_add", timeout=60.0, check=_check
+            )
         except asyncio.TimeoutError:
             await msg.delete()
             return None
@@ -206,6 +221,7 @@ class Player(wavelink.Player):
     async def repeat_track(self):
         await self.play(self.queue.current_track)
 
+
 class Music(commands.Cog):
     """Music commands for playing audio in voice channels."""
 
@@ -221,7 +237,9 @@ class Music(commands.Cog):
                 await self.get_player(member.guild).teardown()
 
     @commands.Cog.listener()
-    async def on_wavelink_track_end(self, player: Player, track: wavelink.Track, reason):
+    async def on_wavelink_track_end(
+        self, player: Player, track: wavelink.Track, reason
+    ):
         if player.queue.repeat_mode == RepeatMode.ONE:
             await player.repeat_track()
         else:
@@ -289,7 +307,9 @@ class Music(commands.Cog):
         await player.set_pause(False)
         await inter.response.send_message("Resumed the song")
 
-    @commands.slash_command(name="stop", description="Stop the player and clear the queue")
+    @commands.slash_command(
+        name="stop", description="Stop the player and clear the queue"
+    )
     async def stop(self, inter: disnake.ApplicationCommandInteraction):
         player = self.get_player(inter)
         player.queue.empty()
@@ -309,13 +329,19 @@ class Music(commands.Cog):
             raise QueueIsEmpty
 
         embed = disnake.Embed(title="Queue", color=disnake.Color.blurple())
-        embed.add_field(name="Currently playing", value=player.queue.current_track.title, inline=False)
-        
+        embed.add_field(
+            name="Currently playing",
+            value=player.queue.current_track.title,
+            inline=False,
+        )
+
         if upcoming := player.queue.upcoming:
             embed.add_field(
                 name="Next up",
-                value="\n".join(f"**{i+1}.** {t.title}" for i, t in enumerate(upcoming[:10])),
-                inline=False
+                value="\n".join(
+                    f"**{i+1}.** {t.title}" for i, t in enumerate(upcoming[:10])
+                ),
+                inline=False,
             )
 
         await inter.response.send_message(embed=embed)
@@ -328,6 +354,7 @@ class Music(commands.Cog):
         player = self.get_player(inter)
         await player.set_volume(volume)
         await inter.response.send_message(f"Volume set to {volume}%")
+
 
 def setup(bot):
     bot.add_cog(Music(bot))

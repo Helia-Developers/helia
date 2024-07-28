@@ -183,8 +183,8 @@ class General(commands.Cog, name="General"):
             days, hours = divmod(hours, 24)
             user = getpass.getuser()
             unameplatform = platform.uname().node
-            hostname = user+'@'+unameplatform
-            aarch= platform.architecture()[0]
+            hostname = user + "@" + unameplatform
+            aarch = platform.architecture()[0]
 
             cputype = platform.processor()
             embed = disnake.Embed(

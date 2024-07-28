@@ -11,12 +11,12 @@ Only bot owners are allowed to use the commands in this module.
 # -*- coding: utf-8 -*-
 import asyncio
 import datetime
+import json
 import os
 import typing
 from os import system as sys
 from os.path import abspath, dirname
 from typing import NoReturn
-import json
 
 import disnake
 from disnake import ButtonStyle, SelectOption
@@ -38,8 +38,12 @@ CONFIG = Config()
 # Load valid users from JSON config
 with open(dirname(abspath(__file__)) + "/../data/arrsconf.json", "r") as config_file:
     config = json.load(config_file)
-    valid_users = config.get('valid_users', [])
-    print("[Admin] the list of valid owner user id's for bot administration is as follows :" + str(valid_users))
+    valid_users = config.get("valid_users", [])
+    print(
+        "[Admin] the list of valid owner user id's for bot administration is as follows :"
+        + str(valid_users)
+    )
+
 
 class Confirm(disnake.ui.View):
     def __init__(self, ctx, bot: Bot):
@@ -355,8 +359,6 @@ class Admin(commands.Cog, name="Admin"):
         embedtimes.add_field(name="Link", value=f"{invite}", inline=True)
         await inter.response.send_message(embed=embedtimes, ephemeral=True)
 
-
-
     @commands.slash_command(
         name="set_status",
         description="Set the bot status[OWNERS-ONLY!!!!].",
@@ -370,7 +372,7 @@ class Admin(commands.Cog, name="Admin"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         author = inter.author
-        
+
         if str(author.id) in valid_users:
             await self.bot.change_presence(activity=disnake.Game(" ".join(sts)))
             embed = disnake.Embed(
@@ -638,7 +640,9 @@ class Admin(commands.Cog, name="Admin"):
         await inter.response.send_message(embed=embed)
 
     @commands.command(
-        slash_command=True, message_command=True, name="shutdown",
+        slash_command=True,
+        message_command=True,
+        name="shutdown",
         description="Bot restart/shutdown",
     )
     async def shutdown(self, ctx: Context):  # Команда для выключения бота
@@ -710,6 +714,7 @@ class Admin(commands.Cog, name="Admin"):
         await ctx.send(embed=embed)
 
     # ... [rest of the code remains unchanged]
+
 
 def setup(bot: Bot) -> NoReturn:
     bot.add_cog(Admin(bot))

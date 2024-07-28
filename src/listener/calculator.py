@@ -1,19 +1,27 @@
+import ast
 import asyncio
 import datetime
 import math
-import ast
+import operator as op
 
 import disnake
 from disnake import ButtonStyle, SelectOption
 from disnake.ext import commands
 from disnake.ext.commands import Bot, Context
 from disnake.ui import Button, Select, View
-import operator as op
 
 from scripts.calculator import buttons
-operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul,
-             ast.Div: op.truediv, ast.Pow: op.pow, ast.BitXor: op.xor,
-             ast.USub: op.neg}
+
+operators = {
+    ast.Add: op.add,
+    ast.Sub: op.sub,
+    ast.Mult: op.mul,
+    ast.Div: op.truediv,
+    ast.Pow: op.pow,
+    ast.BitXor: op.xor,
+    ast.USub: op.neg,
+}
+
 
 class Calculator(commands.Cog, name="Calculator"):
     def __init__(self, bot):
@@ -32,17 +40,18 @@ class Calculator(commands.Cog, name="Calculator"):
                     return operators[type(op)](eval_(operand))
                 case _:
                     raise TypeError(node)
+
         def calculate(exp):
             """
             Calculates the result of the given mathematical expression.
-            
+
             Args:
                 exp (str): The mathematical expression to be evaluated.
-            
+
             Returns:
                 str: The result of the expression, or "An error occurred." if an error occurs during the calculation.
             """
-            ox = ''.join(filter(str.isdigit, exp))
+            ox = "".join(filter(str.isdigit, exp))
             print(ox)
             o = ox.replace("×", "*")
             o = o.replace("÷", "/")
@@ -51,7 +60,7 @@ class Calculator(commands.Cog, name="Calculator"):
             o = o.replace("³", "**3")
             result = ""
             try:
-                result = eval_(ast.parse(int(o), mode='eval').body)                  
+                result = eval_(ast.parse(int(o), mode="eval").body)
                 print(result)
                 result = str(result)
             except BaseException:
@@ -99,7 +108,9 @@ class Calculator(commands.Cog, name="Calculator"):
                     "button_click",
                     check=lambda i: i.author.id == inter.author.id
                     and i.message.id == msg.id,
-                    timeout=(delta - datetime.datetime.now(datetime.UTC)).total_seconds(),
+                    timeout=(
+                        delta - datetime.datetime.now(datetime.UTC)
+                    ).total_seconds(),
                 )
             except asyncio.TimeoutError:
                 await msg.edit(
@@ -149,15 +160,15 @@ class Calculator(commands.Cog, name="Calculator"):
                     break
                 else:
                     await res.response.edit_message(
-                    embed=disnake.Embed(
-                        title=f"{inter.author.name}'s calculator",
-                        description=f"The expression you entered has a result of: {result}",
-                        color=disnake.Colour.blurple(),
-                    ),
-                    components=done,
-                )
+                        embed=disnake.Embed(
+                            title=f"{inter.author.name}'s calculator",
+                            description=f"The expression you entered has a result of: {result}",
+                            color=disnake.Colour.blurple(),
+                        ),
+                        components=done,
+                    )
                 break
-                
+
             elif (
                 len(expression) > 9
                 or expression.count("²") >= 4
@@ -189,7 +200,27 @@ class Calculator(commands.Cog, name="Calculator"):
                     )
                     break
             else:
-                expression += res.component.label if res.component.label.isdigit() or res.component.label in ['+', '-', '*', '/', '.', '(', ')','π','x²','x³','÷','.','×'] else 'Invalid expression'
+                expression += (
+                    res.component.label
+                    if res.component.label.isdigit()
+                    or res.component.label
+                    in [
+                        "+",
+                        "-",
+                        "*",
+                        "/",
+                        ".",
+                        "(",
+                        ")",
+                        "π",
+                        "x²",
+                        "x³",
+                        "÷",
+                        ".",
+                        "×",
+                    ]
+                    else "Invalid expression"
+                )
                 print(expression)
                 f = disnake.Embed(
                     title=f"{inter.author.name}'s calculator",

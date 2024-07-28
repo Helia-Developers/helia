@@ -15,6 +15,7 @@ import datetime
 import os
 import random
 import sqlite3
+
 import aiohttp
 import disnake
 from disnake.ext import commands, tasks
@@ -94,7 +95,7 @@ class CoreClient(commands.AutoShardedBot):
         activar = disnake.Activity(
             type=disnake.ActivityType.watching, name="Orion.py test run"
         )
-        
+
         await self.change_presence(status=disnake.Status.online, activity=activar)
         self.launch_time = datetime.datetime.utcnow()
 
@@ -104,12 +105,16 @@ class CoreClient(commands.AutoShardedBot):
         # await self.update_status_on_dbl()
         print("[LAUNCH] Logged in as {}".format(super(CoreClient, self).user))
         try:
-                db.control()  # UNCOMMENT FOR DB CONNECTION
-                print("[DB] Database up")  # DATABASE CONNECT LOG
+            db.control()  # UNCOMMENT FOR DB CONNECTION
+            print("[DB] Database up")  # DATABASE CONNECT LOG
         except sqlite3.OperationalError:
-                print("[DB] Error: Unable to connect to the database")        
+            print("[DB] Error: Unable to connect to the database")
         self.changeStatus.start()
-        print("[LAUNCH] Started the status change function for user {}".format(super(CoreClient, self).user))
+        print(
+            "[LAUNCH] Started the status change function for user {}".format(
+                super(CoreClient, self).user
+            )
+        )
 
         # async def on_guild_join(self, guild):
         """Updates DBL when client joins a guild"""

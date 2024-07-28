@@ -126,10 +126,16 @@ class Listeners(commands.Cog, name="Listeners"):
         await self.handle_error(ctx, error)
 
     @commands.Cog.listener()
-    async def on_slash_command_error(self, inter: disnake.ApplicationCommandInteraction, error: Exception) -> NoReturn:
+    async def on_slash_command_error(
+        self, inter: disnake.ApplicationCommandInteraction, error: Exception
+    ) -> NoReturn:
         await self.handle_error(inter, error)
 
-    async def handle_error(self, ctx_or_inter: Union[Context, disnake.ApplicationCommandInteraction], error: Exception) -> NoReturn:
+    async def handle_error(
+        self,
+        ctx_or_inter: Union[Context, disnake.ApplicationCommandInteraction],
+        error: Exception,
+    ) -> NoReturn:
         """If an unexpected error occurs, it displays an... error message?
 
         Attributes:
@@ -156,7 +162,7 @@ class Listeners(commands.Cog, name="Listeners"):
         =======================================================
         """
         cprint("==============================")
-        cprint(error_message,color="red")
+        cprint(error_message, color="red")
         cprint("==============================")
         self._log_to_file(error_message)
 
@@ -169,9 +175,9 @@ class Listeners(commands.Cog, name="Listeners"):
             if ctx_or_inter.application_command.cog.name != "Jishaku":
                 embed = Utils.error_embed(
                     STRINGS["etc"]["usage"].format(
-                        COMMANDS[ctx_or_inter.application_command.cog.name]["commands"][ctx_or_inter.application_command.name][
-                            "usage"
-                        ].format(prefix)
+                        COMMANDS[ctx_or_inter.application_command.cog.name]["commands"][
+                            ctx_or_inter.application_command.name
+                        ]["usage"].format(prefix)
                     )
                 )
         elif isinstance(error, commands.MissingPermissions):
@@ -215,6 +221,7 @@ class Listeners(commands.Cog, name="Listeners"):
             await msg.delete()
         else:
             await ctx_or_inter.response.send_message(embed=embed, ephemeral=True)
+
 
 def setup(bot: Bot) -> NoReturn:
     bot.add_cog(Listeners(bot))

@@ -3,10 +3,13 @@ from disnake import ButtonStyle, SelectOption
 from disnake.ext import commands
 from disnake.ui import Button, Select, View
 
+
 class Dropdown(disnake.ui.Select):
     def __init__(self, options, bot):
         self.bot = bot
-        super().__init__(placeholder="Select a category", min_values=1, max_values=1, options=options)
+        super().__init__(
+            placeholder="Select a category", min_values=1, max_values=1, options=options
+        )
 
     async def callback(self, interaction: disnake.MessageInteraction):
         label = self.values[0]
@@ -21,11 +24,13 @@ class Dropdown(disnake.ui.Select):
             embede.set_footer(text="Developed with ❤️ by Middlle")
             await interaction.response.edit_message(embed=embede, view=None)
 
+
 class DropdownView(disnake.ui.View):
     def __init__(self, options, bot):
         super().__init__()
         self.bot = bot
         self.add_item(Dropdown(options, self.bot))
+
 
 class Help(commands.Cog):
     "The Help Menu Cog"
@@ -34,7 +39,9 @@ class Help(commands.Cog):
         self.bot = bot
 
     @commands.slash_command(name="help", description="Shows the help menu")
-    async def help(self, inter: disnake.ApplicationCommandInteraction, command: str = None):
+    async def help(
+        self, inter: disnake.ApplicationCommandInteraction, command: str = None
+    ):
         if command is None:
             await self.send_bot_help(inter)
         else:
@@ -45,7 +52,7 @@ class Help(commands.Cog):
         usable = 0
         myoptions = []
 
-        filtered_cogs = ['testingCOG', 'Preferences', 'Calculator', 'Help']
+        filtered_cogs = ["testingCOG", "Preferences", "Calculator", "Help"]
 
         for cog_name, cog in self.bot.cogs.items():
             print(cog_name)
@@ -63,14 +70,20 @@ class Help(commands.Cog):
 
         await inter.response.send_message(embed=embed, view=view)
 
-    async def send_command_help(self, inter: disnake.ApplicationCommandInteraction, command_name: str):
+    async def send_command_help(
+        self, inter: disnake.ApplicationCommandInteraction, command_name: str
+    ):
         command = self.bot.get_slash_command(command_name)
         if not command:
-            await inter.response.send_message(f"No command called '{command_name}' found.", ephemeral=True)
+            await inter.response.send_message(
+                f"No command called '{command_name}' found.", ephemeral=True
+            )
             return
 
         signature = f"/{command.name} {command.signature}"
-        embed = HelpEmbed(title=signature, description=command.description or "No help found...")
+        embed = HelpEmbed(
+            title=signature, description=command.description or "No help found..."
+        )
 
         if cog := command.cog:
             embed.add_field(name="Category", value=cog.qualified_name)
@@ -85,13 +98,15 @@ class Help(commands.Cog):
 
         await inter.response.send_message(embed=embed)
 
+
 class HelpEmbed(disnake.Embed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.timestamp = disnake.utils.utcnow()
         self.title = ":books: Help System"
-        
+
         self.set_footer(text="Developed with ❤️ by Middlle")
+
 
 async def get_help(self, interaction, CogToPassAlong):
     cog = self.bot.get_cog(CogToPassAlong)
@@ -103,11 +118,11 @@ async def get_help(self, interaction, CogToPassAlong):
     )
     emb.set_author(name="Help System")
     for command in cog.get_slash_commands():
-        
-            emb.add_field(
-                name=f"『`/{command.name}`』", value=command.description, inline=False
-            )
+        emb.add_field(
+            name=f"『`/{command.name}`』", value=command.description, inline=False
+        )
     await interaction.response.edit_message(embed=emb)
+
 
 def setup(bot):
     bot.add_cog(Help(bot))
