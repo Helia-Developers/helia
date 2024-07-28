@@ -33,7 +33,9 @@ class Preferences(commands.Cog, name="Preferences"):
         await inter.response.send_message(embed=embed, ephemeral=True)
 
     @commands.slash_command(name="locale", description="Sets bot language")
-    @commands.has_permissions(administrator=True)
+    @commands.check_any(
+        commands.has_permissions(administrator=True), commands.is_owner()
+    )
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def locale(
         self, inter: disnake.ApplicationCommandInteraction, locale: str

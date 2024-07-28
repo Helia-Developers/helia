@@ -30,7 +30,7 @@ class GNULinux(commands.Cog):
 
     @commands.slash_command(
         name="arch",
-        description="Display information about Arch Linux",
+        description="information about Arch",
     )
     async def arch(self, inter: disnake.ApplicationCommandInteraction):
         """
@@ -71,7 +71,7 @@ class GNULinux(commands.Cog):
 
     @commands.slash_command(
         name="ubuntu",
-        description="Display information about Ubuntu Linux",
+        description="information about Ubuntu",
     )
     async def ubuntu(self, inter: disnake.ApplicationCommandInteraction):
         """
@@ -110,7 +110,7 @@ class GNULinux(commands.Cog):
 
     @commands.slash_command(
         name="debian",
-        description="Display information about Debian Linux",
+        description="information Debian",
     )
     async def debian(self, inter: disnake.ApplicationCommandInteraction):
         """
@@ -151,7 +151,7 @@ class GNULinux(commands.Cog):
 
     @commands.slash_command(
         name="deepin",
-        description="Display information about Deepin Linux",
+        description="information about Deepin",
     )
     async def deepin(self, inter: disnake.ApplicationCommandInteraction):
         """
@@ -192,7 +192,7 @@ class GNULinux(commands.Cog):
 
     @commands.slash_command(
         name="manjaro",
-        description="Display information about Manjaro Linux",
+        description="information Manjaro Linux",
     )
     async def manjaro(self, inter: disnake.ApplicationCommandInteraction):
         """
@@ -233,7 +233,7 @@ class GNULinux(commands.Cog):
 
     @commands.slash_command(
         name="mint",
-        description="Display information about Linux Mint",
+        description="information Linux Mint",
     )
     async def mint(self, inter: disnake.ApplicationCommandInteraction):
         """

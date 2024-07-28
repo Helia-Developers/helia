@@ -14,6 +14,7 @@ import asyncio
 import datetime
 import os
 import random
+import sqlite3
 
 import aiohttp
 import disnake
@@ -49,7 +50,7 @@ class CoreClient(commands.AutoShardedBot):
         # self.BASE_URL = "https://discordbots.org/api/bots/458298539517411328/stats"
         # self.headers = {"Authorization": self.dbl_token}
 
-    @tasks.loop(seconds=110)
+    @tasks.loop(seconds=310)
     async def changeStatus(self):
         statuses = [
             # disnake.Activity(type=disnake.ActivityType.watching, name=f"{len(self.bot.guilds)} servers | {len(self.bot.shards)} shards!"), # bugged status - uncomment after fix
@@ -70,7 +71,7 @@ class CoreClient(commands.AutoShardedBot):
             disnake.Game(name="Final Fantasy XIV"),
             disnake.Activity(
                 type=disnake.ActivityType.watching,
-                name="our support server https://disnake.gg/xUaWU2AQVm",
+                name="our support server https://discord.gg/xUaWU2AQVm",
             ),
             disnake.Game(
                 name="Deep inside, we're nothing more than scions and sinners"
@@ -94,7 +95,7 @@ class CoreClient(commands.AutoShardedBot):
         activar = disnake.Activity(
             type=disnake.ActivityType.watching, name="Orion.py test run"
         )
-        # self.changeStatus.start()
+
         await self.change_presence(status=disnake.Status.online, activity=activar)
         self.launch_time = datetime.datetime.utcnow()
 
@@ -103,8 +104,17 @@ class CoreClient(commands.AutoShardedBot):
         await super(CoreClient, self).change_presence(status=disnake.Status.online)
         # await self.update_status_on_dbl()
         print("[LAUNCH] Logged in as {}".format(super(CoreClient, self).user))
-        db.control()  # UNCOMMENT FOR DB CONNECTION
-        print("[DB] Database Present and ready")  # DATABASE CONNECT LOG
+        try:
+            db.control()  # UNCOMMENT FOR DB CONNECTION
+            print("[DB] Database up")  # DATABASE CONNECT LOG
+        except sqlite3.OperationalError:
+            print("[DB] Error: Unable to connect to the database")
+        self.changeStatus.start()
+        print(
+            "[LAUNCH] Started the status change function for user {}".format(
+                super(CoreClient, self).user
+            )
+        )
 
         # async def on_guild_join(self, guild):
         """Updates DBL when client joins a guild"""

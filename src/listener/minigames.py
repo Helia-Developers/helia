@@ -26,7 +26,7 @@ class Minigames(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.slash_command(name="kubik", description="Roll a random cube")
+    @commands.slash_command(name="kubik", description="random cube")
     async def kubik(self, inter: disnake.ApplicationCommandInteraction):
         """
         Roll a random cube and display the result.
@@ -60,7 +60,7 @@ class Minigames(commands.Cog):
                 "An error occurred while processing the command.", ephemeral=True
             )
 
-    @commands.slash_command(name="monetka", description="Flip a coin")
+    @commands.slash_command(name="monetka", description="coin flip")
     async def monetka(self, inter: disnake.ApplicationCommandInteraction):
         """
         Flip a coin and display the result.
@@ -94,7 +94,7 @@ class Minigames(commands.Cog):
                 "An error occurred while processing the command.", ephemeral=True
             )
 
-    @commands.slash_command(name="casino", description="Play a casino game")
+    @commands.slash_command(name="casino", description="rng")
     async def casino(self, inter: disnake.ApplicationCommandInteraction):
         """
         Generate a random casino-style result with three random elements.

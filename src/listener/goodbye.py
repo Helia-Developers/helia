@@ -67,7 +67,7 @@ class Goodbye(commands.Cog):
         connect.close()
         await channel.send(embed=gb)
 
-    @commands.slash_command(name="goodbye", description="Display goodbye commands help")
+    @commands.slash_command(name="goodbye", description="goodbye cmd")
     async def goodbye(self, inter: disnake.ApplicationCommandInteraction):
         """
         Displays a help message with all the available goodbye-related commands.
@@ -97,7 +97,7 @@ class Goodbye(commands.Cog):
         ).set_author(name="Help System")
         await inter.response.send_message(embed=goodbyehelp)
 
-    @commands.slash_command(name="goodbye_channel", description="Set goodbye channel")
+    @commands.slash_command(name="goodbye_channel", description="goodbye channel")
     async def goodbye_channel(
         self, inter: disnake.ApplicationCommandInteraction, channel: disnake.TextChannel
     ):
@@ -148,7 +148,7 @@ class Goodbye(commands.Cog):
                 f"Failed to set channel: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="goodbye_clear", description="Clear goodbye channel")
+    @commands.slash_command(name="goodbye_clear", description="Clear channel")
     async def goodbye_clear(self, inter: disnake.ApplicationCommandInteraction):
         """
         Removes the configured goodbye channel.
@@ -184,7 +184,7 @@ class Goodbye(commands.Cog):
                 f"Failed to remove goodbye channel setting: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="goodbye_text", description="Set goodbye text")
+    @commands.slash_command(name="goodbye_text", description="goodbye text")
     async def goodbye_text(
         self, inter: disnake.ApplicationCommandInteraction, content: str = None
     ):

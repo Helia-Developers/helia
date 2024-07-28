@@ -12,6 +12,7 @@ This cog is designed to be a central hub for common bot functionality that doesn
 
 # -*- coding: utf-8 -*-
 import datetime
+import getpass
 import math
 import os
 import platform
@@ -36,7 +37,7 @@ class General(commands.Cog, name="General"):
         self.name = "General"
         self.process = psutil.Process(os.getpid())
 
-    @commands.slash_command(name="echo", description="Echo a message as the bot")
+    @commands.slash_command(name="echo", description="Echo msg")
     async def echo(self, inter: disnake.ApplicationCommandInteraction, content: str):
         if not content or len(content) > 200:
             await inter.response.send_message(
@@ -73,7 +74,7 @@ class General(commands.Cog, name="General"):
                 f"An error occurred: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="embed", description="Generate an embed message")
+    @commands.slash_command(name="embed", description="Generate embed")
     async def embed(
         self, inter: disnake.ApplicationCommandInteraction, name: str, content: str
     ):
@@ -156,7 +157,7 @@ class General(commands.Cog, name="General"):
                 f"An error occurred: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="about", description="Information about the bot")
+    @commands.slash_command(name="about", description="about bot")
     async def about(self, inter: disnake.ApplicationCommandInteraction) -> NoReturn:
         """
         Shows a short description of the bot.
@@ -166,8 +167,11 @@ class General(commands.Cog, name="General"):
             lang = await s.get_field("locale", CONFIG["default_locale"])
             STRINGS = Strings(lang)
             path = "scripts/version.txt"
-            with open(path, "r") as file:
-                ver = file.readline()
+            try:
+                with open(path, "r") as file:
+                    ver = file.readline().strip()
+            except FileNotFoundError:
+                ver = "Unknown"
             ramUsage = self.process.memory_full_info().rss / 1024**2
             pythonVersion = platform.python_version()
             dpyVersion = disnake.__version__
@@ -177,6 +181,12 @@ class General(commands.Cog, name="General"):
             hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
             minutes, seconds = divmod(remainder, 60)
             days, hours = divmod(hours, 24)
+            user = getpass.getuser()
+            unameplatform = platform.uname().node
+            hostname = user + "@" + unameplatform
+            aarch = platform.architecture()[0]
+
+            cputype = platform.processor()
             embed = disnake.Embed(
                 title=STRINGS["general"]["abouttitle"],
                 description=STRINGS["general"]["aboutdesc"],
@@ -185,11 +195,11 @@ class General(commands.Cog, name="General"):
 
             embed.add_field(
                 name=STRINGS["general"]["aboutver"],
-                value=f" Version: {ver}\nPython Version:{pythonVersion}\nLibrary: disnake.py\ndisnake.Py Version: {dpyVersion} ",
+                value=f" Version: {ver}\nPython Version:{pythonVersion}\nLibrary: disnake.py\ndisnake.Py Version: {dpyVersion} \n  Hostname {hostname} \n  Host CPU {cputype} \n  Host Arch {aarch} ",
                 inline=False,
             )
             embed.add_field(
-                name="Other Information",
+                name=STRINGS["general"]["otherinfoabout"],
                 value=f" Count: {servercount}\nUser Count: {usercount}\nRAM Usage:{ramUsage:.2f} MB\nDays: {days}d\nHours: {hours}h\nMinutes: {minutes}m\nSeconds: {seconds}s\nCommand Count: {len(self.bot.commands)}",
                 inline=True,
             )
@@ -206,7 +216,7 @@ class General(commands.Cog, name="General"):
                 f"An error occurred: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="privacy", description="Shows privacy policy")
+    @commands.slash_command(name="privacy", description="privacy policy")
     async def privacy(self, inter: disnake.ApplicationCommandInteraction):
         """
         Shows the privacy policy of the bot.

@@ -1,62 +1,21 @@
-"""
-The `Dropdown` class is a custom Discord UI component that provides a dropdown menu for users to select a category from a list of options. The selected category is then used to display the corresponding help information for that category.
-
-The `DropdownView` class is a custom Discord UI view that contains the `Dropdown` component, allowing it to be displayed in a message.
-
-The `get_help` function is responsible for generating the help embed that is displayed to the user based on the selected category. It retrieves the commands from the corresponding cog and formats them into an embed.
-
-The `Help` class is a Discord bot cog that provides the `/help` command, which displays the help system to the user. It creates the initial help embed and the `DropdownView` to allow the user to select a category.
-"""
-
 import disnake
-from disnake import ButtonStyle, SelectOption, interactions
+from disnake import ButtonStyle, SelectOption
 from disnake.ext import commands
 from disnake.ui import Button, Select, View
 
 
 class Dropdown(disnake.ui.Select):
-    def __init__(self, bot):
-        self.bot = bot  # one thing fixed...
-
-        # Set the options that will be presented inside the dropdown
-        options = [
-            SelectOption(label="General", value="General"),
-            SelectOption(label="Moderation", value="Moderation"),
-            SelectOption(label="Utilities", value="Utilities"),
-            SelectOption(label="Music", value="Music"),
-            SelectOption(label="Preferences", value="Preferences"),
-            SelectOption(
-                label="Welcome",
-                value="Welcome",
-            ),
-            SelectOption(
-                label="Goodbye",
-                value="Goodbye",
-            ),
-            SelectOption(label="Other", value="Other"),
-            SelectOption(label="Close", value="Close"),
-        ]
-
-        # The placeholder is what will be shown when no option is chosen
-        # The min and max values indicate we can only pick one of the three options
-        # The options parameter defines the dropdown options. We defined this above
+    def __init__(self, options, bot):
+        self.bot = bot
         super().__init__(
             placeholder="Select a category", min_values=1, max_values=1, options=options
         )
 
     async def callback(self, interaction: disnake.MessageInteraction):
-        # Use the interaction object to send a response message containing
-        # the user's favourite colour or choice. The self object refers to the
-        # Select object, and the values attribute gets a list of the user's
-        # selected options. We only want the first one.
-
-        # print(f"{interaction.author.name} with ID {interaction.author.id} just clicked something in the select menu")
         label = self.values[0]
-        print(label)
-        for cog in self.bot.cogs:  # fixed
-            if label == cog:  # -------------------[1]
+        for cog in self.bot.cogs:
+            if label == cog:
                 await get_help(self, interaction, CogToPassAlong=cog)
-                print(str(cog))
         if label == "Close":
             embede = disnake.Embed(
                 title=":books: Help System",
@@ -67,93 +26,102 @@ class Dropdown(disnake.ui.Select):
 
 
 class DropdownView(disnake.ui.View):
-    def __init__(self, bot):
+    def __init__(self, options, bot):
         super().__init__()
-
-        # Adds the dropdown to our view object.
         self.bot = bot
-        self.add_item(Dropdown(self.bot))
-
-
-async def get_help(self, interaction, CogToPassAlong):
-    # if CogToPassAlong == "NSFW":
-    # if not interaction.channel.is_nsfw():
-    # embed = disnake.Embed(title="Non-NSFW channel 🔞", description=f"Find yourself an NSFW-Channel and retry from there.", color=disnake.Colour.red())
-    # embed.set_footer(text=f"set_your_footer_here")
-    # await interaction.respond(embed=embed)
-    # return
-    # else:
-    # pass
-
-    for _ in self.bot.get_cog(CogToPassAlong).get_commands():
-        pass
-    # making title - getting description from doc-string below class
-    emb = disnake.Embed(
-        title=f"{CogToPassAlong} - Commands",
-        description=self.bot.cogs[CogToPassAlong].__doc__,
-    )
-    emb.set_author(name="Help System")
-    # getting commands from cog
-    for command in self.bot.get_cog(CogToPassAlong).get_commands():
-        # if cog is not hidden
-        if not command.hidden:
-            emb.add_field(
-                name=f"『`{command.name}`』", value=command.help, inline=False
-            )
-    # found cog - breaking loop
-    await interaction.response.edit_message(embed=emb)
+        self.add_item(Dropdown(options, self.bot))
 
 
 class Help(commands.Cog):
+    "The Help Menu Cog"
+
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command(
-        slash_command=True, message_command=True, description="Help Command"
+    @commands.slash_command(name="help", description="Shows the help menu")
+    async def help(
+        self, inter: disnake.ApplicationCommandInteraction, command: str = None
+    ):
+        if command is None:
+            await self.send_bot_help(inter)
+        else:
+            await self.send_command_help(inter, command)
+
+    async def send_bot_help(self, inter: disnake.ApplicationCommandInteraction):
+        embed = HelpEmbed(description=f"Welcome To {self.bot.user.name} Help System")
+        usable = 0
+        myoptions = []
+
+        filtered_cogs = ["testingCOG", "Preferences", "Calculator", "Help"]
+
+        for cog_name, cog in self.bot.cogs.items():
+            print(cog_name)
+            if cog_name.lower() not in [fc.lower() for fc in filtered_cogs]:
+                print(filtered_cogs)
+                if filtered_commands := [cmd for cmd in cog.get_slash_commands()]:
+                    amount_commands = len(filtered_commands)
+                    usable += amount_commands
+                    name = cog.qualified_name
+                    description = cog.description or "No description"
+                    myoptions.append(SelectOption(label=name, value=name))
+
+        myoptions.append(SelectOption(label="Close", value="Close"))
+        view = DropdownView(myoptions, self.bot)
+
+        await inter.response.send_message(embed=embed, view=view)
+
+    async def send_command_help(
+        self, inter: disnake.ApplicationCommandInteraction, command_name: str
+    ):
+        command = self.bot.get_slash_command(command_name)
+        if not command:
+            await inter.response.send_message(
+                f"No command called '{command_name}' found.", ephemeral=True
+            )
+            return
+
+        signature = f"/{command.name} {command.signature}"
+        embed = HelpEmbed(
+            title=signature, description=command.description or "No help found..."
+        )
+
+        if cog := command.cog:
+            embed.add_field(name="Category", value=cog.qualified_name)
+
+        embed.add_field(name="Usable", value="Yes")
+
+        if command._buckets and (cooldown := command._buckets._cooldown):
+            embed.add_field(
+                name="Cooldown",
+                value=f"{cooldown.rate} per {cooldown.per:.0f} seconds",
+            )
+
+        await inter.response.send_message(embed=embed)
+
+
+class HelpEmbed(disnake.Embed):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.timestamp = disnake.utils.utcnow()
+        self.title = ":books: Help System"
+
+        self.set_footer(text="Developed with ❤️ by Middlle")
+
+
+async def get_help(self, interaction, CogToPassAlong):
+    cog = self.bot.get_cog(CogToPassAlong)
+    if not cog:
+        return
+    emb = disnake.Embed(
+        title=f"{CogToPassAlong} - Commands",
+        description=cog.__doc__,
     )
-    async def help(self, ctx):
-        embed = disnake.Embed(
-            title="SELECTION TEST", description="Testing our embeds", color=0xFF8000
+    emb.set_author(name="Help System")
+    for command in cog.get_slash_commands():
+        emb.add_field(
+            name=f"『`/{command.name}`』", value=command.description, inline=False
         )
-        embede = disnake.Embed(
-            title=":books: Help System",
-            description=f"Welcome To {self.bot.user.name} Help System",
-        )
-        embede.set_footer(text="Developed with ❤️ by Middlle")
-        view = DropdownView(self.bot)
-
-        done_components = [
-            Button(style=ButtonStyle.secondary, label="·", disabled=True),
-        ]
-
-        # async def callback(interaction):
-        # await interaction.send(embed=embed)
-
-        await ctx.send(embed=embede, view=view)
-
-    @commands.slash_command(
-        name="help",
-        description="Get a list of commands in the bot.",
-    )
-    async def shelp(self, inter: disnake.ApplicationCommandInteraction):
-        embed = disnake.Embed(
-            title="SELECTION TEST", description="Testing our embeds", color=0xFF8000
-        )
-        embede = disnake.Embed(
-            title=":books: Help System",
-            description=f"Welcome To {self.bot.user.name} Help System",
-        )
-        embede.set_footer(text="Developed with ❤️ by Middlle")
-        view = DropdownView(self.bot)
-
-        done_components = [
-            Button(style=ButtonStyle.secondary, label="·", disabled=True),
-        ]
-
-        # async def callback(interaction):
-        # await interaction.send(embed=embed)
-
-        await inter.response.send_message(embed=embede, view=view)
+    await interaction.response.edit_message(embed=emb)
 
 
 def setup(bot):

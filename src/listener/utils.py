@@ -51,6 +51,7 @@ class Commands:
             with open(
                 dirname(abspath(__file__)) + f"/../data/locales/{locale}/commands.json",
                 "r",
+                encoding="utf-8",
             ) as f:
                 return json.load(f)
         else:
@@ -59,6 +60,7 @@ class Commands:
                 dirname(abspath(__file__))
                 + f'/../data/locales/{CONFIG["default_locale"]}/commands.json',
                 "r",
+                encoding="utf-8",
             ) as f:
                 return json.load(f)
 
@@ -129,6 +131,7 @@ class Strings:
             with open(
                 dirname(abspath(__file__)) + f"/../data/locales/{locale}/strings.json",
                 "r",
+                encoding="utf-8",
             ) as f:
                 return json.load(f)
         else:
@@ -137,6 +140,7 @@ class Strings:
                 dirname(abspath(__file__))
                 + f'/../data/locales/{CONFIG["default_locale"]}/strings.json',
                 "r",
+                encoding="utf-8",
             ) as f:
                 return json.load(f)
 

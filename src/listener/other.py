@@ -13,14 +13,12 @@ CONFIG = Config()
 
 
 class Other(commands.Cog, name="Other"):
-
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Other"
 
     @commands.slash_command(name="ping", description="Check ping")
-    async def ping(self,
-                   inter: disnake.ApplicationCommandInteraction) -> NoReturn:
+    async def ping(self, inter: disnake.ApplicationCommandInteraction) -> NoReturn:
         """
         Shows the bot's latency.
 
@@ -34,6 +32,7 @@ class Other(commands.Cog, name="Other"):
         NoReturn
         """
         try:
+            EMBED_COLOR = 0xFF8000
             s = await Settings(inter.guild.id)
             lang = await s.get_field("locale", CONFIG["default_locale"])
             STRINGS = Strings(lang)
@@ -42,21 +41,22 @@ class Other(commands.Cog, name="Other"):
                 title=f"{self.bot.name} Latency",
                 description=f":hourglass_flowing_sand: {latency} ",
                 # Define the color constant at the module level
-                EMBED_COLOR=0xFF8000
-
-                # Use the constant in your embed creation
-                embed=disnake.Embed(
-                    title=STRINGS["moderation"]["setstatustext"],
-                    description=STRINGS["moderation"]["setstatusdesc"],
-                    color=EMBED_COLOR,
-                )
+                color=EMBED_COLOR,
             )
+
+            # Use the constant in your embed creation
+            embed = disnake.Embed(
+                title=STRINGS["moderation"]["setstatustext"],
+                description=STRINGS["moderation"]["setstatusdesc"],
+                color=EMBED_COLOR,
+            )
+
             await inter.response.send_message(embed=embed)
         except Exception as e:
             Logger.error(f"Error in ping command: {str(e)}")
             await inter.response.send_message(
-                "An error occurred while processing the command.",
-                ephemeral=True)
+                "An error occurred while processing the command.", ephemeral=True
+            )
 
     @commands.slash_command(name="wallpaper", description="Get wallpaper")
     async def wallpaper(self, inter: disnake.ApplicationCommandInteraction):
@@ -100,8 +100,8 @@ class Other(commands.Cog, name="Other"):
         except Exception as e:
             Logger.error(f"Error in wallpaper command: {str(e)}")
             await inter.response.send_message(
-                "An error occurred while processing the command.",
-                ephemeral=True)
+                "An error occurred while processing the command.", ephemeral=True
+            )
 
     @wallpaper.sub_command(name="anime", description="Get an anime wallpaper")
     async def anime(self, inter: disnake.ApplicationCommandInteraction):
@@ -125,14 +125,13 @@ class Other(commands.Cog, name="Other"):
                 title=STRINGS["wallpaper"]["wallpaperanimetitle"],
                 color=0x00FF00,
             )
-            embedanime.set_footer(
-                text=STRINGS["wallpaper"]["wallpaperanimefooter"])
+            embedanime.set_footer(text=STRINGS["wallpaper"]["wallpaperanimefooter"])
             await inter.response.send_message(embed=embedanime)
         except Exception as e:
             Logger.error(f"Error in anime wallpaper command: {str(e)}")
             await inter.response.send_message(
-                "An error occurred while processing the command.",
-                ephemeral=True)
+                "An error occurred while processing the command.", ephemeral=True
+            )
 
     @wallpaper.sub_command(name="nature", description="Get a nature wallpaper")
     async def nature(self, inter: disnake.ApplicationCommandInteraction):
@@ -163,11 +162,10 @@ class Other(commands.Cog, name="Other"):
         except Exception as e:
             Logger.error(f"Error in nature wallpaper command: {str(e)}")
             await inter.response.send_message(
-                "An error occurred while processing the command.",
-                ephemeral=True)
+                "An error occurred while processing the command.", ephemeral=True
+            )
 
-    @wallpaper.sub_command(name="starwars",
-                           description="Get a Star Wars wallpaper")
+    @wallpaper.sub_command(name="starwars", description="Get a Star Wars wallpaper")
     async def starwars(self, inter: disnake.ApplicationCommandInteraction):
         """
         Sends a Star Wars wallpaper.
@@ -196,8 +194,8 @@ class Other(commands.Cog, name="Other"):
         except Exception as e:
             Logger.error(f"Error in Star Wars wallpaper command: {str(e)}")
             await inter.response.send_message(
-                "An error occurred while processing the command.",
-                ephemeral=True)
+                "An error occurred while processing the command.", ephemeral=True
+            )
 
 
 def setup(bot: Bot) -> NoReturn:
