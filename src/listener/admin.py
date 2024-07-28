@@ -16,6 +16,7 @@ import typing
 from os import system as sys
 from os.path import abspath, dirname
 from typing import NoReturn
+import json
 
 import disnake
 from disnake import ButtonStyle, SelectOption
@@ -34,6 +35,10 @@ from listener.utils import Config, Logger, Settings, Strings, Utils
 CONFIG = Config()
 # STRINGS = Strings(CONFIG["default_locale"])
 
+# Load valid users from JSON config
+with open('config.json', 'r') as config_file:
+    config = json.load(config_file)
+    valid_users = config.get('valid_users', [])
 
 class Confirm(disnake.ui.View):
     def __init__(self, ctx, bot: Bot):
@@ -56,18 +61,6 @@ class Confirm(disnake.ui.View):
             author = self.ctx.author
         else:
             author = self.ctx.message.author
-        valid_users = [
-            "540142383270985738",
-            "573123021598883850",
-            "584377789969596416",
-            "106451437839499264",
-            "237984877604110336",
-            "579750505736044574",
-            "497406228364787717",
-            "353049432037523467",
-            "717822288375971900",
-            "168422909482762240",
-        ]
 
         if str(author.id) in valid_users:
             await interaction.response.edit_message(
@@ -132,6 +125,7 @@ class Admin(commands.Cog, name="Admin"):
         self.bot = bot
         self.name = "Admin"
 
+    # ... [rest of the code remains unchanged]
     @commands.command(slash_command=True, message_command=True)
     @commands.is_owner()
     async def load(self, ctx: Context, *, module: str) -> NoReturn:
@@ -360,112 +354,7 @@ class Admin(commands.Cog, name="Admin"):
         embedtimes.add_field(name="Link", value=f"{invite}", inline=True)
         await inter.response.send_message(embed=embedtimes, ephemeral=True)
 
-    @commands.command(
-        slash_command=True,
-        message_command=True,
-        name="shutdown",
-        description="Bot restart/shutdown",
-    )
-    async def shutdown(self, ctx: Context):  # Команда для выключения бота
-        s = await Settings(ctx.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        author = ctx.message.author
-        viewb = Confirm(ctx, self.bot)
-        viewbx = disnake.ui.View()
-        valid_users = [
-            "540142383270985738",
-            "573123021598883850",
-            "584377789969596416",
-            "106451437839499264",
-            "237984877604110336",
-            "579750505736044574",
-            "497406228364787717",
-            "353049432037523467",
-            "717822288375971900",
-            "168422909482762240",
-        ]
 
-        viewbx.add_item(Button(style=ButtonStyle.grey, label="·", disabled=True))
-        embedconfirm = disnake.Embed(
-            title=STRINGS["moderation"]["shutdownembedtitle"],
-            description=STRINGS["moderation"]["shutdownconfirm"],
-        )
-        await ctx.send(embed=embedconfirm, view=viewb)
-        await viewb.wait()
-
-    @commands.slash_command(
-        name="shutdown",
-        description="Shutdown the bot [OWNERS-ONLY!!!!].",
-    )
-    async def slashshutdown(
-        self, inter: disnake.ApplicationCommandInteraction
-    ):  # Команда для выключения бота
-        s = await Settings(inter.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        author = inter.author
-        viewb = Confirm(inter, self.bot)
-        viewbx = disnake.ui.View()
-        valid_users = [
-            "540142383270985738",
-            "573123021598883850",
-            "584377789969596416",
-            "106451437839499264",
-            "237984877604110336",
-            "579750505736044574",
-            "497406228364787717",
-            "353049432037523467",
-            "717822288375971900",
-            "168422909482762240",
-        ]
-
-        viewbx.add_item(Button(style=ButtonStyle.grey, label="·", disabled=True))
-        embedconfirm = disnake.Embed(
-            title=STRINGS["moderation"]["shutdownembedtitle"],
-            description=STRINGS["moderation"]["shutdownconfirm"],
-        )
-        await inter.response.send_message(embed=embedconfirm, view=viewb)
-        await viewb.wait()
-
-    @commands.command(
-        slash_command=True, message_command=True, description="Set bot status"
-    )
-    async def set_status(self, ctx, *args):
-        s = await Settings(ctx.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        author = ctx.message.author
-        valid_users = [
-            "540142383270985738",
-            "573123021598883850",
-            "584377789969596416",
-            "106451437839499264",
-            "237984877604110336",
-            "579750505736044574",
-            "497406228364787717",
-        ]
-        if str(author.id) in valid_users:
-            await self.bot.change_presence(activity=disnake.Game(" ".join(args)))
-            embed = disnake.Embed(
-                title=STRINGS["moderation"]["setstatustext"],
-                description=STRINGS["moderation"]["setstatusdesc"],
-                color=0xFF8000,
-            )
-            embed.add_field(
-                name=STRINGS["moderation"]["setstatusfieldtext"],
-                value=STRINGS["moderation"]["setstatusfielddesc"],
-                inline=True,
-            )
-            embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
-        else:
-            embed = disnake.Embed(
-                title="You failed",
-                description="Need Permission : Bot Owner",
-                color=0xFF0000,
-            )
-
-        await ctx.send(embed=embed)
 
     @commands.slash_command(
         name="set_status",
@@ -480,15 +369,7 @@ class Admin(commands.Cog, name="Admin"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         author = inter.author
-        valid_users = [
-            "540142383270985738",
-            "573123021598883850",
-            "584377789969596416",
-            "106451437839499264",
-            "237984877604110336",
-            "579750505736044574",
-            "497406228364787717",
-        ]
+        
         if str(author.id) in valid_users:
             await self.bot.change_presence(activity=disnake.Game(" ".join(sts)))
             embed = disnake.Embed(
@@ -755,11 +636,79 @@ class Admin(commands.Cog, name="Admin"):
         embed.add_field(name="Seconds", value=f"```{seconds}s```", inline=False)
         await inter.response.send_message(embed=embed)
 
-    # @commands.command()
-    # @commands.is_owner()
-    # async def guildlist(self, ctx: Context, bot : Bot):
-    # await ctx.send(bot.guilds)
+    @commands.command(
+        slash_command=True, message_command=True, name="shutdown",
+        description="Bot restart/shutdown",
+    )
+    async def shutdown(self, ctx: Context):  # Команда для выключения бота
+        s = await Settings(ctx.guild.id)
+        lang = await s.get_field("locale", CONFIG["default_locale"])
+        STRINGS = Strings(lang)
+        author = ctx.message.author
+        viewb = Confirm(ctx, self.bot)
+        viewbx = disnake.ui.View()
 
+        viewbx.add_item(Button(style=ButtonStyle.grey, label="·", disabled=True))
+        embedconfirm = disnake.Embed(
+            title=STRINGS["moderation"]["shutdownembedtitle"],
+            description=STRINGS["moderation"]["shutdownconfirm"],
+        )
+        await ctx.send(embed=embedconfirm, view=viewb)
+        await viewb.wait()
+
+    @commands.slash_command(
+        name="shutdown",
+        description="Shutdown the bot [OWNERS-ONLY!!!!].",
+    )
+    async def slashshutdown(
+        self, inter: disnake.ApplicationCommandInteraction
+    ):  # Команда для выключения бота
+        s = await Settings(inter.guild.id)
+        lang = await s.get_field("locale", CONFIG["default_locale"])
+        STRINGS = Strings(lang)
+        author = inter.author
+        viewb = Confirm(inter, self.bot)
+        viewbx = disnake.ui.View()
+
+        viewbx.add_item(Button(style=ButtonStyle.grey, label="·", disabled=True))
+        embedconfirm = disnake.Embed(
+            title=STRINGS["moderation"]["shutdownembedtitle"],
+            description=STRINGS["moderation"]["shutdownconfirm"],
+        )
+        await inter.response.send_message(embed=embedconfirm, view=viewb)
+        await viewb.wait()
+
+    @commands.command(
+        slash_command=True, message_command=True, description="Set bot status"
+    )
+    async def set_status(self, ctx, *args):
+        s = await Settings(ctx.guild.id)
+        lang = await s.get_field("locale", CONFIG["default_locale"])
+        STRINGS = Strings(lang)
+        author = ctx.message.author
+        if str(author.id) in valid_users:
+            await self.bot.change_presence(activity=disnake.Game(" ".join(args)))
+            embed = disnake.Embed(
+                title=STRINGS["moderation"]["setstatustext"],
+                description=STRINGS["moderation"]["setstatusdesc"],
+                color=0xFF8000,
+            )
+            embed.add_field(
+                name=STRINGS["moderation"]["setstatusfieldtext"],
+                value=STRINGS["moderation"]["setstatusfielddesc"],
+                inline=True,
+            )
+            embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
+        else:
+            embed = disnake.Embed(
+                title="You failed",
+                description="Need Permission : Bot Owner",
+                color=0xFF0000,
+            )
+
+        await ctx.send(embed=embed)
+
+    # ... [rest of the code remains unchanged]
 
 def setup(bot: Bot) -> NoReturn:
     bot.add_cog(Admin(bot))
