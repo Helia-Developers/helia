@@ -40,7 +40,8 @@ class Listeners(commands.Cog, name="Listeners"):
     def _ensure_log_file_exists(self):
         os.makedirs(os.path.dirname(self.logpath), exist_ok=True)
         if not os.path.exists(self.logpath):
-            open(self.logpath, "a").close()
+            with open(self.logpath, "a", encoding="utf-8") as file:
+                pass
 
     def _log_to_file(self, message: str):
         with open(self.logpath, "a", encoding="utf-8") as file:
