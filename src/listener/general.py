@@ -12,6 +12,7 @@ This cog is designed to be a central hub for common bot functionality that doesn
 
 # -*- coding: utf-8 -*-
 import datetime
+import getpass
 import math
 import os
 import platform
@@ -180,6 +181,12 @@ class General(commands.Cog, name="General"):
             hours, remainder = divmod(int(delta_uptime.total_seconds()), 3600)
             minutes, seconds = divmod(remainder, 60)
             days, hours = divmod(hours, 24)
+            user = getpass.getuser()
+            unameplatform = platform.uname().node
+            hostname = user+'@'+unameplatform
+            aarch= platform.architecture()[0]
+
+            cputype = platform.processor()
             embed = disnake.Embed(
                 title=STRINGS["general"]["abouttitle"],
                 description=STRINGS["general"]["aboutdesc"],
@@ -188,7 +195,7 @@ class General(commands.Cog, name="General"):
 
             embed.add_field(
                 name=STRINGS["general"]["aboutver"],
-                value=f" Version: {ver}\nPython Version:{pythonVersion}\nLibrary: disnake.py\ndisnake.Py Version: {dpyVersion} ",
+                value=f" Version: {ver}\nPython Version:{pythonVersion}\nLibrary: disnake.py\ndisnake.Py Version: {dpyVersion} \n  Hostname {hostname} \n  Host CPU {cputype} \n  Host Arch {aarch} ",
                 inline=False,
             )
             embed.add_field(
