@@ -192,7 +192,7 @@ class General(commands.Cog, name="General"):
                 inline=False,
             )
             embed.add_field(
-                name="Other Information",
+                name=STRINGS["general"]["otherinfoabout"],
                 value=f" Count: {servercount}\nUser Count: {usercount}\nRAM Usage:{ramUsage:.2f} MB\nDays: {days}d\nHours: {hours}h\nMinutes: {minutes}m\nSeconds: {seconds}s\nCommand Count: {len(self.bot.commands)}",
                 inline=True,
             )

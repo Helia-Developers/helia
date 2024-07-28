@@ -8,13 +8,13 @@ The `insert_table`, `update_table`, `select_table`, and `delete_table` functions
 The `control` function sets up the database, creating the necessary tables if they don't already exist.
 """
 
-import os
 import sqlite3
+from pathlib import Path
 
-cwd = os.getcwd()
-parent_dir = os.path.abspath(cwd + "/../")
+cwd = Path.cwd()
+parent_dir = cwd.parent
 
-main = os.path.join(parent_dir + "\db\botmaindata.db")
+main = cwd / "db" / "botmaindata.db"
 
 
 def insert_table(table_name, name1, name2):
@@ -34,15 +34,15 @@ def delete_table(table_name, name1, nm1):
 
 
 def control():
-    print(cwd)
-    print(parent_dir)
-    print(main)
+    print(f"[DB] file path: {cwd}")
+    print(f"[DB] parent directory: {parent_dir}")
+    print(f"[DB] main file path: {main}")
 
     # Ensure the directory exists
-    os.makedirs(os.path.dirname(main), exist_ok=True)
+    main.parent.mkdir(parents=True, exist_ok=True)
 
     try:
-        base = sqlite3.connect(main)
+        base = sqlite3.connect(str(main))
         print("[DB] Connected to sqlite")
         cursor = base.cursor()
         tables = ["welcome", "goodbye"]
@@ -62,7 +62,6 @@ def control():
 
         base.commit()
     except sqlite3.OperationalError as e:
-        
         print(f"[DB] Error: {e}")
         print(f"[DB] Unable to open database file: {main}")
         print("[DB] Please check file permissions and path.")
