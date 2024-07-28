@@ -16,7 +16,8 @@ import asyncio
 import datetime
 import os
 import traceback
-from typing import NoReturn
+from types import TracebackType
+from typing import NoReturn, Union
 
 import disnake
 from disnake import Guild, Message
@@ -122,6 +123,13 @@ class Listeners(commands.Cog, name="Listeners"):
 
     @commands.Cog.listener()
     async def on_command_error(self, ctx: Context, error: Exception) -> NoReturn:
+        await self.handle_error(ctx, error)
+
+    @commands.Cog.listener()
+    async def on_slash_command_error(self, inter: disnake.ApplicationCommandInteraction, error: Exception) -> NoReturn:
+        await self.handle_error(inter, error)
+
+    async def handle_error(self, ctx_or_inter: Union[Context, disnake.ApplicationCommandInteraction], error: Exception) -> NoReturn:
         """If an unexpected error occurs, it displays an... error message?
 
         Attributes:
@@ -129,7 +137,7 @@ class Listeners(commands.Cog, name="Listeners"):
         - `error` - error information
 
         """
-        s = await Settings(ctx.guild.id)
+        s = await Settings(ctx_or_inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         COMMANDS = Commands(lang)
@@ -137,18 +145,18 @@ class Listeners(commands.Cog, name="Listeners"):
         error_message = f"""
         ║========================║=========================║
         ║ Guild                  ║ Member                  ║
-        ║ {ctx.guild.name}::::::::::::::║ {ctx.author.name}:::::::::::::::::║        
+        ║ {ctx_or_inter.guild.name}::::::::::::::║ {ctx_or_inter.author.name}:::::::::::::::::║        
         ║========================║=========================║
         ║ Guild ID               ║ Member ID               ║
-        ║ {ctx.guild.id}:::::║ {ctx.author.id}::::::║
+        ║ {ctx_or_inter.guild.id}:::::║ {ctx_or_inter.author.id}::::::║
         ║========================║=========================║
         =======================================================
         Traceback 
-        {traceback.format_exc()}
+        {traceback.format_exception(type(error), error, error.__traceback__)}        
         =======================================================
         """
         cprint("==============================")
-        cprint(error_message)
+        cprint(error_message,color="red")
         cprint("==============================")
         self._log_to_file(error_message)
 
@@ -158,10 +166,10 @@ class Listeners(commands.Cog, name="Listeners"):
         if isinstance(error, commands.MissingRequiredArgument):
             prefix = await s.get_field("prefix", CONFIG["default_prefix"])
 
-            if ctx.command.cog.name != "Jishaku":
+            if ctx_or_inter.application_command.cog.name != "Jishaku":
                 embed = Utils.error_embed(
                     STRINGS["etc"]["usage"].format(
-                        COMMANDS[ctx.command.cog.name]["commands"][ctx.command.name][
+                        COMMANDS[ctx_or_inter.application_command.cog.name]["commands"][ctx_or_inter.application_command.name][
                             "usage"
                         ].format(prefix)
                     )
@@ -201,10 +209,12 @@ class Listeners(commands.Cog, name="Listeners"):
             embed.title = STRINGS["error"]["on_error_title"]
             embed.description = STRINGS["error"]["on_error_text"].format(str(error))
 
-        msg = await ctx.send(embed=embed)
-        await asyncio.sleep(20)
-        await msg.delete()
-
+        if isinstance(ctx_or_inter, Context):
+            msg = await ctx_or_inter.send(embed=embed)
+            await asyncio.sleep(20)
+            await msg.delete()
+        else:
+            await ctx_or_inter.response.send_message(embed=embed, ephemeral=True)
 
 def setup(bot: Bot) -> NoReturn:
     bot.add_cog(Listeners(bot))

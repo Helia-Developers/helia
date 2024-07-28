@@ -41,7 +41,7 @@ class Help(commands.Cog):
             await self.send_command_help(inter, command)
 
     async def send_bot_help(self, inter: disnake.ApplicationCommandInteraction):
-        embed = HelpEmbed()
+        embed = HelpEmbed(description=f"Welcome To {self.bot.user.name} Help System")
         usable = 0
         myoptions = []
 
@@ -90,7 +90,8 @@ class HelpEmbed(disnake.Embed):
         super().__init__(**kwargs)
         self.timestamp = disnake.utils.utcnow()
         self.title = ":books: Help System"
-        self.set_footer(text="Use /help [command] or /help [category] for more information | <> is required | [] is optional")
+        
+        self.set_footer(text="Developed with ❤️ by Middlle")
 
 async def get_help(self, interaction, CogToPassAlong):
     cog = self.bot.get_cog(CogToPassAlong)

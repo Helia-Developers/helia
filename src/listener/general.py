@@ -166,8 +166,11 @@ class General(commands.Cog, name="General"):
             lang = await s.get_field("locale", CONFIG["default_locale"])
             STRINGS = Strings(lang)
             path = "scripts/version.txt"
-            with open(path, "r") as file:
-                ver = file.readline()
+            try:
+                with open(path, "r") as file:
+                    ver = file.readline().strip()
+            except FileNotFoundError:
+                ver = "Unknown"
             ramUsage = self.process.memory_full_info().rss / 1024**2
             pythonVersion = platform.python_version()
             dpyVersion = disnake.__version__
