@@ -27,48 +27,70 @@ OPTIONS = {
 
 
 class AlreadyConnectedToChannel(commands.CommandError):
+    """ """
+
     pass
 
 
 class NoVoiceChannel(commands.CommandError):
+    """ """
+
     pass
 
 
 class QueueIsEmpty(commands.CommandError):
+    """ """
+
     pass
 
 
 class NoTracksFound(commands.CommandError):
+    """ """
+
     pass
 
 
 class PlayerIsAlreadyPaused(commands.CommandError):
+    """ """
+
     pass
 
 
 class PlayerIsAlreadyPlaying(commands.CommandError):
+    """ """
+
     pass
 
 
 class NoMoreTracks(commands.CommandError):
+    """ """
+
     pass
 
 
 class NoPreviousTracks(commands.CommandError):
+    """ """
+
     pass
 
 
 class InvalidRepeatMode(commands.CommandError):
+    """ """
+
     pass
 
 
 class RepeatMode(Enum):
+    """ """
+
     NONE = 0
     ONE = 1
     ALL = 2
 
 
 class Queue:
+    """ """
+
     def __init__(self):
         self._queue = []
         self.position = 0
@@ -76,10 +98,12 @@ class Queue:
 
     @property
     def is_empty(self):
+        """ """
         return not self._queue
 
     @property
     def current_track(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
 
@@ -88,24 +112,33 @@ class Queue:
 
     @property
     def upcoming(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
         return self._queue[self.position + 1 :]
 
     @property
     def history(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
         return self._queue[: self.position]
 
     @property
     def length(self):
+        """ """
         return len(self._queue)
 
     def add(self, *args):
+        """
+
+        :param *args:
+
+        """
         self._queue.extend(args)
 
     def get_next_track(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
         self.position += 1
@@ -119,6 +152,7 @@ class Queue:
         return self._queue[self.position]
 
     def shuffle(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
         upcoming = self.upcoming
@@ -127,6 +161,11 @@ class Queue:
         self._queue.extend(upcoming)
 
     def set_repeat_mode(self, mode):
+        """
+
+        :param mode:
+
+        """
         if mode == "noloop":
             self.repeat_mode = RepeatMode.NONE
         elif mode == "onesong":
@@ -135,11 +174,14 @@ class Queue:
             self.repeat_mode = RepeatMode.ALL
 
     def empty(self):
+        """ """
         self._queue.clear()
         self.position = 0
 
 
 class Player(wavelink.Player):
+    """ """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.queue = Queue()
@@ -174,6 +216,12 @@ class Player(wavelink.Player):
 
     async def choose_track(self, ctx, tracks):
         def _check(r, u):
+            """
+
+            :param r:
+            :param u:
+
+            """
             return (
                 r.emoji in OPTIONS.keys() and u == ctx.author and r.message.id == msg.id
             )
@@ -182,7 +230,7 @@ class Player(wavelink.Player):
             title="Choose a song",
             description=(
                 "\n".join(
-                    f"**{i+1}.** {t.title} ({t.length//60000}:{str(t.length%60).zfill(2)})"
+                    f"**{i+1}.** {t.title} ({t.length//60000}:{str(t.length % 60).zfill(2)})"
                     for i, t in enumerate(tracks[:5])
                 )
             ),
@@ -265,25 +313,30 @@ class Music(commands.Cog):
             await self.wavelink.initiate_node(**node)
 
     def get_player(self, obj):
+        """
+
+        :param obj:
+
+        """
         if isinstance(obj, commands.Context):
             return self.wavelink.get_player(obj.guild.id, cls=Player, context=obj)
         elif isinstance(obj, disnake.Guild):
             return self.wavelink.get_player(obj.id, cls=Player)
 
-    @commands.slash_command(name="join", description="Join a voice channel")
+    @commands.slash_command(name="join", description="Join")
     async def join(self, inter: disnake.ApplicationCommandInteraction):
         player = self.get_player(inter)
         channel = inter.author.voice.channel
         await player.connect(inter, channel)
         await inter.response.send_message(f"Joined {channel.name}")
 
-    @commands.slash_command(name="leave", description="Leave the voice channel")
+    @commands.slash_command(name="leave", description="Leave")
     async def leave(self, inter: disnake.ApplicationCommandInteraction):
         player = self.get_player(inter)
         await player.teardown()
         await inter.response.send_message("Left the voice channel")
 
-    @commands.slash_command(name="play", description="Play a song")
+    @commands.slash_command(name="play", description="Play")
     async def play(self, inter: disnake.ApplicationCommandInteraction, *, query: str):
         player = self.get_player(inter)
 
@@ -297,34 +350,32 @@ class Music(commands.Cog):
         await player.add_tracks(inter, await self.wavelink.get_tracks(query))
         await inter.response.send_message(f"Added to queue: {query}")
 
-    @commands.slash_command(name="pause", description="Pause the current song")
+    @commands.slash_command(name="pause", description="Pause")
     async def pause(self, inter: disnake.ApplicationCommandInteraction):
         player = self.get_player(inter)
         await player.set_pause(True)
         await inter.response.send_message("Paused the song")
 
-    @commands.slash_command(name="resume", description="Resume the current song")
+    @commands.slash_command(name="resume", description="Resume")
     async def resume(self, inter: disnake.ApplicationCommandInteraction):
         player = self.get_player(inter)
         await player.set_pause(False)
         await inter.response.send_message("Resumed the song")
 
-    @commands.slash_command(
-        name="stop", description="Stop the player and clear the queue"
-    )
+    @commands.slash_command(name="stop", description="Stop")
     async def stop(self, inter: disnake.ApplicationCommandInteraction):
         player = self.get_player(inter)
         player.queue.empty()
         await player.stop()
         await inter.response.send_message("Stopped the player and cleared the queue")
 
-    @commands.slash_command(name="skip", description="Skip the current song")
+    @commands.slash_command(name="skip", description="Skip")
     async def skip(self, inter: disnake.ApplicationCommandInteraction):
         player = self.get_player(inter)
         await player.stop()
         await inter.response.send_message("Skipped the current song")
 
-    @commands.slash_command(name="queue", description="Display the current queue")
+    @commands.slash_command(name="queue", description="Queue")
     async def queue(self, inter: disnake.ApplicationCommandInteraction):
         player = self.get_player(inter)
         if player.queue.is_empty:
@@ -348,7 +399,7 @@ class Music(commands.Cog):
 
         await inter.response.send_message(embed=embed)
 
-    @commands.slash_command(name="volume", description="Set the player volume")
+    @commands.slash_command(name="volume", description="Volume")
     async def volume(self, inter: disnake.ApplicationCommandInteraction, volume: int):
         if not 0 <= volume <= 100:
             raise commands.BadArgument("Volume must be between 0 and 100")
@@ -359,5 +410,10 @@ class Music(commands.Cog):
 
 
 def setup(bot):
+    """
+
+    :param bot:
+
+    """
     bot.add_cog(Music(bot))
     Logger.cog_loaded(bot.get_cog("Music").name)

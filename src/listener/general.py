@@ -19,6 +19,7 @@ import platform
 import random
 from typing import NoReturn
 
+import cpuinfo
 import disnake
 import psutil
 import wikipedia
@@ -32,12 +33,31 @@ CONFIG = Config()
 
 
 class General(commands.Cog, name="General"):
+    """ """
+
     def __init__(self, bot) -> None:
         self.bot = bot
         self.name = "General"
         self.process = psutil.Process(os.getpid())
 
-    @commands.slash_command(name="echo", description="Echo msg")
+    @staticmethod
+    def callget_cpu_info():
+        """Returns the CPU brand information, or a message indicating that the cpuinfo library is not installed.
+
+
+        :returns: The CPU brand information, or a message indicating that the cpuinfo library is not installed.
+
+        :rtype: str
+
+        """
+        try:
+            info = cpuinfo.get_cpu_info()
+            print(info["brand_raw"])
+            return info["brand_raw"]
+        except:
+            return " cpuinfo is not installed"
+
+    @commands.slash_command(name="echo", description="Echo")
     async def echo(self, inter: disnake.ApplicationCommandInteraction, content: str):
         if not content or len(content) > 200:
             await inter.response.send_message(
@@ -74,7 +94,7 @@ class General(commands.Cog, name="General"):
                 f"An error occurred: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="embed", description="Generate embed")
+    @commands.slash_command(name="embed", description="Embed")
     async def embed(
         self, inter: disnake.ApplicationCommandInteraction, name: str, content: str
     ):
@@ -110,7 +130,7 @@ class General(commands.Cog, name="General"):
                 f"An error occurred: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="wiki", description="Search Wikipedia")
+    @commands.slash_command(name="wiki", description="Wikipedia")
     @commands.is_nsfw()
     async def wiki(self, inter: disnake.ApplicationCommandInteraction, searcher: str):
         """
@@ -157,11 +177,12 @@ class General(commands.Cog, name="General"):
                 f"An error occurred: {str(e)}", ephemeral=True
             )
 
-    @commands.slash_command(name="about", description="about bot")
+    @commands.slash_command(name="about", description="About")
     async def about(self, inter: disnake.ApplicationCommandInteraction) -> NoReturn:
         """
         Shows a short description of the bot.
         """
+        await inter.response.defer()
         try:
             s = await Settings(inter.guild.id)
             lang = await s.get_field("locale", CONFIG["default_locale"])
@@ -171,7 +192,7 @@ class General(commands.Cog, name="General"):
                 with open(path, "r") as file:
                     ver = file.readline().strip()
             except FileNotFoundError:
-                ver = "Unknown"
+                ver = "Unspecified version of a development build"
             ramUsage = self.process.memory_full_info().rss / 1024**2
             pythonVersion = platform.python_version()
             dpyVersion = disnake.__version__
@@ -186,7 +207,7 @@ class General(commands.Cog, name="General"):
             hostname = user + "@" + unameplatform
             aarch = platform.architecture()[0]
 
-            cputype = platform.processor()
+            cputype = self.callget_cpu_info()
             embed = disnake.Embed(
                 title=STRINGS["general"]["abouttitle"],
                 description=STRINGS["general"]["aboutdesc"],
@@ -195,12 +216,22 @@ class General(commands.Cog, name="General"):
 
             embed.add_field(
                 name=STRINGS["general"]["aboutver"],
-                value=f" Version: {ver}\nPython Version:{pythonVersion}\nLibrary: disnake.py\ndisnake.Py Version: {dpyVersion} \n  Hostname {hostname} \n  Host CPU {cputype} \n  Host Arch {aarch} ",
+                value=f"**Version:** {ver}\n"
+                f"**Python Version:** {pythonVersion}\n"
+                f"**Library:** disnake.py\n"
+                f"**disnake.Py Version:** {dpyVersion}\n"
+                f"**Hostname:** {hostname}\n"
+                f"**Host CPU:** {cputype}\n"
+                f"**Host Arch:** {aarch}",
                 inline=False,
             )
             embed.add_field(
                 name=STRINGS["general"]["otherinfoabout"],
-                value=f" Count: {servercount}\nUser Count: {usercount}\nRAM Usage:{ramUsage:.2f} MB\nDays: {days}d\nHours: {hours}h\nMinutes: {minutes}m\nSeconds: {seconds}s\nCommand Count: {len(self.bot.commands)}",
+                value=f"**Server Count:** {servercount:,}\n"
+                f"**User Count:** {usercount:,}\n"
+                f"**RAM Usage:** {ramUsage:.2f} MB\n"
+                f"**Uptime:** {days}d {hours}h {minutes}m {seconds}s\n"
+                f"**Command Count:** {len(self.bot.commands):,}",
                 inline=True,
             )
             embed.add_field(
@@ -210,13 +241,20 @@ class General(commands.Cog, name="General"):
             )
 
             embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
-            await inter.response.send_message(embed=embed)
+            await inter.edit_original_response(embed=embed)
         except Exception as e:
-            await inter.response.send_message(
-                f"An error occurred: {str(e)}", ephemeral=True
+            embed = disnake.Embed(
+                title=STRINGS["error"]["on_error_title"],
+                color=0xFF0000,
             )
+            embed.add_field(
+                name=STRINGS["error"]["nsfwlogerror"],
+                value=STRINGS["error"]["nsfwtraceback"].format(str(e)),
+                inline=False,
+            )
+            await inter.edit_original_response(embed=embed)
 
-    @commands.slash_command(name="privacy", description="privacy policy")
+    @commands.slash_command(name="privacy", description="Privacy")
     async def privacy(self, inter: disnake.ApplicationCommandInteraction):
         """
         Shows the privacy policy of the bot.
@@ -269,5 +307,10 @@ class General(commands.Cog, name="General"):
 
 
 def setup(bot: Bot) -> NoReturn:
+    """
+
+    :param bot: Bot:
+
+    """
     bot.add_cog(General(bot))
     Logger.cog_loaded(bot.get_cog("General").name)

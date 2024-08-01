@@ -24,17 +24,22 @@ operators = {
 
 
 class Calculator(commands.Cog, name="Calculator"):
+    """ """
+
     def __init__(self, bot):
         self.bot = bot
         self.name = "Calculator"
 
-    @commands.slash_command(name="calculator", description="Open a calculator")
+    @commands.slash_command(name="calculator", description="Calculator")
     async def calculator(self, inter: disnake.ApplicationCommandInteraction):
         def eval_(node):
+            """
+
+            :param node:
+
+            """
             if not isinstance(node, (ast.Expression, ast.BinOp, ast.UnaryOp, ast.Num)):
                 raise ValueError("Invalid expression")
-            match node:
-                case ast.Constant(value) if isinstance(value, int):
             match node:
                 case ast.Constant(value) if isinstance(value, int):
                     return value  # integer
@@ -46,14 +51,13 @@ class Calculator(commands.Cog, name="Calculator"):
                     raise TypeError(node)
 
         def calculate(exp):
-            """
-            Calculates the result of the given mathematical expression.
+            """Calculates the result of the given mathematical expression.
 
-            Args:
-                exp (str): The mathematical expression to be evaluated.
+            :param exp: The mathematical expression to be evaluated.
+            :type exp: str
+            :returns: The result of the expression, or "An error occurred." if an error occurs during the calculation.
+            :rtype: str
 
-            Returns:
-                str: The result of the expression, or "An error occurred." if an error occurs during the calculation.
             """
             ox = "".join(filter(str.isdigit, exp))
             print(ox)
@@ -73,8 +77,7 @@ class Calculator(commands.Cog, name="Calculator"):
 
         m = await inter.response.send_message(content="Loading Calculators...")
         expression = "None"
-        delta = datetime.datetime.now(
-            datetime.UTC) + datetime.timedelta(minutes=5)
+        delta = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=5)
         e = disnake.Embed(
             title=f"{inter.author.name}'s calculator",
             description=f"\n{expression}",
@@ -237,4 +240,9 @@ class Calculator(commands.Cog, name="Calculator"):
 
 
 def setup(bot):
+    """
+
+    :param bot:
+
+    """
     bot.add_cog(Calculator(bot))

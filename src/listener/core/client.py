@@ -24,12 +24,17 @@ from scripts import db  # UNCOMMENT FOR DB CONNECTION
 
 
 class NanoContext(commands.Context):
+    """ """
+
     @property
     def secret(self):
+        """ """
         return "this is my secret"
 
 
 class CoreClient(commands.AutoShardedBot):
+    """ """
+
     def __init__(
         self, name="Helia", id=536892183404478483, command_prefix="n>", intents=None
     ):
@@ -57,9 +62,7 @@ class CoreClient(commands.AutoShardedBot):
             disnake.Activity(
                 type=disnake.ActivityType.watching, name="for bot breakage"
             ),
-            disnake.Activity(
-                type=disnake.ActivityType.watching, name="the disnake.py deprecation"
-            ),
+            disnake.Activity(type=disnake.ActivityType.watching, name="hell on earth"),
             disnake.Activity(
                 type=disnake.ActivityType.listening,
                 name="Dont forget to bump the bot every 3 hours on bot lists!",
