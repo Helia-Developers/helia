@@ -84,7 +84,8 @@ class General(commands.Cog, name="General"):
                         description=STRINGS["general"]["blacklistwarndesc"],
                         color=0xFF0000,
                     )
-                    embed.set_footer(text=STRINGS["general"]["blacklistwarnfooter"])
+                    embed.set_footer(
+                        text=STRINGS["general"]["blacklistwarnfooter"])
                     return await inter.response.send_message(
                         embed=embed, ephemeral=True
                     )
@@ -119,7 +120,8 @@ class General(commands.Cog, name="General"):
                         description=STRINGS["general"]["blacklistwarndesc"],
                         color=0xFF0000,
                     )
-                    embed.set_footer(text=STRINGS["general"]["blacklistwarnfooter"])
+                    embed.set_footer(
+                        text=STRINGS["general"]["blacklistwarnfooter"])
                     return await inter.response.send_message(
                         embed=embed, ephemeral=True
                     )
@@ -240,7 +242,8 @@ class General(commands.Cog, name="General"):
                 inline=True,
             )
 
-            embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
+            embed.set_footer(text=self.bot.user.name,
+                             icon_url=self.bot.user.avatar.url)
             await inter.edit_original_response(embed=embed)
         except Exception as e:
             embed = disnake.Embed(
@@ -298,7 +301,8 @@ class General(commands.Cog, name="General"):
                 value=STRINGS["privacy"]["datadeletepoldesc"],
                 inline=True,
             )
-            embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
+            embed.set_footer(text=self.bot.user.name,
+                             icon_url=self.bot.user.avatar.url)
             await inter.response.send_message(embed=embed)
         except Exception as e:
             await inter.response.send_message(

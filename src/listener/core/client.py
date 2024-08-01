@@ -62,7 +62,8 @@ class CoreClient(commands.AutoShardedBot):
             disnake.Activity(
                 type=disnake.ActivityType.watching, name="for bot breakage"
             ),
-            disnake.Activity(type=disnake.ActivityType.watching, name="hell on earth"),
+            disnake.Activity(type=disnake.ActivityType.watching,
+                             name="hell on earth"),
             disnake.Activity(
                 type=disnake.ActivityType.listening,
                 name="Dont forget to bump the bot every 3 hours on bot lists!",
@@ -79,7 +80,8 @@ class CoreClient(commands.AutoShardedBot):
             disnake.Game(
                 name="Deep inside, we're nothing more than scions and sinners"
             ),
-            disnake.Activity(type=disnake.ActivityType.watching, name="headbanging"),
+            disnake.Activity(
+                type=disnake.ActivityType.watching, name="headbanging"),
         ]
         await asyncio.sleep(40)
         print("---------------------------")
