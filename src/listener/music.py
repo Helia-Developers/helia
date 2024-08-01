@@ -90,7 +90,7 @@ class Queue:
     def upcoming(self):
         if not self._queue:
             raise QueueIsEmpty
-        return self._queue[self.position + 1:]
+        return self._queue[self.position + 1 :]
 
     @property
     def history(self):

@@ -44,14 +44,12 @@ class Goodbye(commands.Cog):
         connect = sqlite3.connect(db.main)
         cursor = connect.cursor()
         cursor.execute(
-            db.select_table("goodbye", "channel_id",
-                            "guild_id", member.guild.id)
+            db.select_table("goodbye", "channel_id", "guild_id", member.guild.id)
         )
         chan = cursor.fetchone()
         if chan is None:
             return
-        cursor.execute(db.select_table(
-            "goodbye", "text", "guild_id", member.guild.id))
+        cursor.execute(db.select_table("goodbye", "text", "guild_id", member.guild.id))
         desc = cursor.fetchone()
         descdef = f"The one who left was {member}, who knows his/hers reasons for leaving but we will welcome them with open arms if they return "
         gb = disnake.Embed(
@@ -61,11 +59,9 @@ class Goodbye(commands.Cog):
         gb.set_author(name="Goodbye System")
 
         if desc is None:
-            gb.add_field(name="Server message",
-                         value=f"{descdef}", inline=True)
+            gb.add_field(name="Server message", value=f"{descdef}", inline=True)
         else:
-            gb.add_field(name="Server message",
-                         value=f"{desc[0]}", inline=True)
+            gb.add_field(name="Server message", value=f"{desc[0]}", inline=True)
         channel = self.bot.get_channel(int(chan[0]))
         cursor.close()
         connect.close()
@@ -122,8 +118,7 @@ class Goodbye(commands.Cog):
             connect = sqlite3.connect(db.main)
             cursor = connect.cursor()
             cursor.execute(
-                db.select_table("goodbye", "channel_id",
-                                "guild_id", inter.guild.id)
+                db.select_table("goodbye", "channel_id", "guild_id", inter.guild.id)
             )
             result = cursor.fetchone()
             if result is None:
@@ -169,8 +164,7 @@ class Goodbye(commands.Cog):
             connect = sqlite3.connect(db.main)
             cursor = connect.cursor()
             cursor.execute(
-                db.select_table("goodbye", "channel_id",
-                                "guild_id", inter.guild.id)
+                db.select_table("goodbye", "channel_id", "guild_id", inter.guild.id)
             )
             result = cursor.fetchone()
             if result is None:
@@ -178,8 +172,7 @@ class Goodbye(commands.Cog):
                     "No goodbye channel is set for this server.", ephemeral=True
                 )
             else:
-                cursor.execute(db.delete_table(
-                    "goodbye", "guild_id", inter.guild.id))
+                cursor.execute(db.delete_table("goodbye", "guild_id", inter.guild.id))
                 await inter.response.send_message(
                     "Cleared the goodbye channel setting", ephemeral=True
                 )
@@ -223,12 +216,10 @@ class Goodbye(commands.Cog):
             res = cursor.fetchone()
             if res is None:
                 val = (inter.guild.id, content)
-                cursor.execute(db.insert_table(
-                    "goodbye", "guild_id", "text"), val)
+                cursor.execute(db.insert_table("goodbye", "guild_id", "text"), val)
             else:
                 val = (content, inter.guild.id)
-                cursor.execute(
-                    "UPDATE goodbye SET text = ? WHERE guild_id = ?", val)
+                cursor.execute("UPDATE goodbye SET text = ? WHERE guild_id = ?", val)
             connect.commit()
             cursor.close()
             connect.close()

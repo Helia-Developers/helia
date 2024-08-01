@@ -106,8 +106,7 @@ class Utilities(commands.Cog):
             STRINGS = await self._get_strings(ctx)
 
             format = (
-                r"png" if re.sub(r"[\<]", r"", emoji.split(":")[
-                                 0]) == "" else "gif"
+                r"png" if re.sub(r"[\<]", r"", emoji.split(":")[0]) == "" else "gif"
             )
             name = emoji.split(":")[1]
             id = re.sub(r"[\>]", r"", emoji.split(r":")[2])
@@ -116,10 +115,8 @@ class Utilities(commands.Cog):
                 title=STRINGS["utilities"]["emoji_info_title"].format(name),
                 color=0xEDA84E,
             )
-            embed.set_image(
-                url=f"https://cdn.discordapp.com/emojis/{id}.{format}")
-            embed.set_footer(
-                text=STRINGS["utilities"]["emoji_info"].format(id))
+            embed.set_image(url=f"https://cdn.discordapp.com/emojis/{id}.{format}")
+            embed.set_footer(text=STRINGS["utilities"]["emoji_info"].format(id))
 
             await ctx.send(embed=embed)
         except Exception as e:
@@ -193,10 +190,8 @@ class Utilities(commands.Cog):
 
             embed = disnake.Embed(
                 color=0xEDA84E,
-                title=STRINGS["utilities"]["avatar_info_title"].format(
-                    name, tag),
-                description=STRINGS["utilities"]["avatar_info"].format(
-                    hash, avatar),
+                title=STRINGS["utilities"]["avatar_info_title"].format(name, tag),
+                description=STRINGS["utilities"]["avatar_info"].format(hash, avatar),
             )
             embed.set_image(url=avatar)
 
@@ -382,8 +377,7 @@ class Utilities(commands.Cog):
             e.add_field(name="Members", value=fmt, inline=True)
             e.add_field(
                 name="Roles",
-                value=", ".join(roles) if len(
-                    roles) < 10 else f"{len(roles)} roles",
+                value=", ".join(roles) if len(roles) < 10 else f"{len(roles)} roles",
             )
 
             emoji_stats = Counter()

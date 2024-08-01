@@ -130,8 +130,7 @@ class Moderation(commands.Cog, name="Moderation"):
             else:
                 try:
                     embed = Utils.error_embed(
-                        STRINGS["moderation"]["dm_ban"].format(
-                            inter.guild.name, reason)
+                        STRINGS["moderation"]["dm_ban"].format(inter.guild.name, reason)
                     )
                     await member.send(embed=embed)
                 except:

@@ -45,8 +45,7 @@ class Broadcast(commands.Cog):
                 color=0x3B88C3,
             )
             author_name = f"{inter.author}"
-            announcement.set_author(
-                name=author_name, icon_url=inter.author.avatar.url)
+            announcement.set_author(name=author_name, icon_url=inter.author.avatar.url)
             announcement.add_field(
                 name=STRINGS["general"]["announcesfieldtitle"],
                 value=f"{inter.guild.name}",
@@ -78,8 +77,7 @@ class Broadcast(commands.Cog):
                 except disnake.NotFound:
                     continue
                 except Exception as e:
-                    print(
-                        f"Error sending announcement to guild {guild.id}: {str(e)}")
+                    print(f"Error sending announcement to guild {guild.id}: {str(e)}")
 
             await inter.followup.send(f"Announcement sent to {sent_counter} servers.")
         except Exception as e:
@@ -141,8 +139,7 @@ class Broadcast(commands.Cog):
                     )
 
             # Create the embed
-            embed = disnake.Embed(title="Debug Information",
-                                  color=disnake.Color.blue())
+            embed = disnake.Embed(title="Debug Information", color=disnake.Color.blue())
 
             # Add main debug info to embed
             embed.add_field(
@@ -158,7 +155,7 @@ class Broadcast(commands.Cog):
 
             # Add command info to embed
             command_chunks = [
-                command_info[i: i + 20] for i in range(0, len(command_info), 20)
+                command_info[i : i + 20] for i in range(0, len(command_info), 20)
             ]
             for i, chunk in enumerate(command_chunks):
                 chunk_value = "\n".join(chunk)
@@ -180,7 +177,7 @@ class Broadcast(commands.Cog):
                 current_embed = disnake.Embed(
                     title="Debug Information (Continued)", color=disnake.Color.blue()
                 )
-                for field in embed.fields[len(embed.fields) // 2:]:
+                for field in embed.fields[len(embed.fields) // 2 :]:
                     if len(current_embed) + len(field.value) > 1000:
                         additional_embeds.append(current_embed)
                         current_embed = disnake.Embed(
