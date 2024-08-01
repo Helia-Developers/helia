@@ -1,9 +1,11 @@
 import asyncio
 import os
+import platform
 
 import disnake
 from disnake.ext import commands
 from disnake.ext.commands import Bot
+import psutil
 
 from listener.utils import Config, Logger, Settings, Strings
 
@@ -16,7 +18,7 @@ class Broadcast(commands.Cog):
 
     @commands.slash_command(
         name="announce",
-        description="global announcements",
+        description="Announce",
     )
     @commands.is_owner()
     async def announce(
@@ -83,7 +85,7 @@ class Broadcast(commands.Cog):
 
     @commands.slash_command(
         name="debug",
-        description="debug cmd",
+        description="Debug",
     )
     @commands.is_owner()
     async def debug(self, inter: disnake.ApplicationCommandInteraction):
@@ -97,9 +99,38 @@ class Broadcast(commands.Cog):
         """
         try:
             voice_states = inter.bot.voice_clients
-            await inter.response.send_message(
-                f"I am currently in {len(voice_states)} voice channels"
-            )
+            guilds = inter.bot.guilds
+            total_members = sum(guild.member_count for guild in guilds)
+            
+            debug_info = [
+                f"Voice channels: {len(voice_states)}",
+                f"Servers: {len(guilds)}",
+                f"Total members: {total_members}",
+                f"Latency: {round(inter.bot.latency * 1000)}ms",
+                f"Discord.py version: {disnake.__version__}",
+                f"Python version: {platform.python_version()}",
+                f"Operating system: {platform.system()} {platform.release()}",
+                f"CPU usage: {psutil.cpu_percent()}%",
+                f"Memory usage: {psutil.virtual_memory().percent}%",
+            ]
+            
+            # Add slash command description lengths
+            debug_info.append("\nSlash Command Description Lengths:")
+            for cog in inter.bot.cogs.values():
+                for command in cog.get_slash_commands():
+                    debug_info.append(f"Cog: {cog.__class__.__name__}, Command: {command.name}, Description Length: {len(command.description)}")
+            
+            # Join the debug info into a single string
+            debug_message = "Debug Information:\n" + "\n".join(debug_info)
+            
+            # Split the message if it's too long
+            if len(debug_message) > 2000:
+                chunks = [debug_message[i:i+2000] for i in range(0, len(debug_message), 2000)]
+                await inter.response.send_message(chunks[0])
+                for chunk in chunks[1:]:
+                    await inter.followup.send(chunk)
+            else:
+                await inter.response.send_message(debug_message)
         except Exception as e:
             await inter.response.send_message(
                 f"An error occurred: {str(e)}", ephemeral=True

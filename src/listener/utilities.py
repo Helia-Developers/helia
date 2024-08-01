@@ -199,7 +199,7 @@ class Utilities(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
-    @commands.slash_command(name="randint", description="random num")
+    @commands.slash_command(name="randint", description="random")
     async def randint(
         self, ctx: disnake.ApplicationCommandInteraction, stc1: int, stc2: int
     ):
@@ -230,7 +230,7 @@ class Utilities(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
-    @commands.slash_command(name="sqrt", description="get sqrt")
+    @commands.slash_command(name="sqrt", description="sqrt")
     async def sqrt(self, ctx: disnake.ApplicationCommandInteraction, num: int):
         """Calculates the square root of a given number.
 
@@ -273,7 +273,7 @@ class Utilities(commands.Cog):
         except Exception as e:
             await ctx.send(f"An error occurred: {str(e)}")
 
-    @commands.slash_command(name="guild", description="guild info")
+    @commands.slash_command(name="guild", description="guild")
     async def guild(
         self, ctx: disnake.ApplicationCommandInteraction, guild_id: int = None
     ) -> None:

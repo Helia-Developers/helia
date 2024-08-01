@@ -58,7 +58,7 @@ class CoreClient(commands.AutoShardedBot):
                 type=disnake.ActivityType.watching, name="for bot breakage"
             ),
             disnake.Activity(
-                type=disnake.ActivityType.watching, name="the disnake.py deprecation"
+                type=disnake.ActivityType.watching, name="hell om earth"
             ),
             disnake.Activity(
                 type=disnake.ActivityType.listening,

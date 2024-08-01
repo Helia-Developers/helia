@@ -1,27 +1,3 @@
-"""
-This class provides a set of moderation commands for a Discord bot, including commands to ban, unban, kick, and mute members, as well as commands to manage roles and channels.
-
-The `ban` and `slashban` commands allow the bot to ban a specified member from the server, with an optional reason. The `unban` and `slashunban` commands allow the bot to unban a specified member from the server.
-
-The `multiban` command allows the bot to ban multiple members at once.
-
-The `kick` and `slashkick` commands allow the bot to kick a specified member from the server, with an optional reason.
-
-The `purge` command allows the bot to delete a specified number of messages in the current channel.
-
-The `setname` command allows the bot to set a nickname for a specified member.
-
-The `mute` command allows the bot to mute a specified member, preventing them from sending messages.
-
-The `unmute` command allows the bot to unmute a specified member, allowing them to send messages again.
-
-The `lockdownrole` and `unlockrole` commands allow the bot to disable and enable writing permissions for a specified role in the server.
-
-The `lockdown` and `unlock` commands allow the bot to disable and enable writing permissions for everyone in the server.
-
-The `channellock` and `channelunlock` commands allow the bot to disable and enable writing permissions in the current channel.
-"""
-
 import asyncio
 from typing import NoReturn
 
@@ -34,8 +10,6 @@ from termcolor import cprint
 
 from listener.utils import Config, Logger, Settings, Strings, Utils
 
-# from disnake_components import Button, ButtonStyle, disnakeComponents
-
 CONFIG = Config()
 
 
@@ -44,72 +18,21 @@ class Moderation(commands.Cog, name="Moderation"):
         self.bot = bot
         self.name = "Moderation"
 
-    @commands.command(slash_command=True, message_command=True)
+    @commands.slash_command(description="Ban member")
     @commands.bot_has_permissions(ban_members=True)
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def ban(
-        self, ctx: Context, member: Member, *, reason: str = "N/A"
-    ) -> NoReturn:
-        """
-
-
-        A command to ban a specified user.
-
-        Arguments:
-        -----------
-        - `member` - user
-        - `reason` - ban reason
-
-        """
-        s = await Settings(ctx.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-
-        if not member.bot:
-            embed = Utils.error_embed(
-                STRINGS["moderation"]["dm_kick"].format(ctx.guild, reason)
-            )
-            await member.send(embed=embed)
-        await asyncio.sleep(5)
-        await member.ban(reason=reason)
-        cprint(
-            f"""
-        ║============================================================║
-        ║--------Succesfully banned {member} in {ctx.guild.name}-------║
-        ║============================================================║
-        """
-        )
-
-    @commands.slash_command(
-        name="ban",
-        description="Bans a member.",
-    )
-    @commands.bot_has_permissions(ban_members=True)
-    @commands.has_permissions(ban_members=True)
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def slashban(
         self,
         inter: disnake.ApplicationCommandInteraction,
-        member: Member = Param(description="User to ban."),
-        *,
-        reason: str = Param(description="Reason to ban."),
+        member: Member = Param(description="User to ban"),
+        reason: str = Param(description="Ban reason", default="N/A"),
     ) -> NoReturn:
-        """
-
-
-        A command to ban a specified user.
-
-        Arguments:
-        -----------
-        - `member` - user
-        - `reason` - ban reason
-
-        """
         await inter.response.defer()
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
+
         if not member.bot:
             embed = Utils.error_embed(
                 STRINGS["moderation"]["dm_kick"].format(inter.guild, reason)
@@ -132,93 +55,16 @@ class Moderation(commands.Cog, name="Moderation"):
             ),
         )
 
-    @commands.command(slash_command=True, message_command=True)
+    @commands.slash_command(description="Unban member")
     @commands.bot_has_permissions(ban_members=True)
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def unban(self, ctx, *, member) -> NoReturn:
-        """
-
-
-        A command to unban a specified user.
-
-        Arguments:
-        -----------
-        - `member` - user tag. Example: `name#1234`
-
-        """
-        s = await Settings(ctx.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-
-        if "#" in ctx.message.content:
-            banned_users = await ctx.guild.bans()
-            for ban_entry in banned_users:
-                member_name, member_discriminator = member.split("#")
-                user = ban_entry.user
-                if (user.name, user.discriminator) == (
-                    member_name,
-                    member_discriminator,
-                ):
-                    await ctx.guild.unban(user)
-                    await ctx.send(
-                        embed=disnake.Embed(
-                            title="Action confirmed",
-                            description=f"Unbanned {user}",
-                            color=0xFF8000,
-                        ),
-                    )
-            cprint(
-                f"""
-             ║============================================================║
-             ║------Succesfully unbanned {member} in {ctx.guild.name}-------║
-             ║============================================================║
-            """
-            )
-            return
-        elif member is int:
-            member = await self.client.fetch_user(int(member))
-            await ctx.guild.unban(member)
-            await ctx.send(
-                embed=disnake.Embed(
-                    title="Action confirmed",
-                    description=f"Unbanned {user}",
-                    color=0xFF8000,
-                ),
-            )
-            cprint(
-                f"""
-             ║============================================================║
-             ║------Succesfully unbanned {member} in {ctx.guild.name}-------║
-             ║============================================================║
-            """
-            )
-        embed = Utils.error_embed(STRINGS["error"]["user_not_found"])
-        await ctx.send(embed=embed)
-
-    @commands.slash_command(
-        name="unban",
-        description="Unbans a member.",
-    )
-    @commands.bot_has_permissions(ban_members=True)
-    @commands.has_permissions(ban_members=True)
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def slashunban(
+    async def unban(
         self,
         inter: disnake.ApplicationCommandInteraction,
-        *,
-        member=Param(description="User to unban."),
+        member: str = Param(description="User to unban"),
     ) -> NoReturn:
-        """
-
-
-        A command to unban a specified user.
-
-        Arguments:
-        -----------
-        - `member` - user tag. Example: `name#1234`
-
-        """
+        await inter.response.defer()
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
@@ -233,158 +79,84 @@ class Moderation(commands.Cog, name="Moderation"):
                     member_discriminator,
                 ):
                     await inter.guild.unban(user)
-                    await inter.response.send_message(
+                    await inter.edit_original_message(
                         embed=disnake.Embed(
                             title="Action confirmed",
                             description=f"Unbanned {user}",
                             color=0xFF8000,
                         ),
                     )
-            cprint(
-                f"""
-             ║============================================================║
-             ║------Succesfully unbanned {member} in {inter.guild.name}-------║
-             ║============================================================║
-            """
-            )
-            return
-        elif member is int:
-            member = await self.client.fetch_user(int(member))
-            await inter.guild.unban(member)
-            await inter.response.send_message(
+                    return
+        elif member.isdigit():
+            user = await self.bot.fetch_user(int(member))
+            await inter.guild.unban(user)
+            await inter.edit_original_message(
                 embed=disnake.Embed(
                     title="Action confirmed",
                     description=f"Unbanned {user}",
                     color=0xFF8000,
                 ),
             )
-            cprint(
-                f"""
-             ║============================================================║
-             ║------Succesfully unbanned {member} in {inter.guild.name}-------║
-             ║============================================================║
-            """
-            )
-        embed = Utils.error_embed(STRINGS["error"]["user_not_found"])
-        await inter.response.send_message(embed=embed)
+            return
 
-    @commands.command(slash_command=True, message_command=True)
+        embed = Utils.error_embed(STRINGS["error"]["user_not_found"])
+        await inter.edit_original_message(embed=embed)
+
+    @commands.slash_command(description="Ban multiple")
     @commands.bot_has_permissions(ban_members=True)
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def multiban(
-        self, ctx: Context, members: Greedy[Member], *, reason: str = "N/A"
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        members: str = Param(description="Users to ban (comma-separated)"),
+        reason: str = Param(description="Ban reason", default="N/A"),
     ) -> NoReturn:
-        """
-
-
-        A command to ban multiple users.
-
-        Arguments:
-        -----------
-        - `member` - user
-        - `reason` - ban reason
-
-        """
-        s = await Settings(ctx.guild.id)
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         not_banned_members = []
 
-        for member in members:
+        member_list = [member.strip() for member in members.split(',')]
+        for member_id in member_list:
             try:
+                member = await inter.guild.fetch_member(int(member_id))
                 await member.ban(reason=reason)
-                await ctx.send("Members banned")
-
             except disnake.Forbidden:
-                not_banned_members.append(member.mention)
-
+                not_banned_members.append(f"<@{member_id}>")
+            except:
+                not_banned_members.append(f"<@{member_id}>")
             else:
                 try:
                     embed = Utils.error_embed(
-                        STRINGS["moderation"]["dm_ban"].format(ctx.guild.name, reason)
+                        STRINGS["moderation"]["dm_ban"].format(inter.guild.name, reason)
                     )
                     await member.send(embed=embed)
                 except:
                     pass
 
         if not not_banned_members:
-            await ctx.message.add_reaction(CONFIG["yes_emoji"])
+            await inter.edit_original_message(content="Members banned")
         else:
-            await ctx.message.add_reaction(CONFIG["warn_emoji"])
-            msg = await ctx.send(
-                Utils.warn_embed(
+            await inter.edit_original_message(
+                embed=Utils.warn_embed(
                     STRINGS["moderation"]["on_not_full_multiban"].format(
                         ", ".join(not_banned_members)
                     )
                 )
             )
-            await asyncio.sleep(30)
-            await msg.delete()
 
-    @commands.command(slash_command=True, message_command=True)
+    @commands.slash_command(description="Kick member")
     @commands.bot_has_permissions(kick_members=True)
     @commands.has_permissions(kick_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def kick(
-        self, ctx: Context, member: Member, *, reason: str = "N/A"
-    ) -> NoReturn:
-        """
-
-
-        A command to kick a specified user.
-
-        Arguments:
-        -----------
-        - `member` - user
-        - `reason` - kick reason
-
-        """
-        s = await Settings(ctx.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-
-        if not member.bot:
-            embed = Utils.error_embed(
-                STRINGS["moderation"]["dm_kick"].format(ctx.guild, reason)
-            )
-            await member.send(embed=embed)
-        await asyncio.sleep(5)
-        await member.kick()
-        await ctx.send(
-            embed=disnake.Embed(
-                title="Action Completed",
-                description=f"Kicked {member} for {reason}",
-                color=0xDD2E44,
-            ),
-        )
-        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
-
-    @commands.slash_command(
-        name="kick",
-        description="Kicks a member.",
-    )
-    @commands.bot_has_permissions(kick_members=True)
-    @commands.has_permissions(kick_members=True)
-    @commands.cooldown(1, 5, commands.BucketType.user)
-    async def slashkick(
         self,
         inter: disnake.ApplicationCommandInteraction,
-        member: Member = Param(description="User to kick."),
-        *,
-        reason: str = "N/A",
+        member: Member = Param(description="User to kick"),
+        reason: str = Param(description="Kick reason", default="N/A"),
     ) -> NoReturn:
-        """
-
-
-        A command to kick a specified user.
-
-        Arguments:
-        -----------
-        - `member` - user
-        - `reason` - kick reason
-
-        """
         await inter.response.defer()
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
@@ -396,7 +168,7 @@ class Moderation(commands.Cog, name="Moderation"):
             )
             await member.send(embed=embed)
         await asyncio.sleep(5)
-        await member.kick()
+        await member.kick(reason=reason)
         await inter.edit_original_message(
             embed=disnake.Embed(
                 title="Action Completed",
@@ -405,320 +177,205 @@ class Moderation(commands.Cog, name="Moderation"):
             ),
         )
 
-    @commands.command(slash_command=True, message_command=True, aliases=["clear"])
+    @commands.slash_command(description="Purge messages")
     @commands.bot_has_permissions(manage_messages=True)
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def purge(self, ctx: Context, number: int) -> NoReturn:
-        """
+    async def purge(
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        number: int = Param(description="Number of messages"),
+    ) -> NoReturn:
+        await inter.response.defer()
 
-
-        Deletes a specified number of messages in the current channel.
-
-        Arguments:
-        -----------
-        - `number` - The number of messages to be deleted.
-
-        """
-        s = await Settings(ctx.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-
-        # select_components = [[
-        # Button(style=ButtonStyle.green, label="✓"),
-        # Button(style=ButtonStyle.red, label="X"),
-        # ]]
-        # done_components = [[
-        # Button(style=ButtonStyle.grey, label="·", disabled=True),
-        # ]]
-
-        # embedconfirm = disnake.Embed(
-        # title="Clear Command",
-        # description=f"```Do you want to remove {number} messages?```",
-        # )
-        # await ctx.send(embed=embedconfirm, components=select_components)
-        # response = await self.bot.wait_for(
-        # "button_click", check=lambda message: message.author == ctx.author)
-
-        await ctx.send(
+        await inter.channel.purge(limit=number)
+        await inter.edit_original_message(
             embed=disnake.Embed(
                 title="Action Completed",
-                description=f"Purging {number} messages",
+                description=f"Purged {number} messages",
                 color=0xDD2E44,
             )
         )
-        await asyncio.sleep(10)
-        deleted = await ctx.channel.purge(limit=number + 1)
 
-        # else:
-        # await response.respond(
-        # type=7,
-        # embed=disnake.Embed(
-        # title="Action Aborted",
-        # description="The action was aborted by clicking the no button",
-        # color=0xDD2E44,
-        # ),
-        # components=done_components,
-        # )
-        # return
-
-    @commands.command(
-        slash_command=True, message_command=True, aliases=["setnick, setname"]
-    )
+    @commands.slash_command(description="Set nickname")
     @commands.bot_has_permissions(manage_nicknames=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def setname(self, ctx: Context, member: Member, *, name: str) -> NoReturn:
-        """
-
-
-        Set a nickname for the specified user.
-
-        Arguments:
-        -----------
-        - `member` - user.
-        - `name` - Nickname to set
-
-        """
-        s = await Settings(ctx.guild.id)
+    async def setname(
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        member: Member = Param(description="User"),
+        name: str = Param(description="New nickname"),
+    ) -> NoReturn:
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
 
         if len(name) > 32:
             embed = Utils.error_embed(STRINGS["error"]["too_long_name"])
-            await ctx.send(embed=embed)
-        elif (
-            ctx.message.author.guild_permissions.manage_nicknames
-            or member == ctx.message.author
-        ):
+            await inter.edit_original_message(embed=embed)
+        elif inter.author.guild_permissions.manage_nicknames or member == inter.author:
             await member.edit(nick=name)
-            # await ctx.message.add_reaction(CONFIG["yes_emoji"])
+            await inter.edit_original_message(content="Nickname changed")
         else:
             embed = Utils.error_embed(STRINGS["error"]["missing_perms"])
-            await ctx.send(embed=embed)
+            await inter.edit_original_message(embed=embed)
 
-    @commands.command(slash_command=True, message_command=True)
-    @commands.bot_has_permissions(manage_roles=True)
+    @commands.slash_command(description="Mute member")
+    @commands.bot_has_permissions(moderate_members=True)
+    @commands.has_permissions(moderate_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def mute(
-        self, ctx: Context, member: Member, *, reason: str = "N/A"
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        member: Member = Param(description="User to mute"),
+        duration: int = Param(description="Duration in minutes"),
+        reason: str = Param(description="Mute reason", default="N/A"),
     ) -> NoReturn:
-        """
-
-
-        Makes a specified user muted which basically means they cannot talk.
-
-        Arguments:
-        -----------
-        - `member` - user.
-        - `reason` - Reason to mute the person
-
-        """
-        s = await Settings(ctx.guild.id)
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        mute_role_id = await s.get_field("mute_role_id")
 
-        if (
-            mute_role_id is None
-            or disnake.utils.get(ctx.guild.roles, id=mute_role_id) is None
-        ):
-            embed = Utils.done_embed(STRINGS["moderation"]["on_mute_role_create"])
-            await ctx.send(embed=embed)
-            mute_role = await ctx.guild.create_role(name="Muted")
+        if member.is_timed_out():
+            embed = Utils.error_embed(STRINGS["error"]["already_muted"])
+            await inter.edit_original_message(embed=embed)
+            return
 
-            await s.set_field("mute_role_id", mute_role.id)
-            mute_role_id = await s.get_field("mute_role_id")
+        await member.timeout(duration=duration * 60, reason=reason)
+        await inter.edit_original_message(content=f"{member} has been muted for {duration} minutes.")
 
-        else:
-            mute_role = disnake.utils.get(ctx.guild.roles, id=mute_role_id)
-
-            for user_role in member.roles:
-                if user_role == mute_role:
-                    embed = Utils.error_embed(STRINGS["error"]["already_muted"])
-                    await ctx.send(embed=embed)
-                    return
-
-        for channel in ctx.guild.text_channels:
-            await channel.set_permissions(
-                mute_role, read_messages=True, send_messages=False, speak=False
-            )
-
-        await member.add_roles(mute_role)
-        # await ctx.message.add_reaction(CONFIG["yes_emoji"])
-
-    @commands.command(slash_command=True, message_command=True)
-    @commands.bot_has_permissions(manage_roles=True)
-    @commands.has_permissions(manage_roles=True)
+    @commands.slash_command(description="Unmute member")
+    @commands.bot_has_permissions(moderate_members=True)
+    @commands.has_permissions(moderate_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def unmute(
-        self, ctx: Context, member: Member, *, reason: str = "N/A"
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        member: Member = Param(description="User to unmute"),
+        reason: str = Param(description="Unmute reason", default="N/A"),
     ) -> NoReturn:
-        """
+        await inter.response.defer()
 
+        if not member.is_timed_out():
+            await inter.edit_original_message(content="This user is not muted.")
+            return
 
-        Unmutes a specified user which allows them to talk again.
+        await member.timeout(duration=0, reason=reason)
+        await inter.edit_original_message(content=f"{member} has been unmuted.")
 
-        Arguments:
-        -----------
-        - `member` - user.
-        - `reason` - Reason to unmute the person
-
-        """
-        mute_role = disnake.utils.get(
-            ctx.guild.roles, id=Utils.get_mute_role(None, ctx.message)
-        )
-        if mute_role is None:
-            # FIXME
-            await ctx.send("нету роли мута ок да\n\n\nок")
-        else:
-            await member.remove_roles(mute_role)
-            # await ctx.message.add_reaction(CONFIG["yes_emoji"])
-
-    @commands.command(slash_command=True, message_command=True)
+    @commands.slash_command(description="Lockdown role")
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    # `RoleConverter` will automatically convert it to a `disnake.Role` instance
-    async def lockdownrole(self, ctx, role: disnake.Role):
-        """
-
-
-        Disables writing permissions for a specified role in server.
-
-        Arguments:
-        -----------
-        - `role` - Role for which to disallow writing in server.
-
-
-        """
-        s = await Settings(ctx.guild.id)
+    async def lockdownrole(
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        role: disnake.Role = Param(description="Role to lockdown"),
+    ):
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        for channel in ctx.guild.channels:
+        for channel in inter.guild.channels:
             await channel.set_permissions(role, send_messages=False)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["lockdowntitleone"],
             description=STRINGS["moderation"]["lockdowndescone"],
         )
-        await ctx.send(embed=embed)
+        await inter.edit_original_message(embed=embed)
 
-    @commands.command(slash_command=True, message_command=True)
+    @commands.slash_command(description="Unlock role")
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def unlockrole(self, ctx, role: disnake.Role):
-        """
-
-
-        Allows  writing permissions for a specfied role in server.
-
-        Arguments:
-        -----------
-        - `role` - Role for which to disallow writing in server.
-
-
-        """
-        s = await Settings(ctx.guild.id)
+    async def unlockrole(
+        self,
+        inter: disnake.ApplicationCommandInteraction,
+        role: disnake.Role = Param(description="Role to unlock"),
+    ):
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        for channel in ctx.guild.channels:
+        for channel in inter.guild.channels:
             await channel.set_permissions(role, send_messages=True)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["lockdownliftedtitleone"],
             description=STRINGS["moderation"]["lockdownlifteddescone"],
             color=0x6E8F5D,
         )
-        await ctx.send(embed=embed)
+        await inter.edit_original_message(embed=embed)
 
-    @commands.command(slash_command=True, message_command=True)
+    @commands.slash_command(description="Lockdown server")
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def lockdown(self, ctx):
-        """
-
-
-        Disables writing permissions for everyone in the server.
-
-        """
-        s = await Settings(ctx.guild.id)
+    async def lockdown(self, inter: disnake.ApplicationCommandInteraction):
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        for channel in ctx.guild.channels:
-            await channel.set_permissions(ctx.guild.default_role, send_messages=False)
+        for channel in inter.guild.channels:
+            await channel.set_permissions(inter.guild.default_role, send_messages=False)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["lockdowntitleone"],
             description=STRINGS["moderation"]["lockdowndescone"],
         )
-        await ctx.send(embed=embed)
+        await inter.edit_original_message(embed=embed)
 
-    @commands.command(slash_command=True, message_command=True)
+    @commands.slash_command(description="Unlock server")
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def unlock(self, ctx):
-        """
-
-
-        Allows writing permissions for everyone in the server.
-
-        """
-        s = await Settings(ctx.guild.id)
+    async def unlock(self, inter: disnake.ApplicationCommandInteraction):
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        for channel in ctx.guild.channels:
-            await channel.set_permissions(ctx.guild.default_role, send_messages=True)
+        for channel in inter.guild.channels:
+            await channel.set_permissions(inter.guild.default_role, send_messages=True)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["lockdownliftedtitleone"],
             description=STRINGS["moderation"]["lockdownlifteddescone"],
             color=0x6E8F5D,
         )
-        await ctx.send(embed=embed)
+        await inter.edit_original_message(embed=embed)
 
-    @commands.command(slash_command=True, message_command=True)
+    @commands.slash_command(description="Lock channel")
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def channellock(self, ctx):
-        """
-
-
-        Disables writing permissions in current channel.
-
-        """
-        s = await Settings(ctx.guild.id)
+    async def channellock(self, inter: disnake.ApplicationCommandInteraction):
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
+        await inter.channel.set_permissions(inter.guild.default_role, send_messages=False)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["channellockdowntitle"],
             description=STRINGS["moderation"]["channellockdowndesc"],
-            color=0x000000,
+            color=0x6E8F5D,
         )
-        await ctx.send(embed=embed)
+        await inter.followup.send(embed=embed)
 
-    @commands.command(slash_command=True, message_command=True)
+    @commands.slash_command(description="Unlock channel")
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def channelunlock(self, ctx):
-        """
-
-        Allows writing permissions in current channel.
-
-        """
-        s = await Settings(ctx.guild.id)
+    async def channelunlock(self, inter: disnake.ApplicationCommandInteraction):
+        await inter.response.defer()
+        s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
+        await inter.channel.set_permissions(inter.guild.default_role, send_messages=True)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["channellockdownliftedtitle"],
             description=STRINGS["moderation"]["channellockdownlifteddesc"],
             color=0x6E8F5D,
         )
-        await ctx.send(embed=embed)
-
+        await inter.followup.send(embed=embed)
 
 def setup(bot: Bot) -> NoReturn:
     bot.add_cog(Moderation(bot))

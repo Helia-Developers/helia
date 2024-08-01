@@ -28,13 +28,11 @@ class Calculator(commands.Cog, name="Calculator"):
         self.bot = bot
         self.name = "Calculator"
 
-    @commands.slash_command(name="calculator", description="Open a calculator")
+    @commands.slash_command(name="calculator", description="Calculator")
     async def calculator(self, inter: disnake.ApplicationCommandInteraction):
         def eval_(node):
             if not isinstance(node, (ast.Expression, ast.BinOp, ast.UnaryOp, ast.Num)):
                 raise ValueError("Invalid expression")
-            match node:
-                case ast.Constant(value) if isinstance(value, int):
             match node:
                 case ast.Constant(value) if isinstance(value, int):
                     return value  # integer
