@@ -299,3 +299,16 @@ middlle. joined test ground
         ['Traceback (most recent call last):\n', '  File "D:\\source\\helia\\src\\listener\\general.py", line 207, in about\n    cputype = self.callget_cpu_inf()\n              ^^^^^^^^^^^^^^^^^^^^\n', "AttributeError: 'General' object has no attribute 'callget_cpu_inf'. Did you mean: 'callget_cpu_info'?\n", '\nDuring handling of the above exception, another exception occurred:\n\n', 'Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\general.py", line 253, in about\n    await inter.edit_original_response(embed=embed,delete_after=30)\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', "TypeError: Interaction.edit_original_response() got an unexpected keyword argument 'delete_after'\n", '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', "disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: TypeError: Interaction.edit_original_response() got an unexpected keyword argument 'delete_after'\n"]        
         =======================================================
         
+[2024-08-01 23:38:55] 
+        ║========================║=========================║
+        ║ Guild                  ║ Member                  ║
+        ║ Space Quest 4 Bots(Test Bot area)::::::::::::::║ lumina.ri:::::::::::::::::║        
+        ║========================║=========================║
+        ║ Guild ID               ║ Member ID               ║
+        ║ 438848185008390158:::::║ 540142383270985738::::::║
+        ║========================║=========================║
+        =======================================================
+        Traceback 
+        ['disnake.ext.commands.errors.CommandNotFound: Command "debug" is not found\n']        
+        =======================================================
+        
