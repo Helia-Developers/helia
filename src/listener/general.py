@@ -20,7 +20,6 @@ import random
 from typing import NoReturn
 
 import cpuinfo
-
 import disnake
 import psutil
 import wikipedia
@@ -43,16 +42,16 @@ class General(commands.Cog, name="General"):
     def callget_cpu_info():
         """
         Returns the CPU brand information, or a message indicating that the cpuinfo library is not installed.
-        
+
         Returns:
             str: The CPU brand information, or a message indicating that the cpuinfo library is not installed.
         """
         try:
             info = cpuinfo.get_cpu_info()
-            print(info['brand_raw'])
-            return info['brand_raw']
+            print(info["brand_raw"])
+            return info["brand_raw"]
         except:
-            return ' cpuinfo is not installed'
+            return " cpuinfo is not installed"
 
     @commands.slash_command(name="echo", description="Echo")
     async def echo(self, inter: disnake.ApplicationCommandInteraction, content: str):
@@ -214,21 +213,21 @@ class General(commands.Cog, name="General"):
             embed.add_field(
                 name=STRINGS["general"]["aboutver"],
                 value=f"**Version:** {ver}\n"
-                      f"**Python Version:** {pythonVersion}\n"
-                      f"**Library:** disnake.py\n"
-                      f"**disnake.Py Version:** {dpyVersion}\n"
-                      f"**Hostname:** {hostname}\n"
-                      f"**Host CPU:** {cputype}\n"
-                      f"**Host Arch:** {aarch}",
+                f"**Python Version:** {pythonVersion}\n"
+                f"**Library:** disnake.py\n"
+                f"**disnake.Py Version:** {dpyVersion}\n"
+                f"**Hostname:** {hostname}\n"
+                f"**Host CPU:** {cputype}\n"
+                f"**Host Arch:** {aarch}",
                 inline=False,
             )
             embed.add_field(
                 name=STRINGS["general"]["otherinfoabout"],
                 value=f"**Server Count:** {servercount:,}\n"
-                      f"**User Count:** {usercount:,}\n"
-                      f"**RAM Usage:** {ramUsage:.2f} MB\n"
-                      f"**Uptime:** {days}d {hours}h {minutes}m {seconds}s\n"
-                      f"**Command Count:** {len(self.bot.commands):,}",
+                f"**User Count:** {usercount:,}\n"
+                f"**RAM Usage:** {ramUsage:.2f} MB\n"
+                f"**Uptime:** {days}d {hours}h {minutes}m {seconds}s\n"
+                f"**Command Count:** {len(self.bot.commands):,}",
                 inline=True,
             )
             embed.add_field(
@@ -242,7 +241,6 @@ class General(commands.Cog, name="General"):
         except Exception as e:
             embed = disnake.Embed(
                 title=STRINGS["error"]["on_error_title"],
-                
                 color=0xFF0000,
             )
             embed.add_field(
@@ -251,6 +249,7 @@ class General(commands.Cog, name="General"):
                 inline=False,
             )
             await inter.edit_original_response(embed=embed)
+
     @commands.slash_command(name="privacy", description="Privacy")
     async def privacy(self, inter: disnake.ApplicationCommandInteraction):
         """

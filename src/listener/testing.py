@@ -30,8 +30,6 @@ class testingCOG(commands.Cog):
 
         await inter.response.send_message("Button callbacks!", components=[button])
 
-    
-
 
 def setup(bot):
     bot.add_cog(testingCOG(bot))

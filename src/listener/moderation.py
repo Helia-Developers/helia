@@ -118,7 +118,7 @@ class Moderation(commands.Cog, name="Moderation"):
         STRINGS = Strings(lang)
         not_banned_members = []
 
-        member_list = [member.strip() for member in members.split(',')]
+        member_list = [member.strip() for member in members.split(",")]
         for member_id in member_list:
             try:
                 member = await inter.guild.fetch_member(int(member_id))
@@ -244,7 +244,9 @@ class Moderation(commands.Cog, name="Moderation"):
             return
 
         await member.timeout(duration=duration * 60, reason=reason)
-        await inter.edit_original_message(content=f"{member} has been muted for {duration} minutes.")
+        await inter.edit_original_message(
+            content=f"{member} has been muted for {duration} minutes."
+        )
 
     @commands.slash_command(description="Unmute member")
     @commands.bot_has_permissions(moderate_members=True)
@@ -352,7 +354,9 @@ class Moderation(commands.Cog, name="Moderation"):
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        await inter.channel.set_permissions(inter.guild.default_role, send_messages=False)
+        await inter.channel.set_permissions(
+            inter.guild.default_role, send_messages=False
+        )
         embed = disnake.Embed(
             title=STRINGS["moderation"]["channellockdowntitle"],
             description=STRINGS["moderation"]["channellockdowndesc"],
@@ -369,13 +373,16 @@ class Moderation(commands.Cog, name="Moderation"):
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        await inter.channel.set_permissions(inter.guild.default_role, send_messages=True)
+        await inter.channel.set_permissions(
+            inter.guild.default_role, send_messages=True
+        )
         embed = disnake.Embed(
             title=STRINGS["moderation"]["channellockdownliftedtitle"],
             description=STRINGS["moderation"]["channellockdownlifteddesc"],
             color=0x6E8F5D,
         )
         await inter.followup.send(embed=embed)
+
 
 def setup(bot: Bot) -> NoReturn:
     bot.add_cog(Moderation(bot))
