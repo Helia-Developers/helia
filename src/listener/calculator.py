@@ -5,14 +5,11 @@ import math
 import operator as op
 
 import disnake
-from disnake import ButtonStyle
-from disnake import SelectOption
+from disnake import ButtonStyle, SelectOption
 from disnake.ext import commands
-from disnake.ext.commands import Bot
-from disnake.ext.commands import Context
-from disnake.ui import Button
-from disnake.ui import Select
-from disnake.ui import View
+from disnake.ext.commands import Bot, Context
+from disnake.ui import Button, Select, View
+
 from scripts.calculator import buttons
 
 operators = {
@@ -35,15 +32,13 @@ class Calculator(commands.Cog, name="Calculator"):
 
     @commands.slash_command(name="calculator", description="Calculator")
     async def calculator(self, inter: disnake.ApplicationCommandInteraction):
-
         def eval_(node):
             """
 
             :param node:
 
             """
-            if not isinstance(
-                    node, (ast.Expression, ast.BinOp, ast.UnaryOp, ast.Num)):
+            if not isinstance(node, (ast.Expression, ast.BinOp, ast.UnaryOp, ast.Num)):
                 raise ValueError("Invalid expression")
             match node:
                 case ast.Constant(value) if isinstance(value, int):
@@ -82,8 +77,7 @@ class Calculator(commands.Cog, name="Calculator"):
 
         m = await inter.response.send_message(content="Loading Calculators...")
         expression = "None"
-        delta = datetime.datetime.now(
-            datetime.UTC) + datetime.timedelta(minutes=5)
+        delta = datetime.datetime.now(datetime.UTC) + datetime.timedelta(minutes=5)
         e = disnake.Embed(
             title=f"{inter.author.name}'s calculator",
             description=f"\n{expression}",
@@ -92,9 +86,11 @@ class Calculator(commands.Cog, name="Calculator"):
         )
         msg = await inter.original_response()
         await msg.edit(content="", components=buttons, embed=e)
-        done = [[
-            Button(style=ButtonStyle.grey, label="·", disabled=True),
-        ]]
+        done = [
+            [
+                Button(style=ButtonStyle.grey, label="·", disabled=True),
+            ]
+        ]
         allowed = [
             "1",
             "2",
@@ -118,11 +114,11 @@ class Calculator(commands.Cog, name="Calculator"):
             try:
                 res = await self.bot.wait_for(
                     "button_click",
-                    check=lambda i: i.author.id == inter.author.id and i.
-                    message.id == msg.id,
+                    check=lambda i: i.author.id == inter.author.id
+                    and i.message.id == msg.id,
                     timeout=(
-                        delta -
-                        datetime.datetime.now(datetime.UTC)).total_seconds(),
+                        delta - datetime.datetime.now(datetime.UTC)
+                    ).total_seconds(),
                 )
             except asyncio.TimeoutError:
                 await msg.edit(
@@ -164,8 +160,7 @@ class Calculator(commands.Cog, name="Calculator"):
                     await res.response.edit_message(
                         embed=disnake.Embed(
                             title=f"Error in calculation",
-                            description=
-                            f"We havce encountered an error: {result}",
+                            description=f"We havce encountered an error: {result}",
                             color=disnake.Colour.red(),
                         ),
                         components=done,
@@ -175,25 +170,27 @@ class Calculator(commands.Cog, name="Calculator"):
                     await res.response.edit_message(
                         embed=disnake.Embed(
                             title=f"{inter.author.name}'s calculator",
-                            description=
-                            f"The expression you entered has a result of: {result}",
+                            description=f"The expression you entered has a result of: {result}",
                             color=disnake.Colour.blurple(),
                         ),
                         components=done,
                     )
                 break
 
-            elif (len(expression) > 9 or expression.count("²") >= 4
-                  or expression.count("³") >= 4 or expression.count("²²") > 1
-                  or expression.count("³³") > 1
-                  or expression.count("²²³³") >= 1):
+            elif (
+                len(expression) > 9
+                or expression.count("²") >= 4
+                or expression.count("³") >= 4
+                or expression.count("²²") > 1
+                or expression.count("³³") > 1
+                or expression.count("²²³³") >= 1
+            ):
                 if res.component.label in allowed:
                     print(expression)
                     await res.response.edit_message(
                         embed=disnake.Embed(
                             title="Closing down",
-                            description=
-                            "You have entered a number that is 9 or more in length or some calculation prone to crashing the bot - for the stability of the bot and crash prevention we will close down this calculator session",
+                            description="You have entered a number that is 9 or more in length or some calculation prone to crashing the bot - for the stability of the bot and crash prevention we will close down this calculator session",
                             color=0xDD2E44,
                         ),
                         components=done,
@@ -204,31 +201,34 @@ class Calculator(commands.Cog, name="Calculator"):
                     await res.response.edit_message(
                         embed=disnake.Embed(
                             title="Closing down",
-                            description=
-                            "You have entered a number that is 9 or more in length or some calculation prone to crashing the bot - for the stability of the bot and crash prevention we will close down this calculator session",
+                            description="You have entered a number that is 9 or more in length or some calculation prone to crashing the bot - for the stability of the bot and crash prevention we will close down this calculator session",
                             color=0xDD2E44,
                         ),
                         components=done,
                     )
                     break
             else:
-                expression += (res.component.label
-                               if res.component.label.isdigit()
-                               or res.component.label in [
-                                   "+",
-                                   "-",
-                                   "*",
-                                   "/",
-                                   ".",
-                                   "(",
-                                   ")",
-                                   "π",
-                                   "x²",
-                                   "x³",
-                                   "÷",
-                                   ".",
-                                   "×",
-                               ] else "Invalid expression")
+                expression += (
+                    res.component.label
+                    if res.component.label.isdigit()
+                    or res.component.label
+                    in [
+                        "+",
+                        "-",
+                        "*",
+                        "/",
+                        ".",
+                        "(",
+                        ")",
+                        "π",
+                        "x²",
+                        "x³",
+                        "÷",
+                        ".",
+                        "×",
+                    ]
+                    else "Invalid expression"
+                )
                 print(expression)
                 f = disnake.Embed(
                     title=f"{inter.author.name}'s calculator",
