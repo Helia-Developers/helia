@@ -11,15 +11,17 @@ This Cog includes the following commands:
 
 The information displayed for each distribution includes a description, a thumbnail image, and a link to the distribution's website.
 """
-
 # LOCALIZATION SUPPORT NEEDS IMPLEMENTING
 import asyncio
 
 import disnake
 from disnake.ext import commands
-from disnake.ext.commands import Bot, Context
-
-from listener.utils import Config, Logger, Settings, Strings
+from disnake.ext.commands import Bot
+from disnake.ext.commands import Context
+from listener.utils import Config
+from listener.utils import Logger
+from listener.utils import Settings
+from listener.utils import Strings
 
 CONFIG = Config()
 

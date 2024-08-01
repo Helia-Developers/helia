@@ -9,7 +9,6 @@ The cog provides the following slash commands:
 
 The `on_member_remove` event listener is responsible for sending the goodbye message when a member leaves the server. It retrieves the configured channel and message from the database, and sends an embed message with the goodbye text.
 """
-
 import asyncio
 import functools
 import sqlite3
@@ -17,10 +16,10 @@ from datetime import datetime
 
 import disnake
 from disnake.ext import commands
-from disnake.ext.commands import Bot, Context
-from termcolor import cprint
-
+from disnake.ext.commands import Bot
+from disnake.ext.commands import Context
 from scripts import db
+from termcolor import cprint
 
 
 class Goodbye(commands.Cog):

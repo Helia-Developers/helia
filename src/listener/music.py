@@ -7,8 +7,10 @@ from enum import Enum
 import disnake
 import wavelink
 from disnake.ext import commands
-
-from listener.utils import Config, Logger, Settings, Strings
+from listener.utils import Config
+from listener.utils import Logger
+from listener.utils import Settings
+from listener.utils import Strings
 
 CONFIG = Config()
 

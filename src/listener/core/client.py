@@ -9,7 +9,6 @@ The class has the following features:
 - Handles the bot's guild join and leave events, updating the bot's status on the DBL website.
 - Handles incoming messages, invoking the bot's commands using the NanoContext class.
 """
-
 import asyncio
 import datetime
 import os
@@ -18,8 +17,8 @@ import sqlite3
 
 import aiohttp
 import disnake
-from disnake.ext import commands, tasks
-
+from disnake.ext import commands
+from disnake.ext import tasks
 from scripts import db  # UNCOMMENT FOR DB CONNECTION
 
 
