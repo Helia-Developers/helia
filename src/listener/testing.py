@@ -8,10 +8,9 @@ The `testingCOG` class provides two commands:
 
 The cog also includes the necessary setup function to add the cog to the bot.
 """
+
 import disnake
-from disnake import Button
-from disnake import ButtonStyle
-from disnake import SelectOption
+from disnake import Button, ButtonStyle, SelectOption
 from disnake.ext import commands
 from disnake.ui import Select as Dropdown
 from disnake.ui import View
@@ -25,15 +24,13 @@ class testingCOG(commands.Cog):
 
     @commands.slash_command(name="button", description="BUTTON TEST")
     async def button(self, inter: disnake.ApplicationCommandInteraction):
-
         async def callback(interaction):
             await interaction.response.send_message(content="Yay")
 
         button = Button(style=ButtonStyle.blurple, label="Click this")
         button.callback = callback
 
-        await inter.response.send_message("Button callbacks!",
-                                          components=[button])
+        await inter.response.send_message("Button callbacks!", components=[button])
 
 
 def setup(bot):
