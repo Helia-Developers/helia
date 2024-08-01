@@ -13,19 +13,23 @@ The `Utilities` class is a Cog that adds several utility commands to the bot, in
 
 These commands are implemented as slash commands.
 """
-
 # -*- coding: utf-8 -*-
 import math
 import random
 import re
-from collections import Counter, OrderedDict, deque
+from collections import Counter
+from collections import deque
+from collections import OrderedDict
 from typing import NoReturn
 
 import disnake
 from disnake.ext import commands
-from disnake.ext.commands import Bot, Context
-
-from listener.utils import Config, Logger, Settings, Strings
+from disnake.ext.commands import Bot
+from disnake.ext.commands import Context
+from listener.utils import Config
+from listener.utils import Logger
+from listener.utils import Settings
+from listener.utils import Strings
 
 CONFIG = Config()
 

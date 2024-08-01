@@ -8,9 +8,10 @@ The `testingCOG` class provides two commands:
 
 The cog also includes the necessary setup function to add the cog to the bot.
 """
-
 import disnake
-from disnake import Button, ButtonStyle, SelectOption
+from disnake import Button
+from disnake import ButtonStyle
+from disnake import SelectOption
 from disnake.ext import commands
 from disnake.ui import Select as Dropdown
 from disnake.ui import View

@@ -5,11 +5,14 @@ import math
 import operator as op
 
 import disnake
-from disnake import ButtonStyle, SelectOption
+from disnake import ButtonStyle
+from disnake import SelectOption
 from disnake.ext import commands
-from disnake.ext.commands import Bot, Context
-from disnake.ui import Button, Select, View
-
+from disnake.ext.commands import Bot
+from disnake.ext.commands import Context
+from disnake.ui import Button
+from disnake.ui import Select
+from disnake.ui import View
 from scripts.calculator import buttons
 
 operators = {
