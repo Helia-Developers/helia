@@ -14,6 +14,8 @@ CONFIG = Config()
 
 
 class Moderation(commands.Cog, name="Moderation"):
+    """ """
+
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Moderation"
@@ -385,5 +387,10 @@ class Moderation(commands.Cog, name="Moderation"):
 
 
 def setup(bot: Bot) -> NoReturn:
+    """
+
+    :param bot: Bot:
+
+    """
     bot.add_cog(Moderation(bot))
     Logger.cog_loaded(bot.get_cog("Moderation").name)

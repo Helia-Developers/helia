@@ -33,6 +33,8 @@ CONFIG = Config()
 
 
 class General(commands.Cog, name="General"):
+    """ """
+
     def __init__(self, bot) -> None:
         self.bot = bot
         self.name = "General"
@@ -40,11 +42,13 @@ class General(commands.Cog, name="General"):
 
     @staticmethod
     def callget_cpu_info():
-        """
-        Returns the CPU brand information, or a message indicating that the cpuinfo library is not installed.
+        """Returns the CPU brand information, or a message indicating that the cpuinfo library is not installed.
 
-        Returns:
-            str: The CPU brand information, or a message indicating that the cpuinfo library is not installed.
+
+        :returns: The CPU brand information, or a message indicating that the cpuinfo library is not installed.
+
+        :rtype: str
+
         """
         try:
             info = cpuinfo.get_cpu_info()
@@ -303,5 +307,10 @@ class General(commands.Cog, name="General"):
 
 
 def setup(bot: Bot) -> NoReturn:
+    """
+
+    :param bot: Bot:
+
+    """
     bot.add_cog(General(bot))
     Logger.cog_loaded(bot.get_cog("General").name)

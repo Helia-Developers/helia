@@ -24,12 +24,17 @@ from scripts import db  # UNCOMMENT FOR DB CONNECTION
 
 
 class NanoContext(commands.Context):
+    """ """
+
     @property
     def secret(self):
+        """ """
         return "this is my secret"
 
 
 class CoreClient(commands.AutoShardedBot):
+    """ """
+
     def __init__(
         self, name="Helia", id=536892183404478483, command_prefix="n>", intents=None
     ):
