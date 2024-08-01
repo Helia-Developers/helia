@@ -35,7 +35,7 @@ class Calculator(commands.Cog, name="Calculator"):
         def eval_(node):
             """
 
-            :param node:
+            :param node: 
 
             """
             if not isinstance(node, (ast.Expression, ast.BinOp, ast.UnaryOp, ast.Num)):
@@ -242,7 +242,7 @@ class Calculator(commands.Cog, name="Calculator"):
 def setup(bot):
     """
 
-    :param bot:
+    :param bot: 
 
     """
     bot.add_cog(Calculator(bot))

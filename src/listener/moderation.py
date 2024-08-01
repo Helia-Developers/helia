@@ -390,6 +390,7 @@ def setup(bot: Bot) -> NoReturn:
     """
 
     :param bot: Bot:
+    :param bot: Bot: 
 
     """
     bot.add_cog(Moderation(bot))

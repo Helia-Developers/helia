@@ -209,7 +209,7 @@ class Broadcast(commands.Cog):
 def setup(bot):
     """
 
-    :param bot:
+    :param bot: 
 
     """
     bot.add_cog(Broadcast(bot))
