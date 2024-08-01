@@ -5,7 +5,7 @@ jishaku
 asyncinit
 disnake
 disnake[voice]
-discord-py-slash-command
+disnake-jishaku
 google-api-python-client
 google-auth
 google-auth-httplib2
@@ -30,7 +30,7 @@ Pillow
 slashify
 python-dotenv
 wavelink
-discord-ext-menus
+path
 pandas
 numpy
 matplotlib
