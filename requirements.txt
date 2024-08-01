@@ -1,7 +1,7 @@
 requests
 termcolor
 aiofile
-jishaku
+
 asyncinit
 disnake
 disnake[voice]
