@@ -54,7 +54,7 @@ class Listeners(commands.Cog, name="Listeners"):
     def _log_to_file(self, message: str):
         """
 
-        :param message: str: 
+        :param message: str:
 
         """
         with open(self.logpath, "a", encoding="utf-8") as file:
@@ -165,14 +165,14 @@ class Listeners(commands.Cog, name="Listeners"):
         error_message = f"""
         ║========================║=========================║
         ║ Guild                  ║ Member                  ║
-        ║ {ctx_or_inter.guild.name}::::::::::::::║ {ctx_or_inter.author.name}:::::::::::::::::║        
+        ║ {ctx_or_inter.guild.name}::::::::::::::║ {ctx_or_inter.author.name}:::::::::::::::::║
         ║========================║=========================║
         ║ Guild ID               ║ Member ID               ║
         ║ {ctx_or_inter.guild.id}:::::║ {ctx_or_inter.author.id}::::::║
         ║========================║=========================║
         =======================================================
-        Traceback 
-        {traceback.format_exception(type(error), error, error.__traceback__)}        
+        Traceback
+        {traceback.format_exception(type(error), error, error.__traceback__)}
         =======================================================
         """
         cprint("==============================")
@@ -240,7 +240,7 @@ class Listeners(commands.Cog, name="Listeners"):
 def setup(bot: Bot) -> NoReturn:
     """
 
-    :param bot: Bot: 
+    :param bot: Bot:
 
     """
     bot.add_cog(Listeners(bot))

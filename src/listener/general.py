@@ -312,7 +312,7 @@ class General(commands.Cog, name="General"):
 def setup(bot: Bot) -> NoReturn:
     """
 
-    :param bot: Bot: 
+    :param bot: Bot:
 
     """
     bot.add_cog(General(bot))

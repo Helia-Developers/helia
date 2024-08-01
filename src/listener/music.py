@@ -123,7 +123,7 @@ class Queue:
     def add(self, *args):
         """
 
-        :param *args: 
+        :param *args:
 
         """
         self._queue.extend(args)
@@ -154,7 +154,7 @@ class Queue:
     def set_repeat_mode(self, mode):
         """
 
-        :param mode: 
+        :param mode:
 
         """
         if mode == "noloop":
@@ -208,8 +208,8 @@ class Player(wavelink.Player):
         def _check(r, u):
             """
 
-            :param r: 
-            :param u: 
+            :param r:
+            :param u:
 
             """
             return (
@@ -305,7 +305,7 @@ class Music(commands.Cog):
     def get_player(self, obj):
         """
 
-        :param obj: 
+        :param obj:
 
         """
         if isinstance(obj, commands.Context):
@@ -402,7 +402,7 @@ class Music(commands.Cog):
 def setup(bot):
     """
 
-    :param bot: 
+    :param bot:
 
     """
     bot.add_cog(Music(bot))

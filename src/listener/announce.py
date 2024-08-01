@@ -88,7 +88,7 @@ class Broadcast(commands.Cog):
 
     """
     Get debug information about the bot.
-    
+
     Parameters:
     -----------
     inter: disnake.ApplicationCommandInteraction
@@ -210,7 +210,7 @@ class Broadcast(commands.Cog):
 def setup(bot):
     """
 
-    :param bot: 
+    :param bot:
 
     """
     bot.add_cog(Broadcast(bot))
