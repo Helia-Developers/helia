@@ -56,7 +56,7 @@ class Listeners(commands.Cog, name="Listeners"):
         """
 
         :param message: str:
-        :param message: str: 
+        :param message: str:
 
         """
         with open(self.logpath, "a", encoding="utf-8") as file:
@@ -243,7 +243,7 @@ def setup(bot: Bot) -> NoReturn:
     """
 
     :param bot: Bot:
-    :param bot: Bot: 
+    :param bot: Bot:
 
     """
     bot.add_cog(Listeners(bot))

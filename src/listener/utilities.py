@@ -413,7 +413,7 @@ def setup(bot: Bot) -> None:
     """
 
     :param bot: Bot:
-    :param bot: Bot: 
+    :param bot: Bot:
 
     """
     bot.add_cog(Utilities(bot))
