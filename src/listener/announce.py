@@ -114,15 +114,15 @@ class Broadcast(commands.Cog):
             total_members = sum(guild.member_count for guild in guilds)
 
             debug_info = [
-                f"Voice channels: {len(voice_states)}",
-                f"Servers: {len(guilds)}",
-                f"Total members: {total_members}",
-                f"Latency: {round(inter.bot.latency * 1000)}ms",
-                f"Disnake.py version: {disnake.__version__}",
-                f"Python version: {platform.python_version()}",
-                f"Operating system: {platform.system()} {platform.release()}",
-                f"CPU usage: {psutil.cpu_percent()}%",
-                f"Memory usage: {psutil.virtual_memory().percent}%",
+                f"```Voice channels: {len(voice_states)} ```",
+                f"```Servers: {len(guilds)} ```",
+                f"```Total members: {total_members} ```",
+                f"```Latency: {round(inter.bot.latency * 1000)}ms ```",
+                f"```Disnake.py version: {disnake.__version__} ```",
+                f"```Python version: {platform.python_version()} ```",
+                f"```Operating system: {platform.system()} {platform.release()} ```",
+                f"```CPU usage: {psutil.cpu_percent()}% ```",
+                f"```Memory usage: {psutil.virtual_memory().percent}% ```",
             ]
 
             # Add bot permissions
@@ -137,7 +137,7 @@ class Broadcast(commands.Cog):
             for cog in inter.bot.cogs.values():
                 for command in cog.get_slash_commands():
                     command_info.append(
-                        f"Cog: {cog.__class__.__name__}, Command: {command.name}, Description Length: {len(command.description)}"
+                        f"```Cog: {cog.__class__.__name__}, Command: {command.name}, \n Description Length: {len(command.description)}```"
                     )
 
             # Create the embed
