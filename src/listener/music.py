@@ -27,48 +27,59 @@ OPTIONS = {
 
 
 class AlreadyConnectedToChannel(commands.CommandError):
+    """ """
     pass
 
 
 class NoVoiceChannel(commands.CommandError):
+    """ """
     pass
 
 
 class QueueIsEmpty(commands.CommandError):
+    """ """
     pass
 
 
 class NoTracksFound(commands.CommandError):
+    """ """
     pass
 
 
 class PlayerIsAlreadyPaused(commands.CommandError):
+    """ """
     pass
 
 
 class PlayerIsAlreadyPlaying(commands.CommandError):
+    """ """
     pass
 
 
 class NoMoreTracks(commands.CommandError):
+    """ """
     pass
 
 
 class NoPreviousTracks(commands.CommandError):
+    """ """
     pass
 
 
 class InvalidRepeatMode(commands.CommandError):
+    """ """
     pass
 
 
 class RepeatMode(Enum):
+    """ """
     NONE = 0
     ONE = 1
     ALL = 2
 
 
 class Queue:
+    """ """
     def __init__(self):
         self._queue = []
         self.position = 0
@@ -76,10 +87,12 @@ class Queue:
 
     @property
     def is_empty(self):
+        """ """
         return not self._queue
 
     @property
     def current_track(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
 
@@ -88,24 +101,33 @@ class Queue:
 
     @property
     def upcoming(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
         return self._queue[self.position + 1 :]
 
     @property
     def history(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
         return self._queue[: self.position]
 
     @property
     def length(self):
+        """ """
         return len(self._queue)
 
     def add(self, *args):
+        """
+
+        :param *args: 
+
+        """
         self._queue.extend(args)
 
     def get_next_track(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
         self.position += 1
@@ -119,6 +141,7 @@ class Queue:
         return self._queue[self.position]
 
     def shuffle(self):
+        """ """
         if not self._queue:
             raise QueueIsEmpty
         upcoming = self.upcoming
@@ -127,6 +150,11 @@ class Queue:
         self._queue.extend(upcoming)
 
     def set_repeat_mode(self, mode):
+        """
+
+        :param mode: 
+
+        """
         if mode == "noloop":
             self.repeat_mode = RepeatMode.NONE
         elif mode == "onesong":
@@ -135,11 +163,13 @@ class Queue:
             self.repeat_mode = RepeatMode.ALL
 
     def empty(self):
+        """ """
         self._queue.clear()
         self.position = 0
 
 
 class Player(wavelink.Player):
+    """ """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.queue = Queue()
@@ -174,6 +204,12 @@ class Player(wavelink.Player):
 
     async def choose_track(self, ctx, tracks):
         def _check(r, u):
+            """
+
+            :param r: 
+            :param u: 
+
+            """
             return (
                 r.emoji in OPTIONS.keys() and u == ctx.author and r.message.id == msg.id
             )
@@ -265,6 +301,11 @@ class Music(commands.Cog):
             await self.wavelink.initiate_node(**node)
 
     def get_player(self, obj):
+        """
+
+        :param obj: 
+
+        """
         if isinstance(obj, commands.Context):
             return self.wavelink.get_player(obj.guild.id, cls=Player, context=obj)
         elif isinstance(obj, disnake.Guild):
@@ -357,5 +398,10 @@ class Music(commands.Cog):
 
 
 def setup(bot):
+    """
+
+    :param bot: 
+
+    """
     bot.add_cog(Music(bot))
     Logger.cog_loaded(bot.get_cog("Music").name)

@@ -13,6 +13,7 @@ CONFIG = Config()
 
 
 class Broadcast(commands.Cog):
+    """ """
     def __init__(self, bot):
         self.bot = bot
 
@@ -205,5 +206,10 @@ class Broadcast(commands.Cog):
 
 
 def setup(bot):
+    """
+
+    :param bot: 
+
+    """
     bot.add_cog(Broadcast(bot))
     print("Global announcements initialized")

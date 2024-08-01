@@ -17,6 +17,7 @@ from disnake.ui import View
 
 
 class testingCOG(commands.Cog):
+    """ """
     def __init__(self, bot):
         self.bot = bot
 
@@ -32,4 +33,9 @@ class testingCOG(commands.Cog):
 
 
 def setup(bot):
+    """
+
+    :param bot: 
+
+    """
     bot.add_cog(testingCOG(bot))

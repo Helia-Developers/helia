@@ -25,6 +25,7 @@ CONFIG = Config()
 
 
 class GNULinux(commands.Cog):
+    """ """
     def __init__(self, bot):
         self.bot = bot
 
@@ -272,4 +273,9 @@ class GNULinux(commands.Cog):
 
 
 def setup(bot):
+    """
+
+    :param bot: 
+
+    """
     bot.add_cog(GNULinux(bot))

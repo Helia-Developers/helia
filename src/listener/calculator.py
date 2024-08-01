@@ -24,6 +24,7 @@ operators = {
 
 
 class Calculator(commands.Cog, name="Calculator"):
+    """ """
     def __init__(self, bot):
         self.bot = bot
         self.name = "Calculator"
@@ -31,6 +32,11 @@ class Calculator(commands.Cog, name="Calculator"):
     @commands.slash_command(name="calculator", description="Calculator")
     async def calculator(self, inter: disnake.ApplicationCommandInteraction):
         def eval_(node):
+            """
+
+            :param node: 
+
+            """
             if not isinstance(node, (ast.Expression, ast.BinOp, ast.UnaryOp, ast.Num)):
                 raise ValueError("Invalid expression")
             match node:
@@ -44,14 +50,13 @@ class Calculator(commands.Cog, name="Calculator"):
                     raise TypeError(node)
 
         def calculate(exp):
-            """
-            Calculates the result of the given mathematical expression.
+            """Calculates the result of the given mathematical expression.
 
-            Args:
-                exp (str): The mathematical expression to be evaluated.
+            :param exp: The mathematical expression to be evaluated.
+            :type exp: str
+            :returns: The result of the expression, or "An error occurred." if an error occurs during the calculation.
+            :rtype: str
 
-            Returns:
-                str: The result of the expression, or "An error occurred." if an error occurs during the calculation.
             """
             ox = "".join(filter(str.isdigit, exp))
             print(ox)
@@ -234,4 +239,9 @@ class Calculator(commands.Cog, name="Calculator"):
 
 
 def setup(bot):
+    """
+
+    :param bot: 
+
+    """
     bot.add_cog(Calculator(bot))

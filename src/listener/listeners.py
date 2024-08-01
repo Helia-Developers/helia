@@ -31,6 +31,7 @@ CONFIG = Config()
 
 
 class Listeners(commands.Cog, name="Listeners"):
+    """ """
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Listeners"
@@ -38,12 +39,18 @@ class Listeners(commands.Cog, name="Listeners"):
         self._ensure_log_file_exists()
 
     def _ensure_log_file_exists(self):
+        """ """
         os.makedirs(os.path.dirname(self.logpath), exist_ok=True)
         if not os.path.exists(self.logpath):
             with open(self.logpath, "a", encoding="utf-8") as file:
                 pass
 
     def _log_to_file(self, message: str):
+        """
+
+        :param message: str: 
+
+        """
         with open(self.logpath, "a", encoding="utf-8") as file:
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             file.write(f"[{timestamp}] {message}\n")
@@ -225,6 +232,11 @@ class Listeners(commands.Cog, name="Listeners"):
 
 
 def setup(bot: Bot) -> NoReturn:
+    """
+
+    :param bot: Bot: 
+
+    """
     bot.add_cog(Listeners(bot))
 
     now = datetime.datetime.now()

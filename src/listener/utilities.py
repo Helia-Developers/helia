@@ -31,6 +31,7 @@ CONFIG = Config()
 
 
 class Utilities(commands.Cog):
+    """ """
     def __init__(self, bot: Bot) -> None:
         self.bot = bot
         self.name = "Utilities"
@@ -404,5 +405,10 @@ class Utilities(commands.Cog):
 
 
 def setup(bot: Bot) -> None:
+    """
+
+    :param bot: Bot: 
+
+    """
     bot.add_cog(Utilities(bot))
     Logger.cog_loaded(bot.get_cog("Utilities").name)
