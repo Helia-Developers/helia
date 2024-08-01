@@ -42,35 +42,30 @@ class Moderation(commands.Cog, name="Moderation"):
         STRINGS = Strings(lang)
 
         if not member.bot:
-            embed = Utils.error_embed(
-                STRINGS["moderation"]["dm_kick"].format(inter.guild, reason)
-            )
+            embed = Utils.error_embed(STRINGS["moderation"]["dm_kick"].format(
+                inter.guild, reason))
             await member.send(embed=embed)
         await asyncio.sleep(5)
         await member.ban(reason=reason)
-        cprint(
-            f"""
+        cprint(f"""
         ║============================================================║
         ║--------Succesfully banned {member} in {inter.guild.name}-------║
         ║============================================================║
-        """
-        )
-        await inter.edit_original_message(
-            embed=disnake.Embed(
-                title="Action done",
-                description=f"Banned {member}",
-                color=0xFF8000,
-            ),
-        )
+        """)
+        await inter.edit_original_message(embed=disnake.Embed(
+            title="Action done",
+            description=f"Banned {member}",
+            color=0xFF8000,
+        ), )
 
     @commands.slash_command(description="Unban member")
     @commands.bot_has_permissions(ban_members=True)
     @commands.has_permissions(ban_members=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def unban(
-        self,
-        inter: disnake.ApplicationCommandInteraction,
-        member: str = Param(description="User to unban"),
+            self,
+            inter: disnake.ApplicationCommandInteraction,
+            member: str = Param(description="User to unban"),
     ) -> NoReturn:
         await inter.response.defer()
         s = await Settings(inter.guild.id)
@@ -83,28 +78,24 @@ class Moderation(commands.Cog, name="Moderation"):
                 member_name, member_discriminator = member.split("#")
                 user = ban_entry.user
                 if (user.name, user.discriminator) == (
-                    member_name,
-                    member_discriminator,
+                        member_name,
+                        member_discriminator,
                 ):
                     await inter.guild.unban(user)
-                    await inter.edit_original_message(
-                        embed=disnake.Embed(
-                            title="Action confirmed",
-                            description=f"Unbanned {user}",
-                            color=0xFF8000,
-                        ),
-                    )
+                    await inter.edit_original_message(embed=disnake.Embed(
+                        title="Action confirmed",
+                        description=f"Unbanned {user}",
+                        color=0xFF8000,
+                    ), )
                     return
         elif member.isdigit():
             user = await self.bot.fetch_user(int(member))
             await inter.guild.unban(user)
-            await inter.edit_original_message(
-                embed=disnake.Embed(
-                    title="Action confirmed",
-                    description=f"Unbanned {user}",
-                    color=0xFF8000,
-                ),
-            )
+            await inter.edit_original_message(embed=disnake.Embed(
+                title="Action confirmed",
+                description=f"Unbanned {user}",
+                color=0xFF8000,
+            ), )
             return
 
         embed = Utils.error_embed(STRINGS["error"]["user_not_found"])
@@ -138,8 +129,8 @@ class Moderation(commands.Cog, name="Moderation"):
             else:
                 try:
                     embed = Utils.error_embed(
-                        STRINGS["moderation"]["dm_ban"].format(inter.guild.name, reason)
-                    )
+                        STRINGS["moderation"]["dm_ban"].format(
+                            inter.guild.name, reason))
                     await member.send(embed=embed)
                 except:
                     pass
@@ -147,13 +138,9 @@ class Moderation(commands.Cog, name="Moderation"):
         if not not_banned_members:
             await inter.edit_original_message(content="Members banned")
         else:
-            await inter.edit_original_message(
-                embed=Utils.warn_embed(
-                    STRINGS["moderation"]["on_not_full_multiban"].format(
-                        ", ".join(not_banned_members)
-                    )
-                )
-            )
+            await inter.edit_original_message(embed=Utils.warn_embed(
+                STRINGS["moderation"]["on_not_full_multiban"].format(", ".join(
+                    not_banned_members))))
 
     @commands.slash_command(description="Kick member")
     @commands.bot_has_permissions(kick_members=True)
@@ -171,49 +158,44 @@ class Moderation(commands.Cog, name="Moderation"):
         STRINGS = Strings(lang)
 
         if not member.bot:
-            embed = Utils.error_embed(
-                STRINGS["moderation"]["dm_kick"].format(inter.guild, reason)
-            )
+            embed = Utils.error_embed(STRINGS["moderation"]["dm_kick"].format(
+                inter.guild, reason))
             await member.send(embed=embed)
         await asyncio.sleep(5)
         await member.kick(reason=reason)
-        await inter.edit_original_message(
-            embed=disnake.Embed(
-                title="Action Completed",
-                description=f"Kicked {member} for {reason}",
-                color=0xDD2E44,
-            ),
-        )
+        await inter.edit_original_message(embed=disnake.Embed(
+            title="Action Completed",
+            description=f"Kicked {member} for {reason}",
+            color=0xDD2E44,
+        ), )
 
     @commands.slash_command(description="Purge messages")
     @commands.bot_has_permissions(manage_messages=True)
     @commands.has_permissions(manage_messages=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def purge(
-        self,
-        inter: disnake.ApplicationCommandInteraction,
-        number: int = Param(description="Number of messages"),
+            self,
+            inter: disnake.ApplicationCommandInteraction,
+            number: int = Param(description="Number of messages"),
     ) -> NoReturn:
         await inter.response.defer()
 
         await inter.channel.purge(limit=number)
-        await inter.edit_original_message(
-            embed=disnake.Embed(
-                title="Action Completed",
-                description=f"Purged {number} messages",
-                color=0xDD2E44,
-            )
-        )
+        await inter.edit_original_message(embed=disnake.Embed(
+            title="Action Completed",
+            description=f"Purged {number} messages",
+            color=0xDD2E44,
+        ))
 
     @commands.slash_command(description="Set nickname")
     @commands.bot_has_permissions(manage_nicknames=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def setname(
-        self,
-        inter: disnake.ApplicationCommandInteraction,
-        member: Member = Param(description="User"),
-        name: str = Param(description="New nickname"),
+            self,
+            inter: disnake.ApplicationCommandInteraction,
+            member: Member = Param(description="User"),
+            name: str = Param(description="New nickname"),
     ) -> NoReturn:
         await inter.response.defer()
         s = await Settings(inter.guild.id)
@@ -253,8 +235,7 @@ class Moderation(commands.Cog, name="Moderation"):
 
         await member.timeout(duration=duration * 60, reason=reason)
         await inter.edit_original_message(
-            content=f"{member} has been muted for {duration} minutes."
-        )
+            content=f"{member} has been muted for {duration} minutes.")
 
     @commands.slash_command(description="Unmute member")
     @commands.bot_has_permissions(moderate_members=True)
@@ -269,20 +250,22 @@ class Moderation(commands.Cog, name="Moderation"):
         await inter.response.defer()
 
         if not member.is_timed_out():
-            await inter.edit_original_message(content="This user is not muted.")
+            await inter.edit_original_message(content="This user is not muted."
+                                              )
             return
 
         await member.timeout(duration=0, reason=reason)
-        await inter.edit_original_message(content=f"{member} has been unmuted.")
+        await inter.edit_original_message(content=f"{member} has been unmuted."
+                                          )
 
     @commands.slash_command(description="Lockdown role")
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def lockdownrole(
-        self,
-        inter: disnake.ApplicationCommandInteraction,
-        role: disnake.Role = Param(description="Role to lockdown"),
+            self,
+            inter: disnake.ApplicationCommandInteraction,
+            role: disnake.Role = Param(description="Role to lockdown"),
     ):
         await inter.response.defer()
         s = await Settings(inter.guild.id)
@@ -301,9 +284,9 @@ class Moderation(commands.Cog, name="Moderation"):
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
     async def unlockrole(
-        self,
-        inter: disnake.ApplicationCommandInteraction,
-        role: disnake.Role = Param(description="Role to unlock"),
+            self,
+            inter: disnake.ApplicationCommandInteraction,
+            role: disnake.Role = Param(description="Role to unlock"),
     ):
         await inter.response.defer()
         s = await Settings(inter.guild.id)
@@ -328,7 +311,8 @@ class Moderation(commands.Cog, name="Moderation"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         for channel in inter.guild.channels:
-            await channel.set_permissions(inter.guild.default_role, send_messages=False)
+            await channel.set_permissions(inter.guild.default_role,
+                                          send_messages=False)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["lockdowntitleone"],
             description=STRINGS["moderation"]["lockdowndescone"],
@@ -345,7 +329,8 @@ class Moderation(commands.Cog, name="Moderation"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
         for channel in inter.guild.channels:
-            await channel.set_permissions(inter.guild.default_role, send_messages=True)
+            await channel.set_permissions(inter.guild.default_role,
+                                          send_messages=True)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["lockdownliftedtitleone"],
             description=STRINGS["moderation"]["lockdownlifteddescone"],
@@ -362,9 +347,8 @@ class Moderation(commands.Cog, name="Moderation"):
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        await inter.channel.set_permissions(
-            inter.guild.default_role, send_messages=False
-        )
+        await inter.channel.set_permissions(inter.guild.default_role,
+                                            send_messages=False)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["channellockdowntitle"],
             description=STRINGS["moderation"]["channellockdowndesc"],
@@ -376,14 +360,14 @@ class Moderation(commands.Cog, name="Moderation"):
     @commands.bot_has_permissions(manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     @commands.cooldown(1, 30, commands.BucketType.user)
-    async def channelunlock(self, inter: disnake.ApplicationCommandInteraction):
+    async def channelunlock(self,
+                            inter: disnake.ApplicationCommandInteraction):
         await inter.response.defer()
         s = await Settings(inter.guild.id)
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
-        await inter.channel.set_permissions(
-            inter.guild.default_role, send_messages=True
-        )
+        await inter.channel.set_permissions(inter.guild.default_role,
+                                            send_messages=True)
         embed = disnake.Embed(
             title=STRINGS["moderation"]["channellockdownliftedtitle"],
             description=STRINGS["moderation"]["channellockdownlifteddesc"],

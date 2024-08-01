@@ -71,13 +71,11 @@ class Listeners(commands.Cog, name="Listeners"):
         """
 
         STRINGS = Strings(CONFIG["default_locale"])
-        cprint(
-            f"""
+        cprint(f"""
         ║==============================║
         ║Bot has been added to: {guild}║
         ║==============================║
-        """
-        )
+        """)
         path = "scripts/version.txt"
         with open(path, "r") as file:
             ver = file.readline()
@@ -88,7 +86,9 @@ class Listeners(commands.Cog, name="Listeners"):
             description=STRINGS["general"]["aboutdesc"],
             color=0xFF6900,
         )
-        embed.add_field(name=STRINGS["general"]["aboutver"], value=ver, inline=True)
+        embed.add_field(name=STRINGS["general"]["aboutver"],
+                        value=ver,
+                        inline=True)
         embed.add_field(
             name=STRINGS["general"]["aboutauthoroninvitetitle"],
             value=STRINGS["general"]["aboutauthoroninvite"],
@@ -99,7 +99,8 @@ class Listeners(commands.Cog, name="Listeners"):
             value=STRINGS["general"]["abouthostingvalue"],
             inline=True,
         )
-        embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
+        embed.set_footer(text=self.bot.user.name,
+                         icon_url=self.bot.user.avatar.url)
         print("The invite for this server is :")
         print(f"{invite}")
         self._log_to_file(f"Bot has been added to: {guild}")
@@ -112,7 +113,8 @@ class Listeners(commands.Cog, name="Listeners"):
     @commands.Cog.listener()
     async def on_command(self, ctx: Context) -> NoReturn:
         """Logging commands to the console."""
-        Logger.command_used(ctx.message.author, ctx.command.name, ctx.message.guild)
+        Logger.command_used(ctx.message.author, ctx.command.name,
+                            ctx.message.guild)
         self._log_to_file(
             f"Command used: {ctx.command.name} by {ctx.message.author} in {ctx.message.guild}"
         )
@@ -129,22 +131,22 @@ class Listeners(commands.Cog, name="Listeners"):
             pass
         else:
             if message.content in [
-                f"<@!{self.bot.user.id}>",
-                f"<@{self.bot.user.id}>",
-                f"@{self.bot.user}",
+                    f"<@!{self.bot.user.id}>",
+                    f"<@{self.bot.user.id}>",
+                    f"@{self.bot.user}",
             ]:
-                await message.channel.send(
-                    STRINGS["etc"]["on_mention"].format(message.author.id, prefix)
-                )
+                await message.channel.send(STRINGS["etc"]["on_mention"].format(
+                    message.author.id, prefix))
 
     @commands.Cog.listener()
-    async def on_command_error(self, ctx: Context, error: Exception) -> NoReturn:
+    async def on_command_error(self, ctx: Context,
+                               error: Exception) -> NoReturn:
         await self.handle_error(ctx, error)
 
     @commands.Cog.listener()
     async def on_slash_command_error(
-        self, inter: disnake.ApplicationCommandInteraction, error: Exception
-    ) -> NoReturn:
+            self, inter: disnake.ApplicationCommandInteraction,
+            error: Exception) -> NoReturn:
         await self.handle_error(inter, error)
 
     async def handle_error(
@@ -189,30 +191,22 @@ class Listeners(commands.Cog, name="Listeners"):
             prefix = await s.get_field("prefix", CONFIG["default_prefix"])
 
             if ctx_or_inter.application_command.cog.name != "Jishaku":
-                embed = Utils.error_embed(
-                    STRINGS["etc"]["usage"].format(
-                        COMMANDS[ctx_or_inter.application_command.cog.name]["commands"][
-                            ctx_or_inter.application_command.name
-                        ]["usage"].format(prefix)
-                    )
-                )
+                embed = Utils.error_embed(STRINGS["etc"]["usage"].format(
+                    COMMANDS[ctx_or_inter.application_command.cog.name]
+                    ["commands"][ctx_or_inter.application_command.name]
+                    ["usage"].format(prefix)))
         elif isinstance(error, commands.MissingPermissions):
             embed = Utils.error_embed(STRINGS["error"]["missing_perms"])
 
         elif isinstance(error, commands.BotMissingPermissions):
             embed = Utils.error_embed(
-                STRINGS["error"]["missing_bot_perms"].format(
-                    " ".join(
-                        "+ " + STRINGS["etc"]["permissions"][f"{perm}"]
-                        for perm in error.missing_perms
-                    )
-                )
-            )
+                STRINGS["error"]["missing_bot_perms"].format(" ".join(
+                    "+ " + STRINGS["etc"]["permissions"][f"{perm}"]
+                    for perm in error.missing_perms)))
 
         elif isinstance(error, commands.CommandOnCooldown):
-            embed = Utils.error_embed(
-                STRINGS["error"]["cooldown"].format(error.retry_after)
-            )
+            embed = Utils.error_embed(STRINGS["error"]["cooldown"].format(
+                error.retry_after))
 
         elif isinstance(error, commands.errors.NSFWChannelRequired):
             embed = disnake.Embed(
@@ -229,14 +223,16 @@ class Listeners(commands.Cog, name="Listeners"):
         else:
             embed = disnake.Embed(color=0xDD0000)
             embed.title = STRINGS["error"]["on_error_title"]
-            embed.description = STRINGS["error"]["on_error_text"].format(str(error))
+            embed.description = STRINGS["error"]["on_error_text"].format(
+                str(error))
 
         if isinstance(ctx_or_inter, Context):
             msg = await ctx_or_inter.send(embed=embed)
             await asyncio.sleep(20)
             await msg.delete()
         else:
-            await ctx_or_inter.response.send_message(embed=embed, ephemeral=True)
+            await ctx_or_inter.response.send_message(embed=embed,
+                                                     ephemeral=True)
 
 
 def setup(bot: Bot) -> NoReturn:

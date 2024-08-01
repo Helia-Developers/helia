@@ -25,9 +25,8 @@ class Broadcast(commands.Cog):
         description="Announce",
     )
     @commands.is_owner()
-    async def announce(
-        self, inter: disnake.ApplicationCommandInteraction, content: str
-    ):
+    async def announce(self, inter: disnake.ApplicationCommandInteraction,
+                       content: str):
         """
         Send a global announcement to all servers.
 
@@ -49,7 +48,8 @@ class Broadcast(commands.Cog):
                 color=0x3B88C3,
             )
             author_name = f"{inter.author}"
-            announcement.set_author(name=author_name, icon_url=inter.author.avatar.url)
+            announcement.set_author(name=author_name,
+                                    icon_url=inter.author.avatar.url)
             announcement.add_field(
                 name=STRINGS["general"]["announcesfieldtitle"],
                 value=f"{inter.guild.name}",
@@ -81,11 +81,15 @@ class Broadcast(commands.Cog):
                 except disnake.NotFound:
                     continue
                 except Exception as e:
-                    print(f"Error sending announcement to guild {guild.id}: {str(e)}")
+                    print(
+                        f"Error sending announcement to guild {guild.id}: {str(e)}"
+                    )
 
-            await inter.followup.send(f"Announcement sent to {sent_counter} servers.")
+            await inter.followup.send(
+                f"Announcement sent to {sent_counter} servers.")
         except Exception as e:
-            await inter.followup.send(f"An error occurred: {str(e)}", ephemeral=True)
+            await inter.followup.send(f"An error occurred: {str(e)}",
+                                      ephemeral=True)
 
     """
     Get debug information about the bot.
@@ -143,12 +147,13 @@ class Broadcast(commands.Cog):
                     )
 
             # Create the embed
-            embed = disnake.Embed(title="Debug Information", color=disnake.Color.blue())
+            embed = disnake.Embed(title="Debug Information",
+                                  color=disnake.Color.blue())
 
             # Add main debug info to embed
-            embed.add_field(
-                name="General Info", value=f"\n{chr(10).join(debug_info)}", inline=False
-            )
+            embed.add_field(name="General Info",
+                            value=f"\n{chr(10).join(debug_info)}",
+                            inline=False)
 
             # Add permissions to embed
             embed.add_field(
@@ -159,38 +164,37 @@ class Broadcast(commands.Cog):
 
             # Add command info to embed
             command_chunks = [
-                command_info[i : i + 20] for i in range(0, len(command_info), 20)
+                command_info[i:i + 20] for i in range(0, len(command_info), 20)
             ]
             for i, chunk in enumerate(command_chunks):
                 chunk_value = "\n".join(chunk)
                 if len(chunk_value) > 1024:
                     chunk_value = chunk_value[:1021] + "..."
-                embed.add_field(
-                    name=f"Command Info (Part {i+1})", value=chunk_value, inline=False
-                )
+                embed.add_field(name=f"Command Info (Part {i+1})",
+                                value=chunk_value,
+                                inline=False)
 
             # Check if the embed content is too long
             if len(embed) > 2000:
                 # Split the embed into multiple messages
                 await inter.response.send_message(
-                    "Debug information (Part 1):", embed=embed
-                )
+                    "Debug information (Part 1):", embed=embed)
 
                 # Create additional embeds for the remaining fields
                 additional_embeds = []
                 current_embed = disnake.Embed(
-                    title="Debug Information (Continued)", color=disnake.Color.blue()
-                )
-                for field in embed.fields[len(embed.fields) // 2 :]:
+                    title="Debug Information (Continued)",
+                    color=disnake.Color.blue())
+                for field in embed.fields[len(embed.fields) // 2:]:
                     if len(current_embed) + len(field.value) > 1000:
                         additional_embeds.append(current_embed)
                         current_embed = disnake.Embed(
                             title="Debug Information (Continued)",
                             color=disnake.Color.blue(),
                         )
-                    current_embed.add_field(
-                        name=field.name, value=field.value, inline=field.inline
-                    )
+                    current_embed.add_field(name=field.name,
+                                            value=field.value,
+                                            inline=field.inline)
 
                 if len(current_embed.fields) > 0:
                     additional_embeds.append(current_embed)
@@ -198,14 +202,12 @@ class Broadcast(commands.Cog):
                 # Send additional embeds
                 for i, embed in enumerate(additional_embeds):
                     await inter.followup.send(
-                        f"Debug information (Part {i+2}):", embed=embed
-                    )
+                        f"Debug information (Part {i+2}):", embed=embed)
             else:
                 await inter.response.send_message(embed=embed)
         except Exception as e:
-            await inter.response.send_message(
-                f"An error occurred: {str(e)}", ephemeral=True
-            )
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
 
 def setup(bot):

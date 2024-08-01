@@ -62,7 +62,8 @@ class General(commands.Cog, name="General"):
             return " cpuinfo is not installed"
 
     @commands.slash_command(name="echo", description="Echo")
-    async def echo(self, inter: disnake.ApplicationCommandInteraction, content: str):
+    async def echo(self, inter: disnake.ApplicationCommandInteraction,
+                   content: str):
         if not content or len(content) > 200:
             await inter.response.send_message(
                 "Invalid content. Please provide a non-empty message under 200 characters.",
@@ -88,20 +89,18 @@ class General(commands.Cog, name="General"):
                         description=STRINGS["general"]["blacklistwarndesc"],
                         color=0xFF0000,
                     )
-                    embed.set_footer(text=STRINGS["general"]["blacklistwarnfooter"])
-                    return await inter.response.send_message(
-                        embed=embed, ephemeral=True
-                    )
+                    embed.set_footer(
+                        text=STRINGS["general"]["blacklistwarnfooter"])
+                    return await inter.response.send_message(embed=embed,
+                                                             ephemeral=True)
             await inter.response.send_message(content)
         except Exception as e:
-            await inter.response.send_message(
-                f"An error occurred: {str(e)}", ephemeral=True
-            )
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(name="embed", description="Embed")
-    async def embed(
-        self, inter: disnake.ApplicationCommandInteraction, name: str, content: str
-    ):
+    async def embed(self, inter: disnake.ApplicationCommandInteraction,
+                    name: str, content: str):
         """
         A command to send an embed with specified name and content as the bot.
 
@@ -123,20 +122,20 @@ class General(commands.Cog, name="General"):
                         description=STRINGS["general"]["blacklistwarndesc"],
                         color=0xFF0000,
                     )
-                    embed.set_footer(text=STRINGS["general"]["blacklistwarnfooter"])
-                    return await inter.response.send_message(
-                        embed=embed, ephemeral=True
-                    )
+                    embed.set_footer(
+                        text=STRINGS["general"]["blacklistwarnfooter"])
+                    return await inter.response.send_message(embed=embed,
+                                                             ephemeral=True)
             creator = disnake.Embed(title=name, description=content)
             await inter.response.send_message(embed=creator)
         except Exception as e:
-            await inter.response.send_message(
-                f"An error occurred: {str(e)}", ephemeral=True
-            )
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(name="wiki", description="Wikipedia")
     @commands.is_nsfw()
-    async def wiki(self, inter: disnake.ApplicationCommandInteraction, searcher: str):
+    async def wiki(self, inter: disnake.ApplicationCommandInteraction,
+                   searcher: str):
         """
         A command to search Wikipedia for a specified topic.
         [REQUIRES NSFW CHANNEL! - Thank you top.gg for somehow finding nsfw there and as a result forcing this command to be restricted]
@@ -164,7 +163,8 @@ class General(commands.Cog, name="General"):
             )
             wikierror.add_field(
                 name="If you are still having this error",
-                value="Report the issue on github or ask in bot support server about it",
+                value=
+                "Report the issue on github or ask in bot support server about it",
                 inline=True,
             )
             wikierror.set_footer(text="Try again ")
@@ -177,12 +177,12 @@ class General(commands.Cog, name="General"):
             )
             await inter.response.send_message(embed=nsfw_error, ephemeral=True)
         except Exception as e:
-            await inter.response.send_message(
-                f"An error occurred: {str(e)}", ephemeral=True
-            )
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
     @commands.slash_command(name="about", description="About")
-    async def about(self, inter: disnake.ApplicationCommandInteraction) -> NoReturn:
+    async def about(self,
+                    inter: disnake.ApplicationCommandInteraction) -> NoReturn:
         """
         Shows a short description of the bot.
         """
@@ -244,7 +244,8 @@ class General(commands.Cog, name="General"):
                 inline=True,
             )
 
-            embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
+            embed.set_footer(text=self.bot.user.name,
+                             icon_url=self.bot.user.avatar.url)
             await inter.edit_original_response(embed=embed)
         except Exception as e:
             embed = disnake.Embed(
@@ -302,12 +303,12 @@ class General(commands.Cog, name="General"):
                 value=STRINGS["privacy"]["datadeletepoldesc"],
                 inline=True,
             )
-            embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
+            embed.set_footer(text=self.bot.user.name,
+                             icon_url=self.bot.user.avatar.url)
             await inter.response.send_message(embed=embed)
         except Exception as e:
-            await inter.response.send_message(
-                f"An error occurred: {str(e)}", ephemeral=True
-            )
+            await inter.response.send_message(f"An error occurred: {str(e)}",
+                                              ephemeral=True)
 
 
 def setup(bot: Bot) -> NoReturn:
