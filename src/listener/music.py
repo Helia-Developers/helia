@@ -90,7 +90,7 @@ class Queue:
     def upcoming(self):
         if not self._queue:
             raise QueueIsEmpty
-        return self._queue[self.position + 1 :]
+        return self._queue[self.position + 1:]
 
     @property
     def history(self):
@@ -182,7 +182,7 @@ class Player(wavelink.Player):
             title="Choose a song",
             description=(
                 "\n".join(
-                    f"**{i+1}.** {t.title} ({t.length//60000}:{str(t.length%60).zfill(2)})"
+                    f"**{i+1}.** {t.title} ({t.length//60000}:{str(t.length % 60).zfill(2)})"
                     for i, t in enumerate(tracks[:5])
                 )
             ),
