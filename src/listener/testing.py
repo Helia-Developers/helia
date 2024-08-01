@@ -19,18 +19,21 @@ from disnake.ui import View
 
 class testingCOG(commands.Cog):
     """ """
+
     def __init__(self, bot):
         self.bot = bot
 
     @commands.slash_command(name="button", description="BUTTON TEST")
     async def button(self, inter: disnake.ApplicationCommandInteraction):
+
         async def callback(interaction):
             await interaction.response.send_message(content="Yay")
 
         button = Button(style=ButtonStyle.blurple, label="Click this")
         button.callback = callback
 
-        await inter.response.send_message("Button callbacks!", components=[button])
+        await inter.response.send_message("Button callbacks!",
+                                          components=[button])
 
 
 def setup(bot):
