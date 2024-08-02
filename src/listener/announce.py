@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import os
 import platform
 
@@ -17,6 +18,7 @@ class Broadcast(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
+        self.logpath = "logs/log.txt"
 
     @commands.slash_command(
         name="announce",
@@ -141,7 +143,7 @@ class Broadcast(commands.Cog):
                     )
 
             # Create the embed
-            embed = disnake.Embed(title="Debug Information", color=disnake.Color.blue())
+            embed = disnake.Embed(title="Debug Information", color=disnake.Color.dark_grey())
 
             # Add main debug info to embed
             embed.add_field(
@@ -167,37 +169,33 @@ class Broadcast(commands.Cog):
                     name=f"Command Info (Part {i+1})", value=chunk_value, inline=False
                 )
 
+            # Print command info to console and save to log
+            print("\n".join(command_info))
+            with open(self.logpath, "a", encoding="utf-8") as file:
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                file.write(f"[{timestamp}] {("\n".join(command_info))}\n")
+
+
+            
+
             # Check if the embed content is too long
-            if len(embed) > 2000:
-                # Split the embed into multiple messages
-                await inter.response.send_message(
-                    "Debug information (Part 1):", embed=embed
-                )
-
-                # Create additional embeds for the remaining fields
-                additional_embeds = []
-                current_embed = disnake.Embed(
-                    title="Debug Information (Continued)", color=disnake.Color.blue()
-                )
-                for field in embed.fields[len(embed.fields) // 2 :]:
-                    if len(current_embed) + len(field.value) > 1000:
-                        additional_embeds.append(current_embed)
-                        current_embed = disnake.Embed(
-                            title="Debug Information (Continued)",
-                            color=disnake.Color.blue(),
-                        )
-                    current_embed.add_field(
-                        name=field.name, value=field.value, inline=field.inline
-                    )
-
+            if len(embed) > 2100:  # Discord's maximum embed length
+                # Split the embed into multiple embeds
+                embeds = []
+                current_embed = disnake.Embed(title="Debug Information", color=disnake.Color.dark_grey())
+                for field in embed.fields:
+                    if len(current_embed) + len(field.value) > 1100:
+                        embeds.append(current_embed)
+                        current_embed = disnake.Embed(title="Debug Information (Continued)", color=disnake.Color.dark_grey())
+                    current_embed.add_field(name=field.name, value=field.value, inline=field.inline)
+                
                 if len(current_embed.fields) > 0:
-                    additional_embeds.append(current_embed)
+                    embeds.append(current_embed)
 
-                # Send additional embeds
-                for i, embed in enumerate(additional_embeds):
-                    await inter.followup.send(
-                        f"Debug information (Part {i+2}):", embed=embed
-                    )
+                # Send multiple embeds
+                await inter.response.send_message("Debug information (Part 1):", embed=embeds[0])
+                for i, embed in enumerate(embeds[1:], 2):
+                    await inter.followup.send(f"Debug information (Part {i}):", embed=embed)
             else:
                 await inter.response.send_message(embed=embed)
         except Exception as e:
