@@ -1566,3 +1566,37 @@ mod bot#1045 left Space Quest 4 Bots(Test Bot area)
 
 
 Jeyy Bot#3108 left Space Quest 4 Bots(Test Bot area)
+[2024-08-02 19:37:50] Command used: jishaku by lumina.ri in Space Quest 4 Bots(Test Bot area)
+[2024-08-02 19:37:50] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ jishaku::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\bot_base.py", line 581, in invoke\n    await ctx.command.invoke(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 1494, in invoke\n    await super().invoke(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 904, in invoke\n    await self.prepare(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 838, in prepare\n    await self._parse_arguments(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 766, in _parse_arguments\n    raise TooManyArguments(f"Too many arguments passed to {self.qualified_name}")\n', 'disnake.ext.commands.errors.TooManyArguments: Too many arguments passed to jishaku\n']
+            =======================================================
+            
+[2024-08-02 19:40:28] Command used: jishaku by lumina.ri in Space Quest 4 Bots(Test Bot area)
+[2024-08-02 19:40:28] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ jishaku::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\bot_base.py", line 581, in invoke\n    await ctx.command.invoke(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 1494, in invoke\n    await super().invoke(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 904, in invoke\n    await self.prepare(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 838, in prepare\n    await self._parse_arguments(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 766, in _parse_arguments\n    raise TooManyArguments(f"Too many arguments passed to {self.qualified_name}")\n', 'disnake.ext.commands.errors.TooManyArguments: Too many arguments passed to jishaku\n']
+            =======================================================
+            

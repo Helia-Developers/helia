@@ -13,18 +13,31 @@ from jishaku.repl import AsyncCodeExecutor, get_var_dict_from_ctx
 class Jishaku(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
     @Feature.Command(parent="jsk", name="py", aliases=["python"])
     async def jsk_python(self, ctx: commands.Context, *, argument: codeblock_converter):
+        await self._jsk_python(ctx, argument)
+
+    @Feature.Command(parent="jsk", name="py", aliases=["python"])
+    async def jsk_python_slash(self, inter: disnake.ApplicationCommandInteraction, *, code: str):
+        argument = codeblock_converter(code)
+        await self._jsk_python(inter, argument)
+
+    async def _jsk_python(self, ctx, argument):
         arg_dict = get_var_dict_from_ctx(ctx, "")
         arg_dict.update(get_var_dict_from_ctx(ctx, "_"))
         arg_dict["_"] = self.last_result
 
-        if ctx.message.reference and isinstance(ctx.message.reference.resolved, disnake.Message):
-            resolved_msg = ctx.message.reference.resolved
-            arg_dict.update(r=resolved_msg, _r=resolved_msg)
+        if isinstance(ctx, commands.Context):
+            if ctx.message.reference and isinstance(ctx.message.reference.resolved, disnake.Message):
+                resolved_msg = ctx.message.reference.resolved
+                arg_dict.update(r=resolved_msg, _r=resolved_msg)
+        elif isinstance(ctx, disnake.ApplicationCommandInteraction):
+            if ctx.message and ctx.message.reference and isinstance(ctx.message.reference.resolved, disnake.Message):
+                resolved_msg = ctx.message.reference.resolved
+                arg_dict.update(r=resolved_msg, _r=resolved_msg)
 
         scope = self.scope
 
         try:
-            async with ReplResponseReactor(ctx.message):
+            async with ReplResponseReactor(ctx.message if isinstance(ctx, commands.Context) else ctx):
                 with self.submit(ctx):
                     executor = AsyncCodeExecutor(argument.content, scope, arg_dict=arg_dict)
                     async for send, result in AsyncSender(executor):
@@ -33,7 +46,10 @@ class Jishaku(*OPTIONAL_FEATURES, *STANDARD_FEATURES):
 
                         self.last_result = result
 
-                        send(await self.jsk_python_result_handling(ctx, result))
+                        if isinstance(ctx, commands.Context):
+                            await send(await self.jsk_python_result_handling(ctx, result))
+                        else:
+                            await ctx.send(await self.jsk_python_result_handling(ctx, result))
 
         finally:
             scope.clear_intersection(arg_dict)
