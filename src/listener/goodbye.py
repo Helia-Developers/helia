@@ -39,7 +39,7 @@ class Goodbye(commands.Cog):
         ║============================================================║
         """
         )
-        with open(logpath, "a") as file:
+        with open(logpath, "a", encoding="utf-8") as file:
             print("\n", file=file)
             print(f"{member} left {member.guild.name}", file=file)
 
