@@ -269,10 +269,25 @@ class Moderation(commands.Cog, name="Moderation"):
         await member.timeout(duration=0, reason=reason)
         await inter.edit_original_message(content=f"{member} has been unmuted.")
 
-    @commands.slash_command(description="Lockdown role")
-    @commands.bot_has_permissions(manage_roles=True)
-    @commands.has_permissions(manage_roles=True)
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.slash_command(name="lockdown", description="Server lockdown commands")
+    @commands.has_permissions(manage_channels=True)
+    async def lockdowns(self, inter: disnake.ApplicationCommandInteraction, subcommand: str = commands.Param(choices=["lockdownrole", "unlockrole", "lockdown", "unlock", "channellock", "channelunlock"])):
+        if subcommand == "lockdownrole":
+            await self.lockdownrole(inter)
+        elif subcommand == "unlockrole":
+            await self.unlockrole(inter)
+        elif subcommand == "lockdown":
+            await self.lockdown(inter)
+        elif subcommand == "unlock":
+            await self.unlock(inter)
+        elif subcommand == "channellock":
+            await self.channellock(inter)
+        elif subcommand == "channelunlock":
+            await self.channelunlock(inter)
+        else:
+            await inter.response.send_message("Invalid subcommand.", ephemeral=True)
+
+    @commands.has_permissions(manage_roles=True, manage_channels=True)
     async def lockdownrole(
         self,
         inter: disnake.ApplicationCommandInteraction,
@@ -290,10 +305,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await inter.edit_original_message(embed=embed)
 
-    @commands.slash_command(description="Unlock role")
-    @commands.bot_has_permissions(manage_roles=True)
-    @commands.has_permissions(manage_roles=True)
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.has_permissions(manage_roles=True, manage_channels=True)
     async def unlockrole(
         self,
         inter: disnake.ApplicationCommandInteraction,
@@ -312,10 +324,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await inter.edit_original_message(embed=embed)
 
-    @commands.slash_command(description="Lockdown server")
-    @commands.bot_has_permissions(manage_roles=True)
-    @commands.has_permissions(manage_roles=True)
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.has_permissions(manage_guild=True, manage_channels=True)
     async def lockdown(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.defer()
         s = await Settings(inter.guild.id)
@@ -329,10 +338,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await inter.edit_original_message(embed=embed)
 
-    @commands.slash_command(description="Unlock server")
-    @commands.bot_has_permissions(manage_roles=True)
-    @commands.has_permissions(manage_roles=True)
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.has_permissions(manage_guild=True, manage_channels=True)
     async def unlock(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.defer()
         s = await Settings(inter.guild.id)
@@ -347,10 +353,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await inter.edit_original_message(embed=embed)
 
-    @commands.slash_command(description="Lock channel")
-    @commands.bot_has_permissions(manage_roles=True)
-    @commands.has_permissions(manage_roles=True)
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.has_permissions(manage_channels=True)
     async def channellock(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.defer()
         s = await Settings(inter.guild.id)
@@ -366,10 +369,7 @@ class Moderation(commands.Cog, name="Moderation"):
         )
         await inter.followup.send(embed=embed)
 
-    @commands.slash_command(description="Unlock channel")
-    @commands.bot_has_permissions(manage_roles=True)
-    @commands.has_permissions(manage_roles=True)
-    @commands.cooldown(1, 30, commands.BucketType.user)
+    @commands.has_permissions(manage_channels=True)
     async def channelunlock(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.defer()
         s = await Settings(inter.guild.id)
@@ -384,7 +384,6 @@ class Moderation(commands.Cog, name="Moderation"):
             color=0x6E8F5D,
         )
         await inter.followup.send(embed=embed)
-
 
 def setup(bot: Bot) -> NoReturn:
     """

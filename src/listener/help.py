@@ -80,7 +80,9 @@ class Help(commands.Cog):
             )
             return
 
-        signature = f"/{command.name} {command.signature}"
+        signature = f"/{command.name}"
+        if isinstance(command, commands.InvokableSlashCommand):
+            signature += f" {' '.join([f'<{param.name}>' for param in command.options])}"
         embed = HelpEmbed(
             title=signature, description=command.description or "No help found..."
         )
