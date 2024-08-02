@@ -197,7 +197,7 @@ class Listeners(commands.Cog, name="Listeners"):
                 STRINGS["error"]["missing_bot_perms"].format(
                     " ".join(
                         "+ " + STRINGS["etc"]["permissions"][f"{perm}"]
-                        for perm in error.missing_perms
+                        for perm in error.missing_permissions
                     )
                 )
             )
@@ -230,7 +230,6 @@ class Listeners(commands.Cog, name="Listeners"):
             await msg.delete()
         else:
             await ctx_or_inter.response.send_message(embed=embed, ephemeral=True)
-
 
 def setup(bot: Bot) -> NoReturn:
     """
