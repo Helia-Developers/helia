@@ -35,27 +35,36 @@ class Moderation(commands.Cog, name="Moderation"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
 
-        if not member.bot:
-            embed = Utils.error_embed(
-                STRINGS["moderation"]["dm_kick"].format(inter.guild, reason)
+        try:
+            if not member.bot:
+                embed = Utils.error_embed(
+                    STRINGS["moderation"]["dm_kick"].format(inter.guild, reason)
+                )
+                await member.send(embed=embed)
+            await asyncio.sleep(5)
+            await member.ban(reason=reason)
+            cprint(
+                f"""
+            ║============================================================║
+            ║--------Succesfully banned {member} in {inter.guild.name}-------║
+            ║============================================================║
+            """
             )
-            await member.send(embed=embed)
-        await asyncio.sleep(5)
-        await member.ban(reason=reason)
-        cprint(
-            f"""
-        ║============================================================║
-        ║--------Succesfully banned {member} in {inter.guild.name}-------║
-        ║============================================================║
-        """
-        )
-        await inter.edit_original_message(
-            embed=disnake.Embed(
-                title="Action done",
-                description=f"Banned {member}",
-                color=0xFF8000,
-            ),
-        )
+            await inter.edit_original_message(
+                embed=disnake.Embed(
+                    title="Action done",
+                    description=f"Banned {member}",
+                    color=0xFF8000,
+                ),
+            )
+        except disnake.Forbidden:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(STRINGS["error"]["missing_perms"])
+            )
+        except disnake.HTTPException as e:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(f"An error occurred: {str(e)}")
+            )
 
     @commands.slash_command(description="Unban member")
     @commands.bot_has_permissions(ban_members=True)
@@ -71,38 +80,47 @@ class Moderation(commands.Cog, name="Moderation"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
 
-        if "#" in member:
-            banned_users = await inter.guild.bans()
-            for ban_entry in banned_users:
-                member_name, member_discriminator = member.split("#")
-                user = ban_entry.user
-                if (user.name, user.discriminator) == (
-                    member_name,
-                    member_discriminator,
-                ):
-                    await inter.guild.unban(user)
-                    await inter.edit_original_message(
-                        embed=disnake.Embed(
-                            title="Action confirmed",
-                            description=f"Unbanned {user}",
-                            color=0xFF8000,
-                        ),
-                    )
-                    return
-        elif member.isdigit():
-            user = await self.bot.fetch_user(int(member))
-            await inter.guild.unban(user)
-            await inter.edit_original_message(
-                embed=disnake.Embed(
-                    title="Action confirmed",
-                    description=f"Unbanned {user}",
-                    color=0xFF8000,
-                ),
-            )
-            return
+        try:
+            if "#" in member:
+                banned_users = await inter.guild.bans()
+                for ban_entry in banned_users:
+                    member_name, member_discriminator = member.split("#")
+                    user = ban_entry.user
+                    if (user.name, user.discriminator) == (
+                        member_name,
+                        member_discriminator,
+                    ):
+                        await inter.guild.unban(user)
+                        await inter.edit_original_message(
+                            embed=disnake.Embed(
+                                title="Action confirmed",
+                                description=f"Unbanned {user}",
+                                color=0xFF8000,
+                            ),
+                        )
+                        return
+            elif member.isdigit():
+                user = await self.bot.fetch_user(int(member))
+                await inter.guild.unban(user)
+                await inter.edit_original_message(
+                    embed=disnake.Embed(
+                        title="Action confirmed",
+                        description=f"Unbanned {user}",
+                        color=0xFF8000,
+                    ),
+                )
+                return
 
-        embed = Utils.error_embed(STRINGS["error"]["user_not_found"])
-        await inter.edit_original_message(embed=embed)
+            embed = Utils.error_embed(STRINGS["error"]["user_not_found"])
+            await inter.edit_original_message(embed=embed)
+        except disnake.Forbidden:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(STRINGS["error"]["missing_perms"])
+            )
+        except disnake.HTTPException as e:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(f"An error occurred: {str(e)}")
+            )
 
     @commands.slash_command(description="Ban multiple")
     @commands.bot_has_permissions(ban_members=True)
@@ -125,18 +143,17 @@ class Moderation(commands.Cog, name="Moderation"):
             try:
                 member = await inter.guild.fetch_member(int(member_id))
                 await member.ban(reason=reason)
-            except disnake.Forbidden:
-                not_banned_members.append(f"<@{member_id}>")
-            except:
-                not_banned_members.append(f"<@{member_id}>")
-            else:
                 try:
                     embed = Utils.error_embed(
                         STRINGS["moderation"]["dm_ban"].format(inter.guild.name, reason)
                     )
                     await member.send(embed=embed)
-                except:
+                except disnake.HTTPException:
                     pass
+            except disnake.Forbidden:
+                not_banned_members.append(f"<@{member_id}>")
+            except disnake.HTTPException:
+                not_banned_members.append(f"<@{member_id}>")
 
         if not not_banned_members:
             await inter.edit_original_message(content="Members banned")
@@ -164,20 +181,29 @@ class Moderation(commands.Cog, name="Moderation"):
         lang = await s.get_field("locale", CONFIG["default_locale"])
         STRINGS = Strings(lang)
 
-        if not member.bot:
-            embed = Utils.error_embed(
-                STRINGS["moderation"]["dm_kick"].format(inter.guild, reason)
+        try:
+            if not member.bot:
+                embed = Utils.error_embed(
+                    STRINGS["moderation"]["dm_kick"].format(inter.guild, reason)
+                )
+                await member.send(embed=embed)
+            await asyncio.sleep(5)
+            await member.kick(reason=reason)
+            await inter.edit_original_message(
+                embed=disnake.Embed(
+                    title="Action Completed",
+                    description=f"Kicked {member} for {reason}",
+                    color=0xDD2E44,
+                ),
             )
-            await member.send(embed=embed)
-        await asyncio.sleep(5)
-        await member.kick(reason=reason)
-        await inter.edit_original_message(
-            embed=disnake.Embed(
-                title="Action Completed",
-                description=f"Kicked {member} for {reason}",
-                color=0xDD2E44,
-            ),
-        )
+        except disnake.Forbidden:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(STRINGS["error"]["missing_perms"])
+            )
+        except disnake.HTTPException as e:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(f"An error occurred: {str(e)}")
+            )
 
     @commands.slash_command(description="Purge messages")
     @commands.bot_has_permissions(manage_messages=True)
@@ -188,16 +214,29 @@ class Moderation(commands.Cog, name="Moderation"):
         inter: disnake.ApplicationCommandInteraction,
         number: int = Param(description="Number of messages"),
     ) -> NoReturn:
+        s = await Settings(inter.guild.id)
+        lang = await s.get_field("locale", CONFIG["default_locale"])
+        STRINGS = Strings(lang)
+
         await inter.response.defer()
 
-        await inter.channel.purge(limit=number)
-        await inter.edit_original_message(
-            embed=disnake.Embed(
-                title="Action Completed",
-                description=f"Purged {number} messages",
-                color=0xDD2E44,
+        try:
+            deleted = await inter.channel.purge(limit=number)
+            await inter.edit_original_message(
+                embed=disnake.Embed(
+                    title="Action Completed",
+                    description=f"Purged {len(deleted)} messages",
+                    color=0xDD2E44,
+                )
             )
-        )
+        except disnake.Forbidden:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(STRINGS["error"]["missing_perms"])
+            )
+        except disnake.HTTPException as e:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(f"An error occurred: {str(e)}")
+            )
 
     @commands.slash_command(description="Set nickname")
     @commands.bot_has_permissions(manage_nicknames=True)
@@ -218,8 +257,17 @@ class Moderation(commands.Cog, name="Moderation"):
             embed = Utils.error_embed(STRINGS["error"]["too_long_name"])
             await inter.edit_original_message(embed=embed)
         elif inter.author.guild_permissions.manage_nicknames or member == inter.author:
-            await member.edit(nick=name)
-            await inter.edit_original_message(content="Nickname changed")
+            try:
+                await member.edit(nick=name)
+                await inter.edit_original_message(content="Nickname changed")
+            except disnake.Forbidden:
+                await inter.edit_original_message(
+                    embed=Utils.error_embed(STRINGS["error"]["missing_perms"])
+                )
+            except disnake.HTTPException as e:
+                await inter.edit_original_message(
+                    embed=Utils.error_embed(f"An error occurred: {str(e)}")
+                )
         else:
             embed = Utils.error_embed(STRINGS["error"]["missing_perms"])
             await inter.edit_original_message(embed=embed)
@@ -245,10 +293,19 @@ class Moderation(commands.Cog, name="Moderation"):
             await inter.edit_original_message(embed=embed)
             return
 
-        await member.timeout(duration=duration * 60, reason=reason)
-        await inter.edit_original_message(
-            content=f"{member} has been muted for {duration} minutes."
-        )
+        try:
+            await member.timeout(duration=duration * 60, reason=reason)
+            await inter.edit_original_message(
+                content=f"{member} has been muted for {duration} minutes."
+            )
+        except disnake.Forbidden:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(STRINGS["error"]["missing_perms"])
+            )
+        except disnake.HTTPException as e:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(f"An error occurred: {str(e)}")
+            )
 
     @commands.slash_command(description="Unmute member")
     @commands.bot_has_permissions(moderate_members=True)
@@ -260,15 +317,27 @@ class Moderation(commands.Cog, name="Moderation"):
         member: Member = Param(description="User to unmute"),
         reason: str = Param(description="Unmute reason", default="N/A"),
     ) -> NoReturn:
+        s = await Settings(inter.guild.id)
+        lang = await s.get_field("locale", CONFIG["default_locale"])
+        STRINGS = Strings(lang)
+
         await inter.response.defer()
 
         if not member.is_timed_out():
             await inter.edit_original_message(content="This user is not muted.")
             return
 
-        await member.timeout(duration=0, reason=reason)
-        await inter.edit_original_message(content=f"{member} has been unmuted.")
-
+        try:
+            await member.timeout(duration=0, reason=reason)
+            await inter.edit_original_message(content=f"{member} has been unmuted.")
+        except disnake.Forbidden:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(STRINGS["error"]["missing_perms"])
+            )
+        except disnake.HTTPException as e:
+            await inter.edit_original_message(
+                embed=Utils.error_embed(f"An error occurred: {str(e)}")
+            )
     @commands.slash_command(name="lockdown", description="Server lockdown commands")
     @commands.has_permissions(manage_channels=True)
     @commands.bot_has_permissions(manage_channels=True, manage_roles=True)
@@ -296,16 +365,24 @@ class Moderation(commands.Cog, name="Moderation"):
         role: disnake.Role = Param(description="Role to lockdown"),
     ):
         await inter.response.defer()
-        s = await Settings(inter.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        for channel in inter.guild.channels:
-            await channel.set_permissions(role, send_messages=False)
-        embed = disnake.Embed(
-            title=STRINGS["moderation"]["lockdowntitleone"],
-            description=STRINGS["moderation"]["lockdowndescone"],
-        )
-        await inter.edit_original_message(embed=embed)
+        try:
+            s = await Settings(inter.guild.id)
+            lang = await s.get_field("locale", CONFIG["default_locale"])
+            STRINGS = Strings(lang)
+            for channel in inter.guild.channels:
+                await channel.set_permissions(role, send_messages=False)
+            embed = disnake.Embed(
+                title=STRINGS["moderation"]["lockdowntitleone"],
+                description=STRINGS["moderation"]["lockdowndescone"],
+            )
+            await inter.edit_original_message(embed=embed)
+        except Exception as e:
+            error_embed = disnake.Embed(
+                title="Error",
+                description=f"An error occurred while locking down the role: {str(e)}",
+                color=0xFF0000
+            )
+            await inter.edit_original_message(embed=error_embed)
 
     @commands.has_permissions(manage_roles=True, manage_channels=True)
     @commands.bot_has_permissions(manage_roles=True, manage_channels=True)
@@ -315,83 +392,123 @@ class Moderation(commands.Cog, name="Moderation"):
         role: disnake.Role = Param(description="Role to unlock"),
     ):
         await inter.response.defer()
-        s = await Settings(inter.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        for channel in inter.guild.channels:
-            await channel.set_permissions(role, send_messages=True)
-        embed = disnake.Embed(
-            title=STRINGS["moderation"]["lockdownliftedtitleone"],
-            description=STRINGS["moderation"]["lockdownlifteddescone"],
-            color=0x6E8F5D,
-        )
-        await inter.edit_original_message(embed=embed)
+        try:
+            s = await Settings(inter.guild.id)
+            lang = await s.get_field("locale", CONFIG["default_locale"])
+            STRINGS = Strings(lang)
+            for channel in inter.guild.channels:
+                await channel.set_permissions(role, send_messages=True)
+            embed = disnake.Embed(
+                title=STRINGS["moderation"]["lockdownliftedtitleone"],
+                description=STRINGS["moderation"]["lockdownlifteddescone"],
+                color=0x6E8F5D,
+            )
+            await inter.edit_original_message(embed=embed)
+        except Exception as e:
+            error_embed = disnake.Embed(
+                title="Error",
+                description=f"An error occurred while unlocking the role: {str(e)}",
+                color=0xFF0000
+            )
+            await inter.edit_original_message(embed=error_embed)
 
     @commands.has_permissions(manage_guild=True, manage_channels=True)
     @commands.bot_has_permissions(manage_guild=True, manage_channels=True)
     async def lockdown(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.defer()
-        s = await Settings(inter.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        for channel in inter.guild.channels:
-            await channel.set_permissions(inter.guild.default_role, send_messages=False)
-        embed = disnake.Embed(
-            title=STRINGS["moderation"]["lockdowntitleone"],
-            description=STRINGS["moderation"]["lockdowndescone"],
-        )
-        await inter.edit_original_message(embed=embed)
+        try:
+            s = await Settings(inter.guild.id)
+            lang = await s.get_field("locale", CONFIG["default_locale"])
+            STRINGS = Strings(lang)
+            for channel in inter.guild.channels:
+                await channel.set_permissions(inter.guild.default_role, send_messages=False)
+            embed = disnake.Embed(
+                title=STRINGS["moderation"]["lockdowntitleone"],
+                description=STRINGS["moderation"]["lockdowndescone"],
+            )
+            await inter.edit_original_message(embed=embed)
+        except Exception as e:
+            error_embed = disnake.Embed(
+                title="Error",
+                description=f"An error occurred while locking down the server: {str(e)}",
+                color=0xFF0000
+            )
+            await inter.edit_original_message(embed=error_embed)
 
     @commands.has_permissions(manage_guild=True, manage_channels=True)
     @commands.bot_has_permissions(manage_guild=True, manage_channels=True)
     async def unlock(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.defer()
-        s = await Settings(inter.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        for channel in inter.guild.channels:
-            await channel.set_permissions(inter.guild.default_role, send_messages=True)
-        embed = disnake.Embed(
-            title=STRINGS["moderation"]["lockdownliftedtitleone"],
-            description=STRINGS["moderation"]["lockdownlifteddescone"],
-            color=0x6E8F5D,
-        )
-        await inter.edit_original_message(embed=embed)
+        try:
+            s = await Settings(inter.guild.id)
+            lang = await s.get_field("locale", CONFIG["default_locale"])
+            STRINGS = Strings(lang)
+            for channel in inter.guild.channels:
+                await channel.set_permissions(inter.guild.default_role, send_messages=True)
+            embed = disnake.Embed(
+                title=STRINGS["moderation"]["lockdownliftedtitleone"],
+                description=STRINGS["moderation"]["lockdownlifteddescone"],
+                color=0x6E8F5D,
+            )
+            await inter.edit_original_message(embed=embed)
+        except Exception as e:
+            error_embed = disnake.Embed(
+                title="Error",
+                description=f"An error occurred while unlocking the server: {str(e)}",
+                color=0xFF0000
+            )
+            await inter.edit_original_message(embed=error_embed)
 
     @commands.has_permissions(manage_channels=True)
     @commands.bot_has_permissions(manage_channels=True)
     async def channellock(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.defer()
-        s = await Settings(inter.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        await inter.channel.set_permissions(
-            inter.guild.default_role, send_messages=False
-        )
-        embed = disnake.Embed(
-            title=STRINGS["moderation"]["channellockdowntitle"],
-            description=STRINGS["moderation"]["channellockdowndesc"],
-            color=0x6E8F5D,
-        )
-        await inter.followup.send(embed=embed)
+        try:
+            s = await Settings(inter.guild.id)
+            lang = await s.get_field("locale", CONFIG["default_locale"])
+            STRINGS = Strings(lang)
+            await inter.channel.set_permissions(
+                inter.guild.default_role, send_messages=False
+            )
+            embed = disnake.Embed(
+                title=STRINGS["moderation"]["channellockdowntitle"],
+                description=STRINGS["moderation"]["channellockdowndesc"],
+                color=0x6E8F5D,
+            )
+            await inter.followup.send(embed=embed)
+        except Exception as e:
+            error_embed = disnake.Embed(
+                title="Error",
+                description=f"An error occurred while locking the channel: {str(e)}",
+                color=0xFF0000
+            )
+            await inter.followup.send(embed=error_embed)
 
     @commands.has_permissions(manage_channels=True)
     @commands.bot_has_permissions(manage_channels=True)
     async def channelunlock(self, inter: disnake.ApplicationCommandInteraction):
         await inter.response.defer()
-        s = await Settings(inter.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        await inter.channel.set_permissions(
-            inter.guild.default_role, send_messages=True
-        )
-        embed = disnake.Embed(
-            title=STRINGS["moderation"]["channellockdownliftedtitle"],
-            description=STRINGS["moderation"]["channellockdownlifteddesc"],
-            color=0x6E8F5D,
-        )
-        await inter.followup.send(embed=embed)
-
+        try:
+            s = await Settings(inter.guild.id)
+            lang = await s.get_field("locale", CONFIG["default_locale"])
+            STRINGS = Strings(lang)
+            await inter.channel.set_permissions(
+                inter.guild.default_role, send_messages=True
+            )
+            embed = disnake.Embed(
+                title=STRINGS["moderation"]["channellockdownliftedtitle"],
+                description=STRINGS["moderation"]["channellockdownlifteddesc"],
+                color=0x6E8F5D,
+            )
+            await inter.followup.send(embed=embed)
+        except Exception as e:
+            error_embed = disnake.Embed(
+                title="Error",
+                description=f"An error occurred while unlocking the channel: {str(e)}",
+                color=0xFF0000
+            )
+            await inter.followup.send(embed=error_embed)
+            
 def setup(bot: Bot) -> NoReturn:
     """
 
