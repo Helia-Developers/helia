@@ -648,3 +648,64 @@ middlle. joined test ground
         ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 717, in invoke\n    await self.prepare(inter)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 314, in prepare\n    if not await self.can_run(inter):\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in can_run\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 573, in async_all\n    for elem in gen:\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in <genexpr>\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n                           ^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\core.py", line 2222, in predicate\n    raise BotMissingPermissions(missing)\n', 'disnake.ext.commands.errors.BotMissingPermissions: Bot requires Manage Channels and Manage Roles permission(s) to run this command.\n']
         =======================================================
         
+[2024-08-02 17:08:41] 
+        ║========================║=========================║
+        ║ Guild                  ║ Member                  ║
+        ║ DisGhost Support & Hangout::::::::::::::║ lumina.ri:::::::::::::::::║
+        ║========================║=========================║
+        ║ Guild ID               ║ Member ID               ║
+        ║ 534450100890763302:::::║ 540142383270985738::::::║
+        ║========================║=========================║
+        =======================================================
+        Traceback
+        ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\admin.py", line 609, in slashinvite\n    await inter.response.send_message("`----`", view=viewx)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\interactions\\base.py", line 957, in send_message\n    raise InteractionResponded(self._parent)\n', 'disnake.errors.InteractionResponded: This interaction has already been responded to before\n', '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', 'disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: InteractionResponded: This interaction has already been responded to before\n']
+        =======================================================
+        
+[2024-08-02 17:13:34] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║ DisGhost Support & Hangout::::::::::::::║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 534450100890763302:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ invite::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\admin.py", line 609, in slashinvite\n    await inter.response.send_message("`----`", view=viewx)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\interactions\\base.py", line 957, in send_message\n    raise InteractionResponded(self._parent)\n', 'disnake.errors.InteractionResponded: This interaction has already been responded to before\n', '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', 'disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: InteractionResponded: This interaction has already been responded to before\n']
+            =======================================================
+            
+[2024-08-02 17:19:05] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║DisGhost Support & Hangout:║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 534450100890763302:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ invite::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\admin.py", line 609, in slashinvite\n    await inter.response.send_message("`----`", view=viewx)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\interactions\\base.py", line 957, in send_message\n    raise InteractionResponded(self._parent)\n', 'disnake.errors.InteractionResponded: This interaction has already been responded to before\n', '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', 'disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: InteractionResponded: This interaction has already been responded to before\n']
+            =======================================================
+            
+[2024-08-02 17:26:16] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║DisGhost Support & Hangout:║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 534450100890763302:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ invite::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\admin.py", line 609, in slashinvite\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\interactions\\base.py", line 957, in send_message\n    raise InteractionResponded(self._parent)\n', 'disnake.errors.InteractionResponded: This interaction has already been responded to before\n', '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', 'disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: InteractionResponded: This interaction has already been responded to before\n']
+            =======================================================
+            

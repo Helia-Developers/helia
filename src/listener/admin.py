@@ -462,42 +462,8 @@ class Admin(commands.Cog, name="Admin"):
         embed = disnake.Embed(
             title=STRINGS["general"]["invitedescd"],
             colour=disnake.Colour(0xFF6900),
-            # url=
-            # f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=204859462&scope=applications.commands%20bot",
             description=STRINGS["general"]["botinvitedesc"],
         )
-        # embed.set_author(
-        # name=STRINGS["general"]["botinvitedescd"],
-        # url=
-        # f"https://discord.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=204557314",
-        # )
-        # mostly useful for helia canary invite but still why not have it be there - comment if your self hosted version will not have canary branch
-        # embed.add_field(
-        # name=STRINGS["general"]["canaryver"],
-        # value=
-        # f"https://discord.com/oauth2/authorize?client_id=671612079106424862&scope=bot&permissions=204557314",
-        # inline=False,
-        # )
-        # embed.add_field(
-        # name=STRINGS["general"]["botupsdc"],
-        # value=f"https://bots.server-discord.com/{self.bot.user.id}",
-        # inline=True,
-        # )
-        # embed.add_field(
-        # name=STRINGS["general"]["botuptopgg"],
-        # value=f"https://top.gg/bot/{self.bot.user.id}",
-        # inline=True,
-        # )
-        # embed.add_field(
-        # name=STRINGS["general"]["botupbod"],
-        # value=f"https://bots.ondiscord.xyz/bots/{self.bot.user.id}",
-        # inline=True,
-        # )
-        # embed.add_field(
-        # name=STRINGS["general"]["botupdblco"],
-        # value=f"https://discordbotslist.co/bot/{self.bot.user.id}",
-        # inline=True,
-        # )
         embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
 
         embedcont = disnake.Embed(title="-----", colour=disnake.Colour(0xFF6900))
@@ -566,47 +532,13 @@ class Admin(commands.Cog, name="Admin"):
         embed = disnake.Embed(
             title=STRINGS["general"]["invitedescd"],
             colour=disnake.Colour(0xFF6900),
-            # url=
-            # f"https://discord.com/api/oauth2/authorize?client_id={self.bot.user.id}&permissions=204859462&scope=applications.commands%20bot",
             description=STRINGS["general"]["botinvitedesc"],
         )
-        # embed.set_author(
-        # name=STRINGS["general"]["botinvitedescd"],
-        # url=
-        # f"https://discord.com/oauth2/authorize?client_id={self.bot.user.id}&scope=bot&permissions=204557314",
-        # )
-        # mostly useful for helia canary invite but still why not have it be there - comment if your self hosted version will not have canary branch
-        # embed.add_field(
-        # name=STRINGS["general"]["canaryver"],
-        # value=
-        # f"https://discord.com/oauth2/authorize?client_id=671612079106424862&scope=bot&permissions=204557314",
-        # inline=False,
-        # )
-        # embed.add_field(
-        # name=STRINGS["general"]["botupsdc"],
-        # value=f"https://bots.server-discord.com/{self.bot.user.id}",
-        # inline=True,
-        # )
-        # embed.add_field(
-        # name=STRINGS["general"]["botuptopgg"],
-        # value=f"https://top.gg/bot/{self.bot.user.id}",
-        # inline=True,
-        # )
-        # embed.add_field(
-        # name=STRINGS["general"]["botupbod"],
-        # value=f"https://bots.ondiscord.xyz/bots/{self.bot.user.id}",
-        # inline=True,
-        # )
-        # embed.add_field(
-        # name=STRINGS["general"]["botupdblco"],
-        # value=f"https://discordbotslist.co/bot/{self.bot.user.id}",
-        # inline=True,
-        # )
         embed.set_footer(text=self.bot.user.name, icon_url=self.bot.user.avatar.url)
 
         embedcont = disnake.Embed(title="-----", colour=disnake.Colour(0xFF6900))
         await inter.response.send_message(embed=embed, view=view)
-        await inter.response.send_message("`----`", view=viewx)
+        await inter.followup.send("`----`", view=viewx)
 
     @commands.command(
         slash_command=True, message_command=True, brief="Gives the bot's uptime"

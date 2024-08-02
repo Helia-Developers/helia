@@ -141,59 +141,71 @@ class Listeners(commands.Cog, name="Listeners"):
         await self.handle_error(inter, error)
 
     async def handle_error(
-        self,
-        ctx_or_inter: Union[Context, disnake.ApplicationCommandInteraction],
-        error: Exception,
-    ) -> NoReturn:
-        """If an unexpected error occurs, it displays an... error message?
+            self,
+            ctx_or_inter: Union[Context, disnake.ApplicationCommandInteraction],
+            error: Exception,
+        ) -> NoReturn:
+            """
+            If an unexpected error occurs, it displays an error message with relevant information about the error, such as the guild, member, command, and the full traceback.
+            
+            Args:
+                ctx_or_inter (Union[Context, disnake.ApplicationCommandInteraction]): The context or interaction object associated with the command that caused the error.
+                error (Exception): The exception object that represents the error that occurred.
+            
+            Returns:
+                NoReturn: This function does not return anything.
+            """
+            
+            
+            s = await Settings(ctx_or_inter.guild.id)
+            lang = await s.get_field("locale", CONFIG["default_locale"])
+            STRINGS = Strings(lang)
+            COMMANDS = Commands(lang)
 
-        Attributes:
-        -----------
-        - `error` - error information
+            command_name = ctx_or_inter.application_command.name if hasattr(ctx_or_inter, 'application_command') else ctx_or_inter.command.name if ctx_or_inter.command else 'Unknown'
 
-        """
-        s = await Settings(ctx_or_inter.guild.id)
-        lang = await s.get_field("locale", CONFIG["default_locale"])
-        STRINGS = Strings(lang)
-        COMMANDS = Commands(lang)
+            error_message = f"""
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║{ctx_or_inter.guild.name}:║ {ctx_or_inter.author.name}:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ {ctx_or_inter.guild.id}:::::║ {ctx_or_inter.author.id}::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ {command_name}::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            {traceback.format_exception(type(error), error, error.__traceback__)}
+            =======================================================
+            """
+            cprint("==============================")
+            cprint(error_message, color="red")
+            cprint("==============================")
+            self._log_to_file(error_message)
 
-        error_message = f"""
-        ║========================║=========================║
-        ║ Guild                  ║ Member                  ║
-        ║ {ctx_or_inter.guild.name}::::::::::::::║ {ctx_or_inter.author.name}:::::::::::::::::║
-        ║========================║=========================║
-        ║ Guild ID               ║ Member ID               ║
-        ║ {ctx_or_inter.guild.id}:::::║ {ctx_or_inter.author.id}::::::║
-        ║========================║=========================║
-        =======================================================
-        Traceback
-        {traceback.format_exception(type(error), error, error.__traceback__)}
-        =======================================================
-        """
-        cprint("==============================")
-        cprint(error_message, color="red")
-        cprint("==============================")
-        self._log_to_file(error_message)
+            if isinstance(error, commands.CommandNotFound):
+                return
 
-        if isinstance(error, commands.CommandNotFound):
-            return
+            if isinstance(error, commands.MissingRequiredArgument):
+                prefix = await s.get_field("prefix", CONFIG["default_prefix"])
 
-        if isinstance(error, commands.MissingRequiredArgument):
-            prefix = await s.get_field("prefix", CONFIG["default_prefix"])
-
-            if ctx_or_inter.application_command.cog.name != "Jishaku":
-                embed = Utils.error_embed(
-                    STRINGS["etc"]["usage"].format(
-                        COMMANDS[ctx_or_inter.application_command.cog.name]["commands"][
-                            ctx_or_inter.application_command.name
-                        ]["usage"].format(prefix)
+            if ctx_or_inter.application_command and ctx_or_inter.application_command.cog and ctx_or_inter.application_command.cog.name != "Jishaku":
+                cog_name = ctx_or_inter.application_command.cog.name
+                if cog_name in COMMANDS and command_name in COMMANDS[cog_name]["commands"]:
+                    embed = Utils.error_embed(
+                        STRINGS["etc"]["usage"].format(
+                            COMMANDS[cog_name]["commands"][command_name]["usage"].format(prefix)
+                        )
                     )
-                )
-        elif isinstance(error, commands.MissingPermissions):
-            embed = Utils.error_embed(STRINGS["error"]["missing_perms"])
+                else:
+                    embed = Utils.error_embed(STRINGS["error"]["command_not_found"])
+            elif isinstance(error, commands.MissingPermissions):
+                embed = Utils.error_embed(STRINGS["error"]["missing_perms"])
 
-        elif isinstance(error, commands.BotMissingPermissions):
-            embed = Utils.error_embed(
+            elif isinstance(error, commands.BotMissingPermissions):
+                embed = Utils.error_embed(
                 STRINGS["error"]["missing_bot_perms"].format(
                     " ".join(
                         "+ " + STRINGS["etc"]["permissions"][f"{perm}"]
@@ -202,34 +214,34 @@ class Listeners(commands.Cog, name="Listeners"):
                 )
             )
 
-        elif isinstance(error, commands.CommandOnCooldown):
-            embed = Utils.error_embed(
-                STRINGS["error"]["cooldown"].format(error.retry_after)
-            )
+            elif isinstance(error, commands.CommandOnCooldown):
+                embed = Utils.error_embed(
+                    STRINGS["error"]["cooldown"].format(error.retry_after)
+                )
 
-        elif isinstance(error, commands.errors.NSFWChannelRequired):
-            embed = disnake.Embed(
-                title=STRINGS["error"]["nsfwerrortitle"],
-                description=STRINGS["error"]["nsfwnotcorrectspot"],
-                color=0xFF0000,
-            )
-            embed.add_field(
-                name=STRINGS["error"]["nsfwlogerror"],
-                value=STRINGS["error"]["nsfwtraceback"].format(str(error)),
-                inline=False,
-            )
+            elif isinstance(error, commands.errors.NSFWChannelRequired):
+                embed = disnake.Embed(
+                    title=STRINGS["error"]["nsfwerrortitle"],
+                    description=STRINGS["error"]["nsfwnotcorrectspot"],
+                    color=0xFF0000,
+                )
+                embed.add_field(
+                    name=STRINGS["error"]["nsfwlogerror"],
+                    value=STRINGS["error"]["nsfwtraceback"].format(str(error)),
+                    inline=False,
+                )
 
-        else:
-            embed = disnake.Embed(color=0xDD0000)
-            embed.title = STRINGS["error"]["on_error_title"]
-            embed.description = STRINGS["error"]["on_error_text"].format(str(error))
+            else:
+                embed = disnake.Embed(color=0xDD0000)
+                embed.title = STRINGS["error"]["on_error_title"]
+                embed.description = STRINGS["error"]["on_error_text"].format(str(error))
 
-        if isinstance(ctx_or_inter, Context):
-            msg = await ctx_or_inter.send(embed=embed)
-            await asyncio.sleep(20)
-            await msg.delete()
-        else:
-            await ctx_or_inter.response.send_message(embed=embed, ephemeral=True)
+            if isinstance(ctx_or_inter, Context):
+                msg = await ctx_or_inter.send(embed=embed)
+                await asyncio.sleep(20)
+                await msg.delete()
+            else:
+                await ctx_or_inter.response.send_message(embed=embed, ephemeral=True)
 
 def setup(bot: Bot) -> NoReturn:
     """
