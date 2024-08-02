@@ -191,20 +191,21 @@ class Listeners(commands.Cog, name="Listeners"):
             if isinstance(error, commands.MissingRequiredArgument):
                 prefix = await s.get_field("prefix", CONFIG["default_prefix"])
 
-            if ctx_or_inter.application_command and ctx_or_inter.application_command.cog and ctx_or_inter.application_command.cog.name != "Jishaku":
-                cog_name = ctx_or_inter.application_command.cog.name
-                if cog_name in COMMANDS and command_name in COMMANDS[cog_name]["commands"]:
-                    embed = Utils.error_embed(
-                        STRINGS["etc"]["usage"].format(
+                if ctx_or_inter.application_command and ctx_or_inter.application_command.cog and ctx_or_inter.application_command.cog.name != "Jishaku":
+                    cog_name = ctx_or_inter.application_command.cog.name
+                    if cog_name in COMMANDS and command_name in COMMANDS[cog_name]["commands"]:
+                        embed = Utils.error_embed(
+                            STRINGS["etc"]["usage"].format(
                             COMMANDS[cog_name]["commands"][command_name]["usage"].format(prefix)
+                            )
                         )
-                    )
-                else:
-                    embed = Utils.error_embed(STRINGS["error"]["command_not_found"])
-            elif isinstance(error, commands.MissingPermissions):
+                    else:
+                        embed = Utils.error_embed(STRINGS["error"]["command_not_found"])
+                
+            elif isinstance(error, (commands.MissingPermissions, disnake.errors.Forbidden)):
                 embed = Utils.error_embed(STRINGS["error"]["missing_perms"])
 
-            elif isinstance(error, commands.BotMissingPermissions):
+            elif isinstance(error, (commands.BotMissingPermissions, disnake.errors.Forbidden)):
                 embed = Utils.error_embed(
                 STRINGS["error"]["missing_bot_perms"].format(
                     " ".join(

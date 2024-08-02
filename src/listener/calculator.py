@@ -160,7 +160,7 @@ class Calculator(commands.Cog, name="Calculator"):
                     await res.response.edit_message(
                         embed=disnake.Embed(
                             title=f"Error in calculation",
-                            description=f"We havce encountered an error: {result}",
+                            description=f"We have encountered an error: {result}",
                             color=disnake.Colour.red(),
                         ),
                         components=done,

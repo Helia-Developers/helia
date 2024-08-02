@@ -709,3 +709,743 @@ middlle. joined test ground
             ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\admin.py", line 609, in slashinvite\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\interactions\\base.py", line 957, in send_message\n    raise InteractionResponded(self._parent)\n', 'disnake.errors.InteractionResponded: This interaction has already been responded to before\n', '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', 'disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: InteractionResponded: This interaction has already been responded to before\n']
             =======================================================
             
+[2024-08-02 17:32:08] Slash Command Description Lengths:
+```Cog: Preferences, Command: prefix, 
+ Description Length: 20```
+```Cog: Preferences, Command: locale, 
+ Description Length: 17```
+```Cog: Help, Command: help, 
+ Description Length: 19```
+```Cog: testingCOG, Command: button, 
+ Description Length: 11```
+```Cog: Moderation, Command: ban, 
+ Description Length: 10```
+```Cog: Moderation, Command: unban, 
+ Description Length: 12```
+```Cog: Moderation, Command: multiban, 
+ Description Length: 12```
+```Cog: Moderation, Command: kick, 
+ Description Length: 11```
+```Cog: Moderation, Command: purge, 
+ Description Length: 14```
+```Cog: Moderation, Command: setname, 
+ Description Length: 12```
+```Cog: Moderation, Command: mute, 
+ Description Length: 11```
+```Cog: Moderation, Command: unmute, 
+ Description Length: 13```
+```Cog: Moderation, Command: lockdown, 
+ Description Length: 24```
+```Cog: Calculator, Command: calculator, 
+ Description Length: 10```
+```Cog: Admin, Command: load, 
+ Description Length: 14```
+```Cog: Admin, Command: unload, 
+ Description Length: 16```
+```Cog: Admin, Command: reload, 
+ Description Length: 16```
+```Cog: Admin, Command: invite_bot, 
+ Description Length: 43```
+```Cog: Admin, Command: set_status, 
+ Description Length: 36```
+```Cog: Admin, Command: invite, 
+ Description Length: 17```
+```Cog: Admin, Command: uptime, 
+ Description Length: 11```
+```Cog: Admin, Command: shutdown, 
+ Description Length: 35```
+```Cog: Utilities, Command: user, 
+ Description Length: 22```
+```Cog: Utilities, Command: emoji, 
+ Description Length: 23```
+```Cog: Utilities, Command: channel, 
+ Description Length: 25```
+```Cog: Utilities, Command: avatar, 
+ Description Length: 19```
+```Cog: Utilities, Command: randint, 
+ Description Length: 23```
+```Cog: Utilities, Command: sqrt, 
+ Description Length: 21```
+```Cog: Utilities, Command: guild, 
+ Description Length: 23```
+```Cog: GNULinux, Command: arch, 
+ Description Length: 4```
+```Cog: GNULinux, Command: ubuntu, 
+ Description Length: 6```
+```Cog: GNULinux, Command: debian, 
+ Description Length: 6```
+```Cog: GNULinux, Command: deepin, 
+ Description Length: 6```
+```Cog: GNULinux, Command: manjaro, 
+ Description Length: 7```
+```Cog: GNULinux, Command: mint, 
+ Description Length: 4```
+```Cog: General, Command: echo, 
+ Description Length: 4```
+```Cog: General, Command: embed, 
+ Description Length: 5```
+```Cog: General, Command: wiki, 
+ Description Length: 9```
+```Cog: General, Command: about, 
+ Description Length: 5```
+```Cog: General, Command: privacy, 
+ Description Length: 7```
+```Cog: Broadcast, Command: announce, 
+ Description Length: 8```
+```Cog: Broadcast, Command: debug, 
+ Description Length: 5```
+```Cog: Minigames, Command: kubik, 
+ Description Length: 11```
+```Cog: Minigames, Command: monetka, 
+ Description Length: 9```
+```Cog: Minigames, Command: casino, 
+ Description Length: 3```
+```Cog: Other, Command: ping, 
+ Description Length: 10```
+```Cog: Other, Command: wallpaper, 
+ Description Length: 13```
+```Cog: Welcome, Command: welcome, 
+ Description Length: 7```
+```Cog: Goodbye, Command: goodbye, 
+ Description Length: 4```
+```Cog: Goodbye, Command: goodbye_channel, 
+ Description Length: 3```
+```Cog: Goodbye, Command: goodbye_clear, 
+ Description Length: 5```
+```Cog: Goodbye, Command: goodbye_text, 
+ Description Length: 3```
+[2024-08-02 17:39:04] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ Unknown::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['disnake.ext.commands.errors.CommandNotFound: Command "debug" is not found\n']
+            =======================================================
+            
+
+
+Dank Memer#5192 left Space Quest 4 Bots(Test Bot area)
+
+
+Dank Memer Beta#2919 left Space Quest 4 Bots(Test Bot area)
+
+
+Vote Tracker#2244 left Space Quest 4 Bots(Test Bot area)
+
+
+Birthday Bot#8358 left Space Quest 4 Bots(Test Bot area)
+
+
+Tatsu#8792 left Space Quest 4 Bots(Test Bot area)
+
+
+To-Do List Bot#7290 left Space Quest 4 Bots(Test Bot area)
+
+
+Helper.gg#8628 left Space Quest 4 Bots(Test Bot area)
+
+
+Nadeko#6685 left Space Quest 4 Bots(Test Bot area)
+
+
+Xenon#7325 left Space Quest 4 Bots(Test Bot area)
+
+
+Member Count#7205 left Space Quest 4 Bots(Test Bot area)
+
+
+Pancake#3691 left Space Quest 4 Bots(Test Bot area)
+
+
+ServerStats#0197 left Space Quest 4 Bots(Test Bot area)
+
+
+GreenScratches#0711 left Space Quest 4 Bots(Test Bot area)
+
+
+Arcane#7800 left Space Quest 4 Bots(Test Bot area)
+
+
+InviteManager#0165 left Space Quest 4 Bots(Test Bot area)
+
+
+Karuta#1280 left Space Quest 4 Bots(Test Bot area)
+
+
+BlockCorp#8821 left Space Quest 4 Bots(Test Bot area)
+
+
+Koya#1050 left Space Quest 4 Bots(Test Bot area)
+
+
+ZeroTwo#3859 left Space Quest 4 Bots(Test Bot area)
+
+
+Rythm#3722 left Space Quest 4 Bots(Test Bot area)
+
+
+RandomBot#5275 left Space Quest 4 Bots(Test Bot area)
+
+
+RandomBot JS#8289 left Space Quest 4 Bots(Test Bot area)
+
+
+Rythm 2#2000 left Space Quest 4 Bots(Test Bot area)
+
+
+Asuna#6877 left Space Quest 4 Bots(Test Bot area)
+
+
+ModMail#5460 left Space Quest 4 Bots(Test Bot area)
+
+
+blargbot#0128 left Space Quest 4 Bots(Test Bot area)
+
+
+UnbelievaBoat#1046 left Space Quest 4 Bots(Test Bot area)
+
+
+Dad Bot#2189 left Space Quest 4 Bots(Test Bot area)
+
+
+NotSoBot#9555 left Space Quest 4 Bots(Test Bot area)
+
+
+Virtual Diner#0323 left Space Quest 4 Bots(Test Bot area)
+
+
+Apollo#5552 left Space Quest 4 Bots(Test Bot area)
+
+
+DISBOARD#2760 left Space Quest 4 Bots(Test Bot area)
+
+
+AIRHORN SOLUTIONS#0001 left Space Quest 4 Bots(Test Bot area)
+
+
+Vortex#8540 left Space Quest 4 Bots(Test Bot area)
+
+
+Gateway#6961 left Space Quest 4 Bots(Test Bot area)
+
+
+Translator#2653 left Space Quest 4 Bots(Test Bot area)
+[2024-08-02 18:47:03] Slash Command Description Lengths:
+```Cog: Preferences, Command: prefix, 
+ Description Length: 20```
+```Cog: Preferences, Command: locale, 
+ Description Length: 17```
+```Cog: Help, Command: help, 
+ Description Length: 19```
+```Cog: testingCOG, Command: button, 
+ Description Length: 11```
+```Cog: Moderation, Command: ban, 
+ Description Length: 10```
+```Cog: Moderation, Command: unban, 
+ Description Length: 12```
+```Cog: Moderation, Command: multiban, 
+ Description Length: 12```
+```Cog: Moderation, Command: kick, 
+ Description Length: 11```
+```Cog: Moderation, Command: purge, 
+ Description Length: 14```
+```Cog: Moderation, Command: setname, 
+ Description Length: 12```
+```Cog: Moderation, Command: mute, 
+ Description Length: 11```
+```Cog: Moderation, Command: unmute, 
+ Description Length: 13```
+```Cog: Moderation, Command: lockdown, 
+ Description Length: 24```
+```Cog: Calculator, Command: calculator, 
+ Description Length: 10```
+```Cog: Admin, Command: load, 
+ Description Length: 14```
+```Cog: Admin, Command: unload, 
+ Description Length: 16```
+```Cog: Admin, Command: reload, 
+ Description Length: 16```
+```Cog: Admin, Command: invite_bot, 
+ Description Length: 43```
+```Cog: Admin, Command: set_status, 
+ Description Length: 36```
+```Cog: Admin, Command: invite, 
+ Description Length: 17```
+```Cog: Admin, Command: uptime, 
+ Description Length: 11```
+```Cog: Admin, Command: shutdown, 
+ Description Length: 35```
+```Cog: Utilities, Command: user, 
+ Description Length: 22```
+```Cog: Utilities, Command: emoji, 
+ Description Length: 23```
+```Cog: Utilities, Command: channel, 
+ Description Length: 25```
+```Cog: Utilities, Command: avatar, 
+ Description Length: 19```
+```Cog: Utilities, Command: randint, 
+ Description Length: 23```
+```Cog: Utilities, Command: sqrt, 
+ Description Length: 21```
+```Cog: Utilities, Command: guild, 
+ Description Length: 23```
+```Cog: GNULinux, Command: arch, 
+ Description Length: 4```
+```Cog: GNULinux, Command: ubuntu, 
+ Description Length: 6```
+```Cog: GNULinux, Command: debian, 
+ Description Length: 6```
+```Cog: GNULinux, Command: deepin, 
+ Description Length: 6```
+```Cog: GNULinux, Command: manjaro, 
+ Description Length: 7```
+```Cog: GNULinux, Command: mint, 
+ Description Length: 4```
+```Cog: General, Command: echo, 
+ Description Length: 4```
+```Cog: General, Command: embed, 
+ Description Length: 5```
+```Cog: General, Command: wiki, 
+ Description Length: 9```
+```Cog: General, Command: about, 
+ Description Length: 5```
+```Cog: General, Command: privacy, 
+ Description Length: 7```
+```Cog: Broadcast, Command: announce, 
+ Description Length: 8```
+```Cog: Broadcast, Command: debug, 
+ Description Length: 5```
+```Cog: Minigames, Command: kubik, 
+ Description Length: 11```
+```Cog: Minigames, Command: monetka, 
+ Description Length: 9```
+```Cog: Minigames, Command: casino, 
+ Description Length: 3```
+```Cog: Other, Command: ping, 
+ Description Length: 10```
+```Cog: Other, Command: wallpaper, 
+ Description Length: 13```
+```Cog: Welcome, Command: welcome, 
+ Description Length: 7```
+```Cog: Goodbye, Command: goodbye, 
+ Description Length: 4```
+```Cog: Goodbye, Command: goodbye_channel, 
+ Description Length: 3```
+```Cog: Goodbye, Command: goodbye_clear, 
+ Description Length: 5```
+```Cog: Goodbye, Command: goodbye_text, 
+ Description Length: 3```
+
+
+AXVin#4169 left Space Quest 4 Bots(Test Bot area)
+
+
+Beemo#4570 left Space Quest 4 Bots(Test Bot area)
+
+
+Chatbot64#8490 left Space Quest 4 Bots(Test Bot area)
+
+
+ClemBot#9646 left Space Quest 4 Bots(Test Bot area)
+
+
+Color-Chan#4928 left Space Quest 4 Bots(Test Bot area)
+
+
+Demon Slayer Bot#7074 left Space Quest 4 Bots(Test Bot area)
+
+
+Erisly#7552 left Space Quest 4 Bots(Test Bot area)
+
+
+Gachapon#8505 left Space Quest 4 Bots(Test Bot area)
+
+
+Gaius Cicereius#3705 left Space Quest 4 Bots(Test Bot area)
+
+
+Hondo Ohnaka#6072 left Space Quest 4 Bots(Test Bot area)
+
+
+I Run Code#2537 left Space Quest 4 Bots(Test Bot area)
+
+
+Invite Tracker#0478 left Space Quest 4 Bots(Test Bot area)
+
+
+Hydra#1214 left Space Quest 4 Bots(Test Bot area)
+
+
+Embed Generator#5905 left Space Quest 4 Bots(Test Bot area)
+
+
+Discord.Me#8575 left Space Quest 4 Bots(Test Bot area)
+
+
+Jarvis#9609 left Space Quest 4 Bots(Test Bot area)
+
+
+Jimmy!#1891 left Space Quest 4 Bots(Test Bot area)
+
+
+Among Us Dumpy Bot#1463 left Space Quest 4 Bots(Test Bot area)
+
+
+awaken the homies#1998 left Space Quest 4 Bots(Test Bot area)
+
+
+Aoi#4472 left Space Quest 4 Bots(Test Bot area)
+
+
+BombBot#2666 left Space Quest 4 Bots(Test Bot area)
+
+
+Axl#3481 left Space Quest 4 Bots(Test Bot area)
+
+
+Blax#2124 left Space Quest 4 Bots(Test Bot area)
+
+
+Bobo Bot Beta#3108 left Space Quest 4 Bots(Test Bot area)
+
+
+
+
+DisSlash#3907 left Space Quest 4 Bots(Test Bot area)
+
+
+DarrenMC#7283 left Space Quest 4 Bots(Test Bot area)
+
+
+DJ Pulse#6608 left Space Quest 4 Bots(Test Bot area)
+
+
+DList#0780 left Space Quest 4 Bots(Test Bot area)
+
+
+Cookie Test Bot#5120 left Space Quest 4 Bots(Test Bot area)
+
+
+Crypto#3464 left Space Quest 4 Bots(Test Bot area)
+
+
+DragonBot#4835 left Space Quest 4 Bots(Test Bot area)
+
+
+DTel#6675 left Space Quest 4 Bots(Test Bot area)
+
+
+EDITH#0575 left Space Quest 4 Bots(Test Bot area)
+
+
+Entro#4255 left Space Quest 4 Bots(Test Bot area)
+
+
+Eren Yeager#7244 left Space Quest 4 Bots(Test Bot area)
+
+
+Esponjosin#3485 left Space Quest 4 Bots(Test Bot area)
+
+
+First bot#9144 left Space Quest 4 Bots(Test Bot area)
+
+
+Flycon#6477 left Space Quest 4 Bots(Test Bot area)
+
+
+fork#8889 left Space Quest 4 Bots(Test Bot area)
+
+
+FuJy Bot#4910 left Space Quest 4 Bots(Test Bot area)
+
+
+GAwesomeBot#7122 left Space Quest 4 Bots(Test Bot area)
+
+
+gearBot#6650 left Space Quest 4 Bots(Test Bot area)
+
+
+get exherboed#7118 left Space Quest 4 Bots(Test Bot area)
+
+
+Hyperion#8703 left Space Quest 4 Bots(Test Bot area)
+
+
+Infinity Link#0663 left Space Quest 4 Bots(Test Bot area)
+
+
+Koha#2387 left Space Quest 4 Bots(Test Bot area)
+
+
+Lambda#2632 left Space Quest 4 Bots(Test Bot area)
+
+
+Lubba#2521 left Space Quest 4 Bots(Test Bot area)
+
+
+MadLibs#2531 left Space Quest 4 Bots(Test Bot area)
+
+
+MagiQ#0195 left Space Quest 4 Bots(Test Bot area)
+
+
+Logger#6088 left Space Quest 4 Bots(Test Bot area)
+
+
+Mr Grape#6524 left Space Quest 4 Bots(Test Bot area)
+
+
+Mythical Money#1204 left Space Quest 4 Bots(Test Bot area)
+
+
+Official Cot Bot#4306 left Space Quest 4 Bots(Test Bot area)
+
+
+OKtestbot#1718 left Space Quest 4 Bots(Test Bot area)
+
+
+Old Broken FireBall#3465 left Space Quest 4 Bots(Test Bot area)
+
+
+Pikadave Studios bot#6191 left Space Quest 4 Bots(Test Bot area)
+
+
+Polarim#6686 left Space Quest 4 Bots(Test Bot area)
+
+
+revibe#0824 left Space Quest 4 Bots(Test Bot area)
+
+
+Rythm-chan#1001 left Space Quest 4 Bots(Test Bot area)
+[2024-08-02 18:53:54] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ lockdown::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 717, in invoke\n    await self.prepare(inter)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 314, in prepare\n    if not await self.can_run(inter):\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in can_run\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 573, in async_all\n    for elem in gen:\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in <genexpr>\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n                           ^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\core.py", line 2222, in predicate\n    raise BotMissingPermissions(missing)\n', 'disnake.ext.commands.errors.BotMissingPermissions: Bot requires Manage Channels and Manage Roles permission(s) to run this command.\n']
+            =======================================================
+            
+
+
+Saya#9919 left Space Quest 4 Bots(Test Bot area)
+
+
+ShuckleBot#7609 left Space Quest 4 Bots(Test Bot area)
+
+
+Softwaresat Bot#7006 left Space Quest 4 Bots(Test Bot area)
+
+
+Sometimes Cute#3440 left Space Quest 4 Bots(Test Bot area)
+
+
+Splash#3914 left Space Quest 4 Bots(Test Bot area)
+
+
+swag-bot#1924 left Space Quest 4 Bots(Test Bot area)
+
+
+The Anime Bot#6613 left Space Quest 4 Bots(Test Bot area)
+
+
+WeegeeBot#0779 left Space Quest 4 Bots(Test Bot area)
+
+
+Yumiko#0032 left Space Quest 4 Bots(Test Bot area)
+
+
+Yumiko Alpha#9225 left Space Quest 4 Bots(Test Bot area)
+[2024-08-02 18:54:45] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ lockdown::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 717, in invoke\n    await self.prepare(inter)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 314, in prepare\n    if not await self.can_run(inter):\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in can_run\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 573, in async_all\n    for elem in gen:\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in <genexpr>\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n                           ^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\core.py", line 2222, in predicate\n    raise BotMissingPermissions(missing)\n', 'disnake.ext.commands.errors.BotMissingPermissions: Bot requires Manage Channels and Manage Roles permission(s) to run this command.\n']
+            =======================================================
+            
+
+
+Zephyr#8744 left Space Quest 4 Bots(Test Bot area)
+
+
+testesfsf#6833 left Space Quest 4 Bots(Test Bot area)
+
+
+wagie#7177 left Space Quest 4 Bots(Test Bot area)
+
+
+Welcomer#5491 left Space Quest 4 Bots(Test Bot area)
+
+
+Yggdrasil#4195 left Space Quest 4 Bots(Test Bot area)
+
+
+
+
+Waifugami#1838 left Space Quest 4 Bots(Test Bot area)
+
+
+Virtual Fisher#7036 left Space Quest 4 Bots(Test Bot area)
+
+
+TypeRacerStats#1630 left Space Quest 4 Bots(Test Bot area)
+
+
+Toonbot#0779 left Space Quest 4 Bots(Test Bot area)
+
+
+TacoShack#6998 left Space Quest 4 Bots(Test Bot area)
+
+
+AmariBot#5150 left Space Quest 4 Bots(Test Bot area)
+
+
+Birthday Bot#5876 left Space Quest 4 Bots(Test Bot area)
+
+
+counting#5250 left Space Quest 4 Bots(Test Bot area)
+
+
+IdleRPG#8939 left Space Quest 4 Bots(Test Bot area)
+
+
+jt.js#2876 left Space Quest 4 Bots(Test Bot area)
+
+
+PicPal#3225 left Space Quest 4 Bots(Test Bot area)
+
+
+K-pop Music Quiz#7255 left Space Quest 4 Bots(Test Bot area)
+
+
+Kyoko#0281 left Space Quest 4 Bots(Test Bot area)
+
+
+Liam#7447 left Space Quest 4 Bots(Test Bot area)
+
+
+Lootcord#6294 left Space Quest 4 Bots(Test Bot area)
+
+
+Lurkr#6062 left Space Quest 4 Bots(Test Bot area)
+
+
+MedalBot#1237 left Space Quest 4 Bots(Test Bot area)
+
+
+MickBot#2578 left Space Quest 4 Bots(Test Bot area)
+[2024-08-02 18:57:39] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ lockdown::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 717, in invoke\n    await self.prepare(inter)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 314, in prepare\n    if not await self.can_run(inter):\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in can_run\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 573, in async_all\n    for elem in gen:\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in <genexpr>\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n                           ^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\core.py", line 2222, in predicate\n    raise BotMissingPermissions(missing)\n', 'disnake.ext.commands.errors.BotMissingPermissions: Bot requires Manage Channels and Manage Roles permission(s) to run this command.\n']
+            =======================================================
+            
+
+
+Miki#6045 left Space Quest 4 Bots(Test Bot area)
+
+
+Mirai#3157 left Space Quest 4 Bots(Test Bot area)
+
+
+MonitoRSS#3921 left Space Quest 4 Bots(Test Bot area)
+
+
+Weemo#5240 left Space Quest 4 Bots(Test Bot area)
+
+
+YouTube#7763 left Space Quest 4 Bots(Test Bot area)
+
+
+Waifu#2747 left Space Quest 4 Bots(Test Bot area)
+
+
+Vetrilox#4029 left Space Quest 4 Bots(Test Bot area)
+
+
+UNO#8721 left Space Quest 4 Bots(Test Bot area)
+
+
+Septapus#2651 left Space Quest 4 Bots(Test Bot area)
+
+
+Statbot#3472 left Space Quest 4 Bots(Test Bot area)
+
+
+Suggester#8366 left Space Quest 4 Bots(Test Bot area)
+
+
+Suzuka#0808 left Space Quest 4 Bots(Test Bot area)
+
+
+PyQuantum#2202 left Space Quest 4 Bots(Test Bot area)
+
+
+Kashima#4514 left Space Quest 4 Bots(Test Bot area)
+
+
+Mudae#0807 left Space Quest 4 Bots(Test Bot area)
+
+
+
+
+Sasaki#2446 left Space Quest 4 Bots(Test Bot area)
+
+
+tip.cc#7731 left Space Quest 4 Bots(Test Bot area)
+
+
+Tupperbox#4754 left Space Quest 4 Bots(Test Bot area)
+
+
+YAGPDB.xyz#8760 left Space Quest 4 Bots(Test Bot area)
+[2024-08-02 19:00:15] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ lockdown::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 717, in invoke\n    await self.prepare(inter)\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 314, in prepare\n    if not await self.can_run(inter):\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in can_run\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\utils.py", line 573, in async_all\n    for elem in gen:\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in <genexpr>\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n                           ^^^^^^^^^^^^^^^^\n', '  File "C:\\Users\\andrej\\AppData\\Roaming\\Python\\Python312\\site-packages\\disnake\\ext\\commands\\core.py", line 2222, in predicate\n    raise BotMissingPermissions(missing)\n', 'disnake.ext.commands.errors.BotMissingPermissions: Bot requires Manage Channels and Manage Roles permission(s) to run this command.\n']
+            =======================================================
+            
