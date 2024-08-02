@@ -427,3 +427,16 @@ middlle. joined test ground
  Description Length: 5```
 ```Cog: Goodbye, Command: goodbye_text, 
  Description Length: 3```
+[2024-08-02 15:41:48] 
+        ║========================║=========================║
+        ║ Guild                  ║ Member                  ║
+        ║ DisGhost Support & Hangout::::::::::::::║ lumina.ri:::::::::::::::::║
+        ║========================║=========================║
+        ║ Guild ID               ║ Member ID               ║
+        ║ 534450100890763302:::::║ 540142383270985738::::::║
+        ║========================║=========================║
+        =======================================================
+        Traceback
+        ['disnake.ext.commands.errors.CommandNotFound: Command "jsk" is not found\n']
+        =======================================================
+        

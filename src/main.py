@@ -28,14 +28,17 @@ from listener.core.client import CoreClient
 from listener.prefs import Preferences
 from listener.utils import Config, Logger, Strings, Utils
 
-os.system("ls -l; pip uninstall -y discord.py")
-os.system("ls -l; pip uninstall -y wavelink")
-os.system("ls -l; poetry remove discord.py")
-os.system("ls -l; pip install disnake")
-os.system("ls -l; poetry add disnake")
-os.system("ls -l; pip install -U git+https://github.com/Disnake-Extensions/jishaku")
-os.system("ls -l; pip install -U git+https://github.com/pieckenst/WaveLinkFork.git")
+import platform
 
+if platform.system() == "Linux":
+    os.system("ls -l; pip uninstall -y discord.py")
+    os.system("ls -l; pip uninstall -y wavelink")
+    os.system("ls -l; poetry remove discord.py")
+
+    os.system("pip install disnake")
+    os.system("poetry add disnake")
+    os.system("pip install -U git+https://github.com/Disnake-Extensions/jishaku")
+    os.system("pip install -U git+https://github.com/pieckenst/WaveLinkFork.git")
 CONFIG = Config()
 STRINGS = Strings(CONFIG["default_locale"])
 
@@ -132,47 +135,53 @@ async def main():
         cprint(f"=====Extension - {command_cog} was loaded succesfully!=====", "green")
     if __name__ == "__main__":
         # Load command Cogs
-        startup_extensions = [
-            "listener.help",
-            "listener.testing",
-            "listener.music",
-            "listener.moderation",
-            "listener.calculator",
-            "listener.listeners",
-            "listener.admin",
-            "listener.utilities",
-            "listener.gnulinux",
-            "listener.general",
-            "listener.announce",
-            "listener.minigames",
-            "listener.other",
-            "listener.utils",
-            "listener.welcome",
-            "listener.goodbye",
-            "listener.workers",
-        ]
-        for extension in startup_extensions:
-            try:
-                client.load_extension(extension)
-                cprint(
-                    f"║=====Extension - {extension} was loaded succesfully!=====║",
-                    "green",
-                )
-            except commands.errors.ExtensionFailed as e:
-                if (
-                    isinstance(e.original, disnake.errors.HTTPException)
-                    and e.original.code == 50035
-                ):
+        try:
+            client.load_extension('jishaku')
+            print("    Loaded 'jishaku.py'")
+        except Exception as e:
+            print(f"    Failed to load 'jishaku': {e}")
+        finally:
+            startup_extensions = [
+                "listener.help",
+                "listener.testing",
+                "listener.music",
+                "listener.moderation",
+                "listener.calculator",
+                "listener.listeners",
+                "listener.admin",
+                "listener.utilities",
+                "listener.gnulinux",
+                "listener.general",
+                "listener.announce",
+                "listener.minigames",
+                "listener.other",
+                "listener.utils",
+                "listener.welcome",
+                "listener.goodbye",
+                "listener.workers",
+            ]
+            for extension in startup_extensions:
+                try:
+                    client.load_extension(extension)
                     cprint(
-                        f"║=====Warning: SyncWarning: Failed to overwrite global commands due to 400 Bad Request (error code: 50035): Invalid Form Body in {extension}=====║",
-                        "yellow",
+                        f"║=====Extension - {extension} was loaded succesfully!=====║",
+                        "green",
                     )
-                else:
-                    exc = f"{type(e).__name__}: {e}"
-                    cprint(
-                        f"║=====Failed to load extension {extension}\n{exc}=====║",
-                        "red",
-                    )
+                except commands.errors.ExtensionFailed as e:
+                    if (
+                        isinstance(e.original, disnake.errors.HTTPException)
+                        and e.original.code == 50035
+                    ):
+                        cprint(
+                            f"║=====Warning: SyncWarning: Failed to overwrite global commands due to 400 Bad Request (error code: 50035): Invalid Form Body in {extension}=====║",
+                            "yellow",
+                        )
+                    else:
+                        exc = f"{type(e).__name__}: {e}"
+                        cprint(
+                            f"║=====Failed to load extension {extension}\n{exc}=====║",
+                            "red",
+                        )
 
     # Run Bot
 

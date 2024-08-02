@@ -96,14 +96,14 @@ class CoreClient(commands.AutoShardedBot):
 
     async def on_ready(self):
         activar = disnake.Activity(
-            type=disnake.ActivityType.watching, name="Orion.py test run"
+            type=disnake.ActivityType.watching, name="Starting up the bot..."
         )
 
         await self.change_presence(status=disnake.Status.online, activity=activar)
         self.launch_time = datetime.datetime.utcnow()
 
-        # self.load_extension("jishaku")
-        # print("    Loaded 'jishaku.py'")
+    
+        
         await super(CoreClient, self).change_presence(status=disnake.Status.online)
         # await self.update_status_on_dbl()
         print("[LAUNCH] Logged in as {}".format(super(CoreClient, self).user))
