@@ -3,7 +3,6 @@ from disnake import ButtonStyle, SelectOption
 from disnake.ext import commands
 from disnake.ui import Button, Select, View
 
-
 class Dropdown(disnake.ui.Select):
     def __init__(self, options, bot):
         self.bot = bot
@@ -16,6 +15,7 @@ class Dropdown(disnake.ui.Select):
         for cog in self.bot.cogs:
             if label == cog:
                 await get_help(self, interaction, CogToPassAlong=cog)
+                return
         if label == "Close":
             embede = disnake.Embed(
                 title=":books: Help System",
@@ -26,11 +26,32 @@ class Dropdown(disnake.ui.Select):
 
 
 class DropdownView(disnake.ui.View):
-    def __init__(self, options, bot):
+    def __init__(self, bot):
         super().__init__()
         self.bot = bot
+        options = [SelectOption(label=cog, value=cog) for cog in bot.cogs if cog.lower() not in ["testingcog", "preferences", "calculator", "help","workers","jishaku","listeners","utils"]]
+        options.append(SelectOption(label="Close", value="Close"))
         self.add_item(Dropdown(options, self.bot))
 
+
+class PaginationView(disnake.ui.View):
+    def __init__(self, embeds, bot):
+        super().__init__()
+        self.embeds = embeds
+        self.current_page = 0
+        self.bot = bot
+        self.add_item(Dropdown([SelectOption(label=cog, value=cog) for cog in bot.cogs if cog.lower() not in ["testingcog", "preferences", "calculator", "help","workers","jishaku","listeners","utils"]] + [SelectOption(label="Close", value="Close")], self.bot))
+        self.add_item(Button(style=ButtonStyle.primary, label="◀", custom_id="previous"))
+        self.add_item(Button(style=ButtonStyle.primary, label="▶", custom_id="next"))
+
+    async def interaction_check(self, interaction: disnake.MessageInteraction) -> bool:
+        if interaction.data.custom_id == "previous":
+            self.current_page = max(0, self.current_page - 1)
+        elif interaction.data.custom_id == "next":
+            self.current_page = min(len(self.embeds) - 1, self.current_page + 1)
+
+        await interaction.response.edit_message(embed=self.embeds[self.current_page], view=self)
+        return True
 
 class Help(commands.Cog):
     "The Help Menu Cog"
@@ -45,41 +66,24 @@ class Help(commands.Cog):
         if command is None:
             await self.send_bot_help(inter)
         else:
-            await self.send_command_help(inter, command)
+            cmd = self.bot.get_slash_command(command)
+            if cmd:
+                await self.send_command_help(inter, cmd)
+            else:
+                await inter.response.send_message(
+                    f"No command called '{command}' found.", ephemeral=True
+                )
 
     async def send_bot_help(self, inter: disnake.ApplicationCommandInteraction):
-        embed = HelpEmbed(description=f"Welcome To {self.bot.user.name} Help System")
-        usable = 0
-        myoptions = []
+        embede = disnake.Embed(
+            title=":books: Help System",
+            description=f"Welcome To {self.bot.user.name} Help System",
+        )
+        embede.set_footer(text="Developed with ❤️ by Middlle")
+        view = DropdownView(self.bot)
+        await inter.response.send_message(embed=embede, view=view)
 
-        filtered_cogs = ["testingCOG", "Preferences", "Calculator", "Help"]
-
-        for cog_name, cog in self.bot.cogs.items():
-            print(cog_name)
-            if cog_name.lower() not in [fc.lower() for fc in filtered_cogs]:
-                print(filtered_cogs)
-                if filtered_commands := [cmd for cmd in cog.get_slash_commands()]:
-                    amount_commands = len(filtered_commands)
-                    usable += amount_commands
-                    name = cog.qualified_name
-                    description = cog.description or "No description"
-                    myoptions.append(SelectOption(label=name, value=name))
-
-        myoptions.append(SelectOption(label="Close", value="Close"))
-        view = DropdownView(myoptions, self.bot)
-
-        await inter.response.send_message(embed=embed, view=view)
-
-    async def send_command_help(
-        self, inter: disnake.ApplicationCommandInteraction, command_name: str
-    ):
-        command = self.bot.get_slash_command(command_name)
-        if not command:
-            await inter.response.send_message(
-                f"No command called '{command_name}' found.", ephemeral=True
-            )
-            return
-
+    async def send_command_help(self, inter: disnake.ApplicationCommandInteraction, command):
         signature = f"/{command.name}"
         if isinstance(command, commands.InvokableSlashCommand):
             signature += f" {' '.join([f'<{param.name}>' for param in command.options])}"
@@ -100,30 +104,45 @@ class Help(commands.Cog):
 
         await inter.response.send_message(embed=embed)
 
-
 class HelpEmbed(disnake.Embed):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.timestamp = disnake.utils.utcnow()
-        self.title = ":books: Help System"
-
         self.set_footer(text="Developed with ❤️ by Middlle")
-
 
 async def get_help(self, interaction, CogToPassAlong):
     cog = self.bot.get_cog(CogToPassAlong)
     if not cog:
         return
-    emb = disnake.Embed(
+    embeds = []
+    embed = disnake.Embed(
         title=f"{CogToPassAlong} - Commands",
         description=cog.__doc__,
     )
-    emb.set_author(name="Help System")
+    embed.set_author(name="Help System")
+    commands_text = ""
     for command in cog.get_slash_commands():
-        emb.add_field(
-            name=f"『`/{command.name}`』", value=command.description, inline=False
-        )
-    await interaction.response.edit_message(embed=emb)
+        command_text = f"『`/{command.name}`』: {command.description}\n"
+        if len(commands_text) + len(command_text) > 1024:
+            embed.add_field(name="Commands", value=commands_text, inline=False)
+            embeds.append(embed)
+            embed = disnake.Embed(
+                title=f"{CogToPassAlong} - Commands (Continued)",
+                description=cog.__doc__,
+            )
+            embed.set_author(name="Help System")
+            commands_text = command_text
+        else:
+            commands_text += command_text
+    if commands_text:
+        embed.add_field(name="Commands", value=commands_text, inline=False)
+    embeds.append(embed)
+    
+    if len(embeds) > 1:
+        view = PaginationView(embeds, self.bot)
+        await interaction.response.edit_message(embed=embeds[0], view=view)
+    else:
+        await interaction.response.edit_message(embed=embeds[0])
 
 
 def setup(bot):

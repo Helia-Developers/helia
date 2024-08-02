@@ -1600,3 +1600,111 @@ Jeyy Bot#3108 left Space Quest 4 Bots(Test Bot area)
             ['Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\bot_base.py", line 581, in invoke\n    await ctx.command.invoke(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 1494, in invoke\n    await super().invoke(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 904, in invoke\n    await self.prepare(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 838, in prepare\n    await self._parse_arguments(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 766, in _parse_arguments\n    raise TooManyArguments(f"Too many arguments passed to {self.qualified_name}")\n', 'disnake.ext.commands.errors.TooManyArguments: Too many arguments passed to jishaku\n']
             =======================================================
             
+[2024-08-02 19:41:27] Command used: jishaku by lumina.ri in Space Quest 4 Bots(Test Bot area)
+[2024-08-02 19:41:35] Command used: jishaku by lumina.ri in Space Quest 4 Bots(Test Bot area)
+[2024-08-02 19:41:35] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ jishaku::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\bot_base.py", line 581, in invoke\n    await ctx.command.invoke(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 1494, in invoke\n    await super().invoke(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 904, in invoke\n    await self.prepare(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 838, in prepare\n    await self._parse_arguments(ctx)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 766, in _parse_arguments\n    raise TooManyArguments(f"Too many arguments passed to {self.qualified_name}")\n', 'disnake.ext.commands.errors.TooManyArguments: Too many arguments passed to jishaku\n']
+            =======================================================
+            
+[2024-08-02 19:43:05] Command used: debug by lumina.ri in Space Quest 4 Bots(Test Bot area)
+[2024-08-02 19:50:43] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ wiki::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 717, in invoke\n    await self.prepare(inter)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\base_core.py", line 314, in prepare\n    if not await self.can_run(inter):\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in can_run\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\utils.py", line 573, in async_all\n    for elem in gen:\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\base_core.py", line 623, in <genexpr>\n    return await async_all(predicate(inter) for predicate in predicates)  # type: ignore\n                           ^^^^^^^^^^^^^^^^\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\core.py", line 2499, in pred\n    raise NSFWChannelRequired(ch)  # type: ignore\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', "disnake.ext.commands.errors.NSFWChannelRequired: Channel 'getitworkin' needs to be NSFW for this command to work.\n"]
+            =======================================================
+            
+
+
+JDJG Bot [Beta]#1282 joined Space Quest 4 Bots(Test Bot area)
+[2024-08-02 22:35:05] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ help::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\help.py", line 105, in help\n    await self.bot.help_command.send_bot_help(self.bot.cogs)\n', '  File "D:\\source\\helia\\src\\listener\\help.py", line 15, in send_bot_help\n    if filtered_commands := await self.filter_commands(commands):\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\help.py", line 548, in filter_commands\n    iterator = commands if self.show_hidden else filter(lambda c: not c.hidden, commands)\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', "TypeError: 'Preferences' object is not iterable\n", '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', "disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: TypeError: 'Preferences' object is not iterable\n"]
+            =======================================================
+            
+[2024-08-02 22:36:20] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ help::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\help.py", line 106, in help\n    await self.bot.help_command.send_bot_help(None)\n', '  File "D:\\source\\helia\\src\\listener\\help.py", line 14, in send_bot_help\n    for cog_name, cog in self.context.bot.cogs.items():\n                         ^^^^^^^^^^^^^^^^\n', "AttributeError: '_MissingSentinel' object has no attribute 'bot'\n", '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', "disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: AttributeError: '_MissingSentinel' object has no attribute 'bot'\n"]
+            =======================================================
+            
+[2024-08-02 22:49:22] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ help::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\help.py", line 114, in help\n    await self.bot.help_command.send_bot_help(None)\n', '  File "D:\\source\\helia\\src\\listener\\help.py", line 51, in send_bot_help\n    bot = ctx.bot\n          ^^^^^^^\n', "AttributeError: '_MissingSentinel' object has no attribute 'bot'\n", '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', "disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: AttributeError: '_MissingSentinel' object has no attribute 'bot'\n"]
+            =======================================================
+            
+[2024-08-02 22:51:05] 
+            ║========================║=========================║
+            ║ Guild                  ║ Member                  ║
+            ║Space Quest 4 Bots(Test Bot area):║ lumina.ri:::::::::::::::::║
+            ║========================║=========================║
+            ║ Guild ID               ║ Member ID               ║
+            ║ 438848185008390158:::::║ 540142383270985738::::::║
+            ║========================║=========================║
+            ║ Command                ║
+            ║ help::::::::::::::::::::::::::::::::::::║
+            ║========================║
+            =======================================================
+            Traceback
+            ['Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 728, in invoke\n    await call_param_func(self.callback, inter, self.cog, **kwargs)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\params.py", line 1083, in call_param_func\n    return await maybe_coroutine(safe_call, function, **kwargs)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\utils.py", line 567, in maybe_coroutine\n    return await value\n           ^^^^^^^^^^^\n', '  File "D:\\source\\helia\\src\\listener\\help.py", line 114, in help\n    await self.bot.help_command.send_bot_help(None)\n', '  File "D:\\source\\helia\\src\\listener\\help.py", line 51, in send_bot_help\n    bot = ctx.bot\n          ^^^^^^^\n', "AttributeError: '_MissingSentinel' object has no attribute 'bot'\n", '\nThe above exception was the direct cause of the following exception:\n\n', 'Traceback (most recent call last):\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\interaction_bot_base.py", line 1378, in process_application_commands\n    await app_command.invoke(interaction)\n', '  File "c:\\Program Files\\Python312\\Lib\\site-packages\\disnake\\ext\\commands\\slash_core.py", line 737, in invoke\n    raise CommandInvokeError(exc) from exc\n', "disnake.ext.commands.errors.CommandInvokeError: Command raised an exception: AttributeError: '_MissingSentinel' object has no attribute 'bot'\n"]
+            =======================================================
+            
+
+
+azura.rbx joined DisGhost Support & Hangout
+
+
+nigga.blacka joined DisGhost Support & Hangout
